@@ -11,41 +11,50 @@ import java.io.IOException;
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
-        // Start out with a JSON Parser Object
+
+        String orderFilePath = "orders/order.json";
+
+        /// Get the order data through readOrderFile function
+        try {
+            JSONObject orderData = readOrderFile(orderFilePath);
+            if (orderData != null){
+                String orderType = (String) orderData.get("type");
+                Long orderDate = (Long) orderData.get("order_date");
+                /// Print out the orderType and orderDate
+                System.out.println("Type: " + orderType);
+                System.out.println("Order_Date: " + orderDate);
+                //// Item is an object array
+                System.out.printf("\tItems%15s %10s", "Quantity:", "Price\n");
+                JSONArray itemsArray = (JSONArray) orderData.get("items");
+                for (Object itemObj : itemsArray){
+                    JSONObject itemData = (JSONObject)itemObj;
+
+                    String name = (String)itemData.get("name");
+                    Long quantity = (Long)itemData.get("quantity");
+                    double price = (double)itemData.get("price");
+
+                    ///  Print out the items ordered
+                    System.out.printf("\t%-" + 15 + "s %-8d %.2f\n", name, quantity, price);
+                }
+            }
+        }
+        catch (ParseException | IOException e){
+            System.out.println(e.getMessage());
+        }
+
+
+
+
+    }
+
+    public static JSONObject readOrderFile(String pathFile) throws IOException, ParseException {
+        // Create the JSON Parse object
         JSONParser parser = new JSONParser();
 
-        try{
-            String file = "orders/order.json";
-            Object obj = parser.parse(new FileReader(file));
+        // Create the file path convert it into an object and then read it into the parser
+        Object obj = parser.parse(new FileReader(pathFile));
+        JSONObject objectInfo = (JSONObject) obj;
 
-            JSONObject theOrder = (JSONObject) obj;
-            Object order = theOrder.get("order");
-            JSONObject orderData = (JSONObject) order;
-            String orderType = (String) orderData.get("type");
-            Long orderDate = (Long) orderData.get("order_date");
-
-            JSONArray itemsArray = (JSONArray) orderData.get("items");
-
-            for (Object itemObj : itemsArray){
-                JSONObject itemsData = (JSONObject) itemObj;
-
-                String name = (String) itemsData.get("name");
-                Long quantity = (Long) itemsData.get("quantity");
-                double price = (double) itemsData.get("price");
-
-                System.out.println(name + ":" + quantity + ":" + price);
-            }
-
-        }
-        catch (IOException e){
-            System.err.println("Reading Error: " + e.getMessage());
-        }
-        catch (ParseException e){
-            System.err.println("Error Parsing: " + e.getMessage());
-        }
-
-
-
-
+        return (JSONObject) objectInfo.get("order");
     }
 }
