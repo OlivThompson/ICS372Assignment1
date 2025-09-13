@@ -14,16 +14,16 @@ public class Main {
 
         String orderFilePath = "orders/order.json";
 
-        /// Get the order data through readOrderFile function
+        // Get the order data through readOrderFile function
         try {
             JSONObject orderData = readOrderFile(orderFilePath);
             if (orderData != null){
                 String orderType = (String) orderData.get("type");
                 Long orderDate = (Long) orderData.get("order_date");
-                /// Print out the orderType and orderDate
+                // Print out the orderType and orderDate
                 System.out.println("Type: " + orderType);
                 System.out.println("Order_Date: " + orderDate);
-                //// Item is an object array
+                // Item is an object array
                 System.out.printf("\tItems%15s %10s", "Quantity:", "Price\n");
                 JSONArray itemsArray = (JSONArray) orderData.get("items");
                 for (Object itemObj : itemsArray){
@@ -33,7 +33,7 @@ public class Main {
                     Long quantity = (Long)itemData.get("quantity");
                     double price = (double)itemData.get("price");
 
-                    ///  Print out the items ordered
+                    //  Print out the items ordered
                     System.out.printf("\t%-" + 15 + "s %-8d %.2f\n", name, quantity, price);
                 }
             }
