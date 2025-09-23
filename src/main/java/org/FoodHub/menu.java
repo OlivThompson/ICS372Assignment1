@@ -28,15 +28,18 @@ public class menu {
         return restrauntMenu;
     }
 
-    public String printMenu(){
+    public String toString(){
         /// Want to loop through the array and format it into a string
         String formattedString = "";
         System.out.printf("%14s\n", "Menu");
-        System.out.println("------------------------");
+        System.out.println("-----------------------------");
+        int counter = 1;
         for (foodItem theItem : restrauntMenu){
-            String formattingTheString = String.format("\t%-15s $%.2f\n", theItem.getName(), theItem.getPrice());
+            String formattingTheString = String.format("\t%d. %-15s $%.2f\n",counter, theItem.getName(), theItem.getPrice());
             formattedString += formattingTheString;
+            counter++;
         }
+
         return formattedString;
     }
 
