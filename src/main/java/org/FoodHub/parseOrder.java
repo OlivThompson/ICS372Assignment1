@@ -6,14 +6,12 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class parseOrder {
     private String filePath = "";
     private JSONObject objectInfo;
-    ArrayList<String> items = new ArrayList<>();
+    ArrayList<foodItem> items = new ArrayList<>();
 
     /// Parse the file that is being directed
     public parseOrder(String orderFile) throws IOException, ParseException{
@@ -31,13 +29,13 @@ public class parseOrder {
     };
 
     /// Return the array of the items from the json
-    public ArrayList<String> getItems(){
+    public ArrayList<foodItem> getItems(){
         /// Create another JSONObject in order to get access into the (order's) data
         JSONObject objectItemDataAccess = (JSONObject)objectInfo.get("order");
         JSONArray itemsArray = (JSONArray)objectItemDataAccess.get("items");
         for (Object itemObject : itemsArray){
             JSONObject itemData = (JSONObject)itemObject;
-            String itemName = (String)itemData.get("name");
+            foodItem itemName = (foodItem)itemData.get("name");
             items.add(itemName);
         }
         return items;
@@ -56,7 +54,15 @@ public class parseOrder {
             String name = (String)itemData.get("name");
             Long quantity = (Long)itemData.get("quantity");
             double price = (double)itemData.get("price");
-            System.out.printf("\t%-" + 15 + "s %-8d %.2f\n", name, quantity, price);
+            System.out.printf("\t%-" + 15 + "s %-8d %-8d %.2f\n", name, quantity, price);
         }
     }
+
+    /// Create a new order
+    /// But this new will also create a new orderfile
+    /// orderfile will be created and named incrementally
+    /// the Path to the file will automatically be set to "orders/ + "orderId""
+//    public void writeToFile(Order incomingOrder){
+        ///  Begin by focusing on putting into json format
+//    }
 }
