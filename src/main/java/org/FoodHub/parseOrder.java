@@ -27,6 +27,8 @@ public class parseOrder {
         this.objectInfo = (JSONObject)obj;
     };
 
+    public parseOrder(){};
+
     /// Return the order information to whoever requests it
     public Object getObjInfo(){
         return objectInfo;
@@ -68,11 +70,35 @@ public class parseOrder {
         }
     }
 
+    public String getOrderType(){
+        JSONObject orderData = (JSONObject)objectInfo.get("order");
+        String orderType = (String)orderData.get("type");
+        return orderType;
+    }
+
+    public long getOrderTime(){
+        JSONObject orderData = (JSONObject)objectInfo.get("order_date");
+        return (long)orderData.get("order_date");
+    };
+
     /// Create a new order
     /// But this new will also create a new orderfile
     /// orderfile will be created and named incrementally
     /// the Path to the file will automatically be set to "orders/ + "orderId""
-    public JSONObject writeToFile(Order incomingOrder){
+    public void writeOrderToJSON(Order theOrder){
+        File orderPath = new File("orders");
+        if (!orderPath .exists()){
+            orderPath.mkdirs();
+            System.out.println("Create Directory");
+        }
+        try(FileWriter file = new FileWriter(orderPath + File.separator + theOrder.getOrderId() + ".json")){
+            file.write(fortmatForWriting(theOrder).toJSONString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public JSONObject fortmatForWriting(Order incomingOrder){
 
         JSONArray itemArray = new JSONArray();
         for (foodItem itemData : incomingOrder.getFoodList()){
@@ -90,7 +116,6 @@ public class parseOrder {
 
         JSONObject theOrder = new JSONObject();
         theOrder.put("order", orderObj);
-        System.out.println(theOrder.toJSONString());
         return theOrder;
     }
 
@@ -98,11 +123,11 @@ public class parseOrder {
         JSONArray allOrdersArray = new JSONArray();
 
         for (Order order : allOrders){
-            JSONObject orderJSON = writeToFile(order);
+            JSONObject orderJSON = fortmatForWriting(order);
             allOrdersArray.add(orderJSON);
         }
 
-        File all_Orders_Path = new File("/orders/all_orders");
+        File all_Orders_Path = new File("orders/all_orders");
         if  (!all_Orders_Path.exists()){
             all_Orders_Path.mkdirs();
             System.out.println("Created Directory");
