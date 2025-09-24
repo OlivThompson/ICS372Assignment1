@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class parseOrder {
     private String filePath = "";
     private JSONObject objectInfo;
-    ArrayList<foodItem> items = new ArrayList<>();
+    ArrayList<foodItem> items = new ArrayList<foodItem>();
 
     /// Parse the file that is being directed
     public parseOrder(String orderFile) throws IOException, ParseException{
@@ -35,8 +35,14 @@ public class parseOrder {
         JSONArray itemsArray = (JSONArray)objectItemDataAccess.get("items");
         for (Object itemObject : itemsArray){
             JSONObject itemData = (JSONObject)itemObject;
-            foodItem itemName = (foodItem)itemData.get("name");
-            items.add(itemName);
+            String itemName = (String)itemData.get("name");
+            double price = (double)itemData.get("price");
+            long quantity = (long)itemData.get("quantity");
+
+            foodItem newItem = new foodItem(itemName);
+            newItem.setFoodQuantity((int)quantity);
+            newItem.foodSetPrice(price);
+            items.add(newItem);
         }
         return items;
     };

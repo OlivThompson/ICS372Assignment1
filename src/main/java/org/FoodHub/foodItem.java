@@ -33,4 +33,8 @@ public class foodItem {
         return quantity;
     }
 
+    public String toString(){
+        return food;
+    }
+
 }

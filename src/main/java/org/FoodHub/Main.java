@@ -7,6 +7,7 @@ import org.json.simple.parser.ParseException;
 import java.io.FileReader;
 import java.io.IOException;
 
+import java.time.LocalDateTime;
 import java.util.Scanner;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
@@ -17,17 +18,19 @@ public class Main {
 
         //String orderPath = scnr.nextLine();
         String orderPath = "orders/order.json";
-        /// Create an object instance to be passed on
-        Object orderInformation;
 
         try{
             parseOrder parseOrderFile = new parseOrder(orderPath);
-            parseOrderFile.readOrdersFromJson();
+//            orderManager2 prompter = new orderManager2();
+            Order newOrder = new Order(1);
+
+            /// Here is an example that you can use to run fetching JSON FILE foodItem Attributes and printing it
+            newOrder.getOrderItemFromJSON(parseOrderFile.getItems());
+            newOrder.printOrderItems();
+
         }
         catch(ParseException|IOException e){
             System.out.println(e.getMessage());
         }
-
-
     }
 }

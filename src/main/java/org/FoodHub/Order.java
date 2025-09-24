@@ -34,7 +34,7 @@ public class Order {
 //    }
 
     public void getOrderItemFromJSON(ArrayList<foodItem> foodItem){
-        this.foodItems = foodItem;
+        this.foodItems.addAll(foodItem);
     }
 
     public int getOrderId(){
