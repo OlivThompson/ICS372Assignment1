@@ -1,34 +1,57 @@
 package org.FoodHub;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Queue;
 
 public class OrderManager {
-    private Queue<Order> orders = new Queue<Order>();
+    private List<Order> incomingOrders = new ArrayList<Order>();
 
     private List<Order> completedOrders = new ArrayList<Order>();
 
     public void addOrder(Order order) {
-
+       this.incomingOrders.add(order);
     }
 
     public void cancelOrder(int orderID) {
+        int index = -1;
+        for(int i = 0; i < incomingOrders.size(); i++) {
+            if (incomingOrders.get(i).getOrderId() == orderID) {
+                index = i;
+            }
+        }
 
+        incomingOrders.remove(index);
     }
 
-    public void startIncomingOrder() {
+    public void startIncomingOrder(int orderID) {
+        int index = -1;
+        for(int i = 0; i < incomingOrders.size(); i++) {
+            if (incomingOrders.get(i).getOrderId() == orderID) {
+                index = i;
+            }
+        }
 
+        incomingOrders.get(index).setStatus("Started");
     }
 
     public void completeIncomingOrder(int orderID) {
+        int index = -1;
+        for(int i = 0; i < incomingOrders.size(); i++) {
+            if (incomingOrders.get(i).getOrderId() == orderID) {
+                index = i;
+            }
+        }
 
+        Order completedOrder = incomingOrders.get(index);
+        completedOrder.setStatus("Completed");
+        completedOrders.add(completedOrder);
+        incomingOrders.remove(completedOrder);
     }
 
     public void exportAllOrders() {
-
+        //CONSIDER MOVING TO ORDERMANAGERINTERFACE
     }
 
     public List<Order> getIncompleteOrders() {
-        return null;
+        return this.incomingOrders;
     }
 }
