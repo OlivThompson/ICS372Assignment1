@@ -17,17 +17,13 @@ public class parseOrder {
     private JSONObject objectInfo;
     ArrayList<foodItem> items = new ArrayList<foodItem>();
 
-    /// Parse the file that is being directed
-    public parseOrder(String orderFile) throws IOException, ParseException{
-        filePath = orderFile;
-        JSONParser parser = new JSONParser();
-
-        Object obj = parser.parse(new FileReader(filePath));
-        /// Assign this to the variable
-        this.objectInfo = (JSONObject)obj;
-    };
-
     public parseOrder(){};
+
+    public void parseFile(String orderFile) throws IOException, ParseException{
+        JSONParser parser = new JSONParser();
+        Object obj = parser.parse(new FileReader(filePath));
+        this.objectInfo = (JSONObject)obj;
+    }
 
     /// Return the order information to whoever requests it
     public Object getObjInfo(){
@@ -91,11 +87,15 @@ public class parseOrder {
             orderPath.mkdirs();
             System.out.println("Create Directory");
         }
-        try(FileWriter file = new FileWriter(orderPath + File.separator + theOrder.getOrderId() + ".json")){
+
+        File outputFile = new File(orderPath, "Order#" + theOrder.getOrderId() + ".json");
+
+        try(FileWriter file = new FileWriter(outputFile)){
             file.write(fortmatForWriting(theOrder).toJSONString());
-        } catch (IOException e) {
+        } catch(IOException e){
             e.printStackTrace();
         }
+
     }
 
     public JSONObject fortmatForWriting(Order incomingOrder){
