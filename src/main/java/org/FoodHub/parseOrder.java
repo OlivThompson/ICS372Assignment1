@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class parseOrder {
-    private String filePath = "";
     private JSONObject objectInfo;
     ArrayList<foodItem> items = new ArrayList<foodItem>();
 
@@ -21,7 +20,7 @@ public class parseOrder {
 
     public void parseFile(String orderFile) throws IOException, ParseException{
         JSONParser parser = new JSONParser();
-        Object obj = parser.parse(new FileReader(filePath));
+        Object obj = parser.parse(new FileReader(orderFile));
         this.objectInfo = (JSONObject)obj;
     }
 
@@ -74,7 +73,8 @@ public class parseOrder {
 
     public long getOrderTime(){
         JSONObject orderData = (JSONObject)objectInfo.get("order_date");
-        return (long)orderData.get("order_date");
+        long orderDate = (long)orderData.get("order_date");
+        return orderDate;
     };
 
     /// Create a new order

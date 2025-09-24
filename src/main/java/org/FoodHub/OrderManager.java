@@ -12,12 +12,6 @@ import java.util.stream.Stream;
 public class OrderManager {
     private ArrayList<Order> allOrders = new ArrayList<Order>();
     private static int orderID = 0;
-    private String orderType;
-    private long orderDate;
-    private int status = 0;  /// By default
-    /// 0 = Incomplete/Start
-    /// 1 = Complete
-    /// 2 = Cancelled
     parseOrder orderParser = new parseOrder();
 
 
@@ -29,21 +23,37 @@ public class OrderManager {
 //    }
 
     public void cancelOrder(Order order) {
-        order.setStatus(2);
+        order.setStatus(3);
         allOrders.remove(order);
     }
 
-    public void startIncomingOrder(String file) {
-        orderID += 1;
+    public void addOrder(String file){
+        String orderType = null;
+        long orderDate = 0;
+        int status = 0;
+        ArrayList<foodItem> items = new ArrayList<foodItem>();
+        /// 0 = Incoming
+        /// 1 = Start
+        /// 2 = Complete
+        /// 3 = Cancelled
+
         try {
             orderParser.parseFile(file);
             orderType = orderParser.getOrderType();
             orderDate = orderParser.getOrderTime();
+            items = orderParser.getItems();
+
+            orderID += 1;
+            Order newOrder = new  Order(orderID, orderType, orderDate, status, items);
+            allOrders.add(newOrder);
+
         } catch (IOException| ParseException e) {
             e.printStackTrace();
         }
-        Order newOrder = new Order(orderID, orderType, orderDate, status);
-        allOrders.add(newOrder);
+    }
+
+    public void startIncomingOrder(Order theOrder) {
+        theOrder.setStatus(1);
     }
 
     public ArrayList<Order> getCompletedOrders() {

@@ -19,8 +19,11 @@ public class Order {
 //        this.orderTime = orderTime;
 //    }
 
-    public Order(int orderId, String orderType, long orderTime, int orderStatus){
+    public Order(int orderId, String orderType, long orderTime, int orderStatus, ArrayList<foodItem> items){
         this.orderId = orderId;
+        this.orderType = orderType;
+        this.orderTime = orderTime;
+        this.orderStatus = orderStatus;
     }
 
     /// WHAT DO I DO WITH THE QUANTITY, HOW SHOULD I IMPLEMENT IT?
