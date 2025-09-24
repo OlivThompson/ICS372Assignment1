@@ -60,7 +60,7 @@ public class parseOrder {
             String name = (String)itemData.get("name");
             Long quantity = (Long)itemData.get("quantity");
             double price = (double)itemData.get("price");
-            System.out.printf("\t%-" + 15 + "s %-8d %-8d %.2f\n", name, quantity, price);
+            System.out.printf("\t%-" + 15 + "s %-8d %.2f\n", name, quantity, price);
         }
     }
 
@@ -68,7 +68,24 @@ public class parseOrder {
     /// But this new will also create a new orderfile
     /// orderfile will be created and named incrementally
     /// the Path to the file will automatically be set to "orders/ + "orderId""
-//    public void writeToFile(Order incomingOrder){
-        ///  Begin by focusing on putting into json format
-//    }
+    public void writeToFile(Order incomingOrder){
+
+        JSONArray itemArray = new JSONArray();
+        for (foodItem itemData : incomingOrder.getFoodList()){
+            JSONObject itemObj = new JSONObject();
+            itemObj.put("name", itemData.getName());
+            itemObj.put("quantity", itemData.getQuantity());
+            itemObj.put("price", itemData.getPrice());
+            itemArray.add(itemObj);
+        }
+
+        JSONObject orderObj = new JSONObject();
+        orderObj.put("type", incomingOrder.getOrderType());
+        orderObj.put("order_date", incomingOrder.getOrderTime());
+        orderObj.put("items", itemArray);
+
+        JSONObject theOrder = new JSONObject();
+        theOrder.put("order", orderObj);
+        System.out.println(theOrder.toJSONString());
+    }
 }
