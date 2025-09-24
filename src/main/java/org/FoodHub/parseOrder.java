@@ -4,9 +4,13 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+
+import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class parseOrder {
     private String filePath = "";
@@ -68,7 +72,7 @@ public class parseOrder {
     /// But this new will also create a new orderfile
     /// orderfile will be created and named incrementally
     /// the Path to the file will automatically be set to "orders/ + "orderId""
-    public void writeToFile(Order incomingOrder){
+    public JSONObject writeToFile(Order incomingOrder){
 
         JSONArray itemArray = new JSONArray();
         for (foodItem itemData : incomingOrder.getFoodList()){
@@ -87,5 +91,27 @@ public class parseOrder {
         JSONObject theOrder = new JSONObject();
         theOrder.put("order", orderObj);
         System.out.println(theOrder.toJSONString());
+        return theOrder;
+    }
+
+    public void writeAllOrderToFile(List<Order> allOrders){
+        JSONArray allOrdersArray = new JSONArray();
+
+        for (Order order : allOrders){
+            JSONObject orderJSON = writeToFile(order);
+            allOrdersArray.add(orderJSON);
+        }
+
+        File all_Orders_Path = new File("/orders/all_orders");
+        if  (!all_Orders_Path.exists()){
+            all_Orders_Path.mkdirs();
+            System.out.println("Created Directory");
+        }
+        try(FileWriter file = new FileWriter(all_Orders_Path + File.separator + "all_orders.json")){
+            file.write(allOrdersArray.toJSONString());
+            System.out.println("Success");
+        }catch(IOException e){
+            e.printStackTrace();
+        }
     }
 }
