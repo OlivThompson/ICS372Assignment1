@@ -7,6 +7,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.io.File;
+import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /// 0 = Incoming
@@ -17,9 +19,14 @@ public class OrderManager {
     private ArrayList<Order> allOrders = new ArrayList<Order>();
     parseOrder orderParser = new parseOrder();
     private int orderID = 0;
+    List<String> jsonFileOrders;
 
 
     public OrderManager(){
+        printOrderList();
+        for (String theOrder : jsonFileOrders){
+            addOrder(theOrder);
+        }
     }
 
     public void cancelOrder(Order order) {
@@ -79,14 +86,19 @@ public class OrderManager {
         orderParser.readOrdersFromJson();
     }
 
-    public void printOrderList(){
+    public List<String> printOrderList(){
         Path directory = Paths.get("orders");
         String extensions = ".json";
 
         try(Stream<Path> stream = Files.list(directory)){
-            stream.filter(file ->file.toString().endsWith(extensions)).forEach(file -> System.out.println(file.getFileName()));
+            jsonFileOrders = stream.filter(file ->file.toString().endsWith(extensions)).map(Path::getFileName)
+                    .map(Path::toString)
+                    .collect(Collectors.toList());
+            return jsonFileOrders;
         } catch (IOException e){
             e.printStackTrace();
+            System.out.println("Error");
+            return List.of();
         }
     }
 
@@ -102,8 +114,17 @@ public class OrderManager {
     public void printOrderStatus(int orderID){
         for (Order theOrder : allOrders){
             if (theOrder.getOrderId() == orderID){
-                System.out.println(theOrder.getStatus());
+                System.out.println("Current Status: " + theOrder.getStatus());
             }
         }
     }
+
+    public void completeOrder(int orderID){
+        for (Order theOrder : allOrders){
+            if (theOrder.getOrderId() == orderID){
+                theOrder.setStatus(2);
+            }
+        }
+    }
+
 }

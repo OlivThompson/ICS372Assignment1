@@ -29,16 +29,16 @@ public class UserInterface {
 
             switch(selector) {
                 case 1:
-                    manage.printOrderList();
+                    System.out.println(manage.getAllOrders());
                     break;
                 case 2:
                     System.out.printf("What order do you want to add: ");
                     file = scnr.nextLine();
                     manage.addOrder(file + ".json");
-                    manage.printOrderStatus(1);
+                    manage.printOrderStatus(1); /// For later removal
                     break;
                 case 3:
-                    System.out.println("What order do you want to read: ");
+                    System.out.println("What incoming order do you want to read: ");
                     file = scnr.next();
                     manage.readOrderInfo(file + ".json");
                     break;
@@ -46,7 +46,14 @@ public class UserInterface {
                     System.out.println("Incoming order to start: ");
                     int orderID = scnr.nextInt();
                     manage.startIncomingOrder(orderID);
+                    manage.printOrderStatus(orderID); /// For later removal
+                    break;
+                case 5:
+                    System.out.println("Completed order: ");
+                    orderID = scnr.nextInt();
+                    manage.completeOrder(orderID);
                     manage.printOrderStatus(orderID);
+                    break;
             }
         }
     }
