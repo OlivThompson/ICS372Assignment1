@@ -33,12 +33,14 @@ public class UserInterface {
                 case 2:
                     System.out.printf("What order do you want to add: ");
                     file = scnr.nextLine();
-                    manage.addOrder("orders" + File.separator + file + ".json");
+                    manage.addOrder(file + ".json");
                     break;
                 case 3:
                     System.out.println("What order do you want to read: ");
                     file = scnr.next();
+                    manage.readOrderInfo(file + ".json");
                     break;
+                case 4:
             }
         }
     }

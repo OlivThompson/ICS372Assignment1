@@ -11,16 +11,12 @@ import java.util.stream.Stream;
 
 public class OrderManager {
     private ArrayList<Order> allOrders = new ArrayList<Order>();
-    private static int orderID = 0;
     parseOrder orderParser = new parseOrder();
+    private int orderID = 0;
 
 
     public OrderManager(){
     }
-
-//    public void addOrder(Order order) {
-//        allOrders.add(order);
-//    }
 
     public void cancelOrder(Order order) {
         order.setStatus(3);
@@ -28,28 +24,10 @@ public class OrderManager {
     }
 
     public void addOrder(String file){
-        String orderType = null;
-        long orderDate = 0;
-        int status = 0;
-        ArrayList<foodItem> items = new ArrayList<foodItem>();
-        /// 0 = Incoming
-        /// 1 = Start
-        /// 2 = Complete
-        /// 3 = Cancelled
-
-        try {
-            orderParser.parseFile(file);
-            orderType = orderParser.getOrderType();
-            orderDate = orderParser.getOrderTime();
-            items = orderParser.getItems();
-
-            orderID += 1;
-            Order newOrder = new  Order(orderID, orderType, orderDate, status, items);
-            allOrders.add(newOrder);
-
-        } catch (IOException| ParseException e) {
-            e.printStackTrace();
-        }
+        Order newOrder = new Order(file);
+        orderID++;
+        newOrder.setOrderId(orderID);
+        allOrders.add(newOrder);
     }
 
     public void startIncomingOrder(Order theOrder) {
@@ -80,8 +58,12 @@ public class OrderManager {
         orderParser.writeAllOrderToFile(allOrders);
     }
 
-    public ArrayList<Order> getAllOrders(){
-        return allOrders;
+    public ArrayList<Integer> getAllOrders(){
+        ArrayList<Integer> orderIDs = new ArrayList<Integer>();
+        for (Order theOrder : allOrders){
+            orderIDs.add(theOrder.getOrderId());
+        }
+        return orderIDs;
     }
 
     public void printIncomingOrder(){
@@ -99,7 +81,12 @@ public class OrderManager {
         }
     }
 
-    public void readOrderInfo(){
+    public void readOrderInfo(String theFileOrder){
+        try {
+            orderParser.parseFile(theFileOrder);
+        }catch (IOException|ParseException e){
+            e.printStackTrace();
+        }
         orderParser.readOrdersFromJson();
     }
 }

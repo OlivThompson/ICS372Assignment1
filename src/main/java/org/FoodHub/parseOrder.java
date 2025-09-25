@@ -9,6 +9,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +22,14 @@ public class parseOrder {
 
     public void parseFile(String orderFile) throws IOException, ParseException{
         JSONParser parser = new JSONParser();
-        Object obj = parser.parse(new FileReader(orderFile));
+        String userDirectory = System.getProperty("user.dir");
+        System.out.println(userDirectory);
+
+        Path theOrderDir = Paths.get(userDirectory, "orders");
+        Path theOrderFile = theOrderDir.resolve(orderFile);
+
+        Object obj = parser.parse(new FileReader(theOrderFile.toFile()));
+        System.out.println("Error Pass Here");
         this.objectInfo = (JSONObject)obj;
     }
 
@@ -72,7 +81,7 @@ public class parseOrder {
     }
 
     public long getOrderTime(){
-        JSONObject orderData = (JSONObject)objectInfo.get("order_date");
+        JSONObject orderData = (JSONObject)objectInfo.get("order");
         long orderDate = (long)orderData.get("order_date");
         return orderDate;
     };
