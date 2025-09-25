@@ -10,6 +10,7 @@ public class UserInterface {
 
     public UserInterface(){
         while(true){
+
             System.out.println("\n1. View Incoming Order List");
             System.out.println("2. Add Order");
             System.out.println("3. Read Order");
@@ -22,7 +23,7 @@ public class UserInterface {
             System.out.println("10. Exit");
             int selector = scnr.nextInt();
             scnr.nextLine();
-            if (selector == 10){
+            if (selector == 10) {
                 break;
             }
 
@@ -34,6 +35,7 @@ public class UserInterface {
                     System.out.printf("What order do you want to add: ");
                     file = scnr.nextLine();
                     manage.addOrder(file + ".json");
+                    manage.printOrderStatus(1);
                     break;
                 case 3:
                     System.out.println("What order do you want to read: ");
@@ -41,6 +43,10 @@ public class UserInterface {
                     manage.readOrderInfo(file + ".json");
                     break;
                 case 4:
+                    System.out.println("Incoming order to start: ");
+                    int orderID = scnr.nextInt();
+                    manage.startIncomingOrder(orderID);
+                    manage.printOrderStatus(orderID);
             }
         }
     }

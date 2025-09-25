@@ -9,6 +9,10 @@ import java.util.ArrayList;
 import java.io.File;
 import java.util.stream.Stream;
 
+/// 0 = Incoming
+/// 1 = Start
+/// 2 = Completed
+
 public class OrderManager {
     private ArrayList<Order> allOrders = new ArrayList<Order>();
     parseOrder orderParser = new parseOrder();
@@ -30,8 +34,13 @@ public class OrderManager {
         allOrders.add(newOrder);
     }
 
-    public void startIncomingOrder(Order theOrder) {
-        theOrder.setStatus(1);
+    public void startIncomingOrder(int orderID) {
+        for (Order theOrder : allOrders){
+            if (theOrder.getOrderId() == orderID){
+                theOrder.setStatus(1);
+            }
+        }
+        System.out.println("Order#" + orderID + " has been started");
     }
 
     public ArrayList<Order> getCompletedOrders() {
@@ -88,5 +97,13 @@ public class OrderManager {
             e.printStackTrace();
         }
         orderParser.readOrdersFromJson();
+    }
+
+    public void printOrderStatus(int orderID){
+        for (Order theOrder : allOrders){
+            if (theOrder.getOrderId() == orderID){
+                System.out.println(theOrder.getStatus());
+            }
+        }
     }
 }
