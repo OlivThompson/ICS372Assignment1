@@ -14,15 +14,6 @@ public class OrderParser {
     private String filePath = "";
     private JSONObject objectInfo;
     private int orderID = 0;
-    /// Parse the file that is being directed
-//    public OrderParser(String orderFile) throws IOException, ParseException{
-//        filePath = orderFile;
-//        JSONParser parser = new JSONParser();
-//
-//        Object obj = parser.parse(new FileReader(filePath));
-//        /// Assign this to the variable
-//        this.objectInfo = (JSONObject)obj;
-//    };
 
     /// Return the order information to whoever requests it
     public Object getObjInfo(){
