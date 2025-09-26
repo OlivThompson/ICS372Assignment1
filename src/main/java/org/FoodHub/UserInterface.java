@@ -8,18 +8,11 @@ public class UserInterface {
     Scanner scnr = new Scanner(System.in);
     String file;
 
-    public UserInterface(){
-        while(true){
+    public UserInterface() {
+        while (true) {
 
-            System.out.println("\n1. View Incoming Order List");
-            System.out.println("2. Add Order");
-            System.out.println("3. Read Order");
-            System.out.println("4. Start Order");
-            System.out.println("5. Complete Order");
-            System.out.println("6. Export Order");
-            System.out.println("7. Export All Orders");
-            System.out.println("8. Print Completed Orders");
-            System.out.println("9. Print Incompleted Orders");
+            System.out.println("1. Select Order#");
+            System.out.println("2. Get all order Price");
             System.out.println("10. Exit");
             int selector = scnr.nextInt();
             scnr.nextLine();
@@ -27,36 +20,35 @@ public class UserInterface {
                 break;
             }
 
-            switch(selector) {
+            switch (selector) {
                 case 1:
-                    System.out.println(manage.getAllOrders());
-                    break;
-                case 2:
-                    System.out.printf("What order do you want to add: ");
-                    file = scnr.nextLine();
-                    manage.addOrder(file + ".json");
-                    manage.printOrderStatus(1); /// For later removal
-                    break;
-                case 3:
-                    System.out.println("What incoming order do you want to read: ");
-                    file = scnr.next();
-                    manage.readOrderInfo(file + ".json");
-                    break;
-                case 4:
-                    System.out.println("Incoming order to start: ");
+                    printOrderAllStatus();
+                    System.out.print("Select Order: ");
                     int orderID = scnr.nextInt();
-                    manage.startIncomingOrder(orderID);
-                    manage.printOrderStatus(orderID); /// For later removal
-                    break;
-                case 5:
-                    System.out.println("Completed order: ");
-                    orderID = scnr.nextInt();
-                    manage.completeOrder(orderID);
-                    manage.printOrderStatus(orderID);
+                    System.out.println("1. View Order");
+                    System.out.println("2. Start Order");
+                    System.out.println("3. Complete Order");
                     break;
             }
         }
     }
 
+    public void printOrderAllStatus() {
+        String orderStatus = "";
+        for (Order order : manage.getAllOrders()) {
+            if (order.getStatus() == 0) {
+                orderStatus = "Incoming";
+            } else if (order.getStatus() == 1) {
+                orderStatus = "Started";
+            } else if (order.getStatus() == 2) {
+                orderStatus = "Completed";
+            }
+            System.out.println("\nOrder#" + order.getOrderId() + "\t\t|\t Order Status: " + orderStatus);
+        }
+    }
 
+    public void waitForEnter(Scanner scnr) {
+        System.out.println("\n\nPress Enter to continue...");
+        scnr.nextLine();
+    }
 }
