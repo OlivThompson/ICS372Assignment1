@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Order {
-    public static int orderID = 0;
+    private static int orderID = 0;
     private int orderId;
     private List<FoodItem> foodItems = new ArrayList<FoodItem>();
     private String orderStatus;
@@ -31,7 +31,9 @@ public class Order {
     public void printOrderItems(){
         System.out.println(foodItems);
     }
-
+    public List<FoodItem> getFoodItems() {
+        return this.foodItems;
+    }
     public void setStatus(String status) {
         this.orderStatus = status;
     }
@@ -58,7 +60,11 @@ public class Order {
         System.out.println();
     }
 
-    private String getType() {
+    public long getOrderTime() {
+        return this.orderTime;
+    }
+
+    public String getOrderType() {
         return this.orderType;
     }
 

@@ -47,5 +47,9 @@ public class OrderManager {
         }
         return order;
     }
+
+    public List<Order> getOrders() {
+        return this.orders;
+    }
 }
 

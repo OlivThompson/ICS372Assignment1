@@ -60,7 +60,7 @@ public class OrderManagerInterface {
     }
 
     private void exportAllOrders() {
-        System.out.println("INCOMPLETE FUNCTIONALITY");
+        orderParser.writeAllOrderToFile(orderManager.getOrders());
     }
 
     private void completeIncomingOrder() {
