@@ -14,9 +14,11 @@ import java.util.stream.Stream;
 /// 0 = Incoming
 /// 1 = Start
 /// 2 = Completed
+/// 3 = Cancel
 
 public class OrderManager {
     private ArrayList<Order> allOrders = new ArrayList<Order>();
+    private ArrayList<Order> completedOrders = new ArrayList<Order>();
     parseOrder orderParser = new parseOrder();
     private int orderID = 0;
     List<String> jsonFileOrders;
@@ -51,12 +53,6 @@ public class OrderManager {
     }
 
     public ArrayList<Order> getCompletedOrders() {
-        ArrayList<Order> completedOrders = new ArrayList<Order>();
-        for (Order theOrder : allOrders){
-            if (theOrder.getStatus() == 1){
-                completedOrders.add(theOrder);
-            }
-        }
         return completedOrders;
     }
 
@@ -126,8 +122,20 @@ public class OrderManager {
         for (Order theOrder : allOrders){
             if (theOrder.getOrderId() == orderID){
                 theOrder.setStatus(2);
+                orderParser.writeOrderToJSON(theOrder);
+                completedOrders.add(theOrder);
+                allOrders.remove(theOrder);
             }
         }
+    }
+
+    public int getOrderStatus(int orderID){
+        for (Order theOrder : allOrders){
+            if (theOrder.getOrderId() == orderID){
+                return theOrder.getStatus();
+            }
+        }
+        return 1;
     }
 
 }

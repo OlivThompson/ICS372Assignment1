@@ -91,7 +91,7 @@ public class parseOrder {
     /// orderfile will be created and named incrementally
     /// the Path to the file will automatically be set to "orders/ + "orderId""
     public void writeOrderToJSON(Order theOrder){
-        File orderPath = new File("orders");
+        File orderPath = new File("orders/completedOrder");
         if (!orderPath .exists()){
             orderPath.mkdirs();
             System.out.println("Create Directory");
