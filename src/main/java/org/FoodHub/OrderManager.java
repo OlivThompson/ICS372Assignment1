@@ -6,7 +6,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.io.File;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -101,23 +100,6 @@ public class OrderManager {
             e.printStackTrace();
             System.out.println("Error");
             return List.of();
-        }
-    }
-
-    public void readOrderInfo(String theFileOrder){
-        try {
-            orderParser.parseFile(theFileOrder);
-        }catch (IOException|ParseException e){
-            e.printStackTrace();
-        }
-        orderParser.readOrdersFromJson();
-    }
-
-    public void printOrderStatus(int orderID){
-        for (Order theOrder : allOrders){
-            if (theOrder.getOrderId() == orderID){
-                System.out.println("Current Status: " + theOrder.getStatus());
-            }
         }
     }
 

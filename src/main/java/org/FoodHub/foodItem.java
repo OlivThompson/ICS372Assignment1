@@ -8,10 +8,6 @@ public class foodItem {
     public foodItem(String food){
         this.food = food;
     }
-    public foodItem(String food, double price){
-        this.food = food;
-        this.price = price;
-    }
 
     public void foodSetPrice(double price){
         this.price = price;

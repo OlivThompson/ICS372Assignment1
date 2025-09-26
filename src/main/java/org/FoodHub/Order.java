@@ -1,10 +1,7 @@
 package org.FoodHub;
 
-import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Order {
@@ -28,10 +25,6 @@ public class Order {
         }
     }
 
-//    public void getOrderItemFromJSON(ArrayList<foodItem> foodItem){
-//        this.foodItems.addAll(foodItem);
-//    }
-
     public int getOrderId(){
         return orderId;
     }
@@ -48,13 +41,9 @@ public class Order {
         orderStatus = status;
     }
 
-    public int getStatus(){
+    public int getStatus() {
         return orderStatus;
     }
-
-//    public void printOrderItems(){
-//        System.out.println(foodItems);
-//    }
 
     public ArrayList<foodItem> getFoodList(){
         return foodItems;

@@ -33,11 +33,6 @@ public class parseOrder {
         this.objectInfo = (JSONObject)obj;
     }
 
-    /// Return the order information to whoever requests it
-    public Object getObjInfo(){
-        return objectInfo;
-    };
-
     /// Return the array of the items from the json
     public ArrayList<foodItem> getItems(){
         /// Create another JSONObject in order to get access into the (order's) data
@@ -86,19 +81,13 @@ public class parseOrder {
         return orderDate;
     };
 
-    /// Create a new order
-    /// But this new will also create a new orderfile
-    /// orderfile will be created and named incrementally
-    /// the Path to the file will automatically be set to "orders/ + "orderId""
     public void writeOrderToJSON(Order theOrder){
         File orderPath = new File("orders/completedOrder");
         if (!orderPath .exists()){
             orderPath.mkdirs();
             System.out.println("Create Directory");
         }
-
         File outputFile = new File(orderPath, "Order#" + theOrder.getOrderId() + ".json");
-
         try(FileWriter file = new FileWriter(outputFile)){
             file.write(fortmatForWriting(theOrder).toJSONString());
         } catch(IOException e){
@@ -108,7 +97,6 @@ public class parseOrder {
     }
 
     public JSONObject fortmatForWriting(Order incomingOrder){
-
         JSONArray itemArray = new JSONArray();
         for (foodItem itemData : incomingOrder.getFoodList()){
             JSONObject itemObj = new JSONObject();
