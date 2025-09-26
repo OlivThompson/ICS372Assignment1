@@ -22,7 +22,12 @@ public class OrderManager {
     }
 
     public void startIncomingOrder(int orderID) {
-        findOrder((orderID)).setStatus("Started");
+        Order order = findOrder(orderID);
+        if(!order.getStatus().equals("Incoming")) {
+            System.out.println("Only incoming orders can be started.\n");
+        } else {
+            order.setStatus("Started");
+        }
     }
 
     public void completeIncomingOrder(int orderID) {
