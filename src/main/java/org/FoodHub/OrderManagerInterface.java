@@ -67,7 +67,7 @@ public class OrderManagerInterface {
         System.out.println("Enter order ID to complete: ");
         int orderID = s.nextInt();
 
-        orderManager.startIncomingOrder(orderID);
+        orderManager.completeIncomingOrder(orderID);
     }
 
     private void viewIncomingOrders() {

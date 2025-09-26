@@ -27,7 +27,7 @@ public class OrderParser {
     /// Return the order information to whoever requests it
     public Object getObjInfo(){
         return objectInfo;
-    };
+    }
 
     /// Return the array of the items from the json
 //    public ArrayList<FoodItem> getItems(){
