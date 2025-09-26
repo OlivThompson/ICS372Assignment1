@@ -12,7 +12,8 @@ public class UserInterface {
         while (true) {
 
             System.out.println("1. Select Order#");
-            System.out.println("2. Get all order Price");
+            System.out.println("2. Get All Order Status");
+            System.out.println("3. Get all order Price");
             System.out.println("10. Exit");
             int selector = scnr.nextInt();
             scnr.nextLine();
@@ -25,10 +26,22 @@ public class UserInterface {
                     printOrderAllStatus();
                     System.out.print("Select Order: ");
                     int orderID = scnr.nextInt();
+                    scnr.nextLine();
                     System.out.println("1. View Order");
                     System.out.println("2. Start Order");
                     System.out.println("3. Complete Order");
+                    selector = scnr.nextInt();
+                        switch(selector){
+                            case 1:
+                                manage.printOrder(orderID);
+                            case 2:
+                                manage.startIncomingOrder(orderID);
+                            case 3:
+                                manage.completeOrder(orderID);
+                        }
                     break;
+                case 2:
+                    printOrderAllStatus();
             }
         }
     }

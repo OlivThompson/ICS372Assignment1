@@ -23,7 +23,7 @@ public class OrderManager {
 
 
     public OrderManager(){
-        printOrderList();
+        fetechOrderFolderList();
         for (String theOrder : jsonFileOrders){
             addOrder(theOrder);
         }
@@ -74,19 +74,22 @@ public class OrderManager {
         orderParser.writeAllOrderToFile(allOrders);
     }
 
-    public ArrayList<Integer> getAllOrders(){
-        ArrayList<Integer> orderIDs = new ArrayList<Integer>();
-        for (Order theOrder : allOrders){
-            orderIDs.add(theOrder.getOrderId());
+    public ArrayList<Order> getAllOrders(){
+        return allOrders;
+    }
+
+    public void printOrder(int orderID){
+        String getFileName = jsonFileOrders.get(orderID - 1);
+        try {
+            orderParser.parseFile(getFileName);
+            orderParser.readOrdersFromJson();
         }
-        return orderIDs;
+        catch (IOException|ParseException e){
+            e.printStackTrace();
+        }
     }
 
-    public void printIncomingOrder(){
-        orderParser.readOrdersFromJson();
-    }
-
-    public List<String> printOrderList(){
+    public List<String> fetechOrderFolderList(){
         Path directory = Paths.get("orders");
         String extensions = ".json";
 
