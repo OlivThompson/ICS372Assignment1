@@ -1,6 +1,5 @@
 package org.FoodHub;
 
-import java.io.File;
 import java.util.Scanner;
 
 public class UserInterface {
@@ -13,7 +12,7 @@ public class UserInterface {
 
             System.out.println("1. Select Order#");
             System.out.println("2. Get All Order Status");
-            System.out.println("3. Get all order Price");
+            System.out.println("3. Show all uncompleted order");
             System.out.println("10. Exit");
             int selector = scnr.nextInt();
             scnr.nextLine();
@@ -26,10 +25,6 @@ public class UserInterface {
                     printOrderAllStatus();
                     System.out.print("Select Order: ");
                     int orderID = scnr.nextInt();
-                    if (checkIfOrderExists(orderID)) {
-                        System.out.println("Order has already been completed!, try again");
-                        waitForEnter(scnr);
-                    }
                     scnr.nextLine();
                     while(tryAgain) {
                         System.out.println("Selected Order: " + orderID);
@@ -40,6 +35,12 @@ public class UserInterface {
                         selector = scnr.nextInt();
                         scnr.nextLine();
                         switch (selector) {
+
+                            ///  If status = 0 (Incoming) it can be only Started(1) or cancel(3)
+                            ///  If stats = 1 (Started) it can only be cancel(3) or completed(2)
+                            ///  If status = 2 (completed), do nothing (already exported to completedOrder file)
+                            ///  If status = 3 (Cancel) do nothing
+
                             case 1:
                                 manage.printOrder(orderID);
                                 break;
@@ -54,17 +55,54 @@ public class UserInterface {
                                     System.out.println("\nOrder has already been cancelled, you cannot start!\n");
                                     waitForEnter(scnr);
                                 }
-//                                else if(manage.getOrderStatus(orderID) == 2){
-//                                    System.out.println("Order has already been completed");
-//                                }
+                                else if (manage.getOrderStatus(orderID) == 2){
+                                    System.out.println("Order has already been completed!");
+                                    waitForEnter(scnr);
+                                    break;
+                                }
+                                else{
+                                    System.out.println("Wrong input try again!");
+                                    waitForEnter(scnr);
+                                    break;
+                                }
                                 break;
                             case 3:
-                                if (manage.getOrderStatus(orderID) != 1){
+                                if (manage.getOrderStatus(orderID) == 0){
                                     System.out.println("The has not been started yet");
                                     waitForEnter(scnr);
                                     break;
                                 }
-                                manage.completeOrder(orderID);
+                                else if (manage.getOrderStatus(orderID) == 3){
+                                    System.out.println("Order has already been cancelled!");
+                                    waitForEnter(scnr);
+                                    break;
+                                }
+                                else if (manage.getOrderStatus(orderID) == 2){
+                                    System.out.println("Order has already been completed!");
+                                    waitForEnter(scnr);
+                                    break;
+                                }
+                                else if (manage.getOrderStatus(orderID) == 1) {
+                                    manage.completeOrder(orderID);
+                                    System.out.println("Order has been completed");
+                                    waitForEnter(scnr);
+                                    break;
+                                }
+                                break;
+                            case 4:
+                                if (manage.getOrderStatus(orderID) == 2){
+                                    System.out.println("You cannot cancel a completed order!");
+                                    waitForEnter(scnr);
+                                    break;
+                                }
+                                else if (manage.getOrderStatus(orderID) == 3){
+                                    System.out.println("Order is already cancelled");
+                                    waitForEnter(scnr);
+                                    break;
+                                }
+                                manage.cancelOrder(orderID);
+                                System.out.println("Order has been cancelled");
+                                waitForEnter(scnr);
                                 break;
                         }
                         break;
@@ -72,6 +110,10 @@ public class UserInterface {
                     break;
                 case 2:
                     printOrderAllStatus();
+                    break;
+                case 3:
+                    getIncompleteOrder();
+                    break;
             }
         }
     }
@@ -86,6 +128,9 @@ public class UserInterface {
             } else if (order.getStatus() == 2) {
                 orderStatus = "Completed";
             }
+            else if (order.getStatus() == 3){
+                orderStatus = "Cancelled";
+            }
             System.out.println("Order#" + order.getOrderId() + "\t\t|\t Order Status: " + orderStatus);
         }
     }
@@ -95,12 +140,14 @@ public class UserInterface {
         scnr.nextLine();
     }
 
-    public boolean checkIfOrderExists(int orderID){
-        for (Order checkOrder : manage.getCompletedOrders()){
-            if (manage.getCompletedOrders().contains(checkOrder)){
-                return true;
-            }
+    public void getIncompleteOrder(){
+        String orderStatus = "";
+        double totalPrice = 0;
+        for (Order order : manage.getIncompleteOrders()){
+            System.out.println("Order#" + order.getOrderId() + "\t\t|\t Order Status: " + order.getStatus());
+            totalPrice += order.getTotalPrice();
         }
-        return false;
+        System.out.println("\nTotal Price: " + totalPrice + "\n\n");
     }
+
 }

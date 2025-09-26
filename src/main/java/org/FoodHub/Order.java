@@ -36,13 +36,13 @@ public class Order {
         return orderId;
     }
 
-//    public double getTotalPrice(){
-//        double totalPrice = 0;
-//        for (Object foodItem : foodItems) {
-//            totalPrice += foodItem.getPrice();
-//        }
-//        return totalPrice;
-//    }
+    public double getTotalPrice(){
+        double totalPrice = 0;
+        for (foodItem item : foodItems){
+            totalPrice += item.getPrice();
+        }
+        return totalPrice;
+    }
 
     public void setStatus(int status){
         orderStatus = status;

@@ -31,9 +31,12 @@ public class OrderManager {
         }
     }
 
-    public void cancelOrder(Order order) {
-        order.setStatus(3);
-        allOrders.remove(order);
+    public void cancelOrder(int orderID) {
+        for (Order theOrder : allOrders){
+            if (theOrder.getOrderId() == orderID){
+                theOrder.setStatus(3);
+            }
+        }
     }
 
     public void addOrder(String file){
@@ -124,7 +127,6 @@ public class OrderManager {
                 theOrder.setStatus(2);
                 orderParser.writeOrderToJSON(theOrder);
                 completedOrders.add(theOrder);
-                allOrders.remove(theOrder);
             }
         }
     }
