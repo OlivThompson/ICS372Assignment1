@@ -4,16 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Order {
-
+    public static int orderID = 0;
     private int orderId;
     private List<FoodItem> foodItems = new ArrayList<FoodItem>();
     private String orderStatus;
     private Long orderTime;
     private String orderType;
 
-    public Order(int orderId, List<FoodItem> foodItems, String orderStatus,
+    public Order(List<FoodItem> foodItems, String orderStatus,
                  Long orderTime, String orderType) {
-        this.orderId = orderId;
+        this.orderId = Order.orderID++;
         this.foodItems = foodItems;
         this.orderStatus = orderStatus;
         this.orderTime = orderTime;
