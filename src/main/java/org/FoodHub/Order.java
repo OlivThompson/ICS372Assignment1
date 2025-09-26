@@ -38,7 +38,7 @@ public class Order {
         this.orderStatus = status;
     }
 
-    public double totalPrice() {
+    public double calculateTotalPrice() {
         double totalPrice = 0;
         for( FoodItem i : this.foodItems) {
             totalPrice += (i.getPrice() * i.getQuantity());
@@ -51,9 +51,10 @@ public class Order {
         Order #%d
         Order Type: %s
         Date: %d
+        Price Total: %.2f
             Items       Quantity    Price 
                 """;
-        System.out.printf(header, this.orderId, this.orderType, this.orderTime);
+        System.out.printf(header, this.orderId, this.orderType, this.orderTime, this.calculateTotalPrice());
         for(FoodItem i : this.foodItems) {
             System.out.printf("    %-10s    %-10d$%-10.2f\n", i.getName(),i.getQuantity(),i.getPrice());
         }

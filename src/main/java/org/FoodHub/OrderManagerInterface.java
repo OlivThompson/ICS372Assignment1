@@ -19,8 +19,9 @@ public class OrderManagerInterface {
                 3. Start Incoming Order
                 4. View Incoming Orders
                 5. Complete Incoming Order
-                6. Export All Orders
-                7. Exit
+                6. View All Incomplete Orders
+                7. Export All Orders
+                8. Exit
                 """;
         System.out.println(userMenu);
     }
@@ -50,13 +51,20 @@ public class OrderManagerInterface {
                 completeIncomingOrder();
                 break;
             case 6:
-                exportAllOrders();
+                displayAllIncompleteOrders();
                 break;
             case 7:
+                exportAllOrders();
+                break;
+            case 8:
                 System.exit(0);
                 break;
 
         }
+    }
+
+    private void displayAllIncompleteOrders() {
+        orderManager.displayAllIncompleteOrders();
     }
 
     private void exportAllOrders() {
@@ -98,7 +106,6 @@ public class OrderManagerInterface {
         System.out.println("Enter filepath for new order: ");
         s.nextLine();
         String filepath = s.nextLine();
-        System.out.println(filepath);
         Order order = orderParser.readOrderFromJson(filepath);
         orderManager.addOrder(order);
     }

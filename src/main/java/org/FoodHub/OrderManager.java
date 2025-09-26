@@ -51,5 +51,13 @@ public class OrderManager {
     public List<Order> getOrders() {
         return this.orders;
     }
+
+    public void displayAllIncompleteOrders() {
+        for(Order o : this.orders) {
+            if(!o.getStatus().equals("Completed")) {
+                o.displayOrder();
+            }
+        }
+    }
 }
 
