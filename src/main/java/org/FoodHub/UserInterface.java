@@ -147,7 +147,7 @@ public class UserInterface {
             System.out.println("Order#" + order.getOrderId() + "\t\t|\t Order Status: " + order.getStatus());
             totalPrice += order.getTotalPrice();
         }
-        System.out.println("\nTotal Price: " + totalPrice + "\n\n");
+        System.out.printf("\nTotal Price: %.02f\n\n", totalPrice);
     }
 
 }

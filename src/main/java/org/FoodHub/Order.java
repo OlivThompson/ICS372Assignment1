@@ -14,7 +14,7 @@ public class Order {
     private int orderStatus;
     private long orderTime;
     private String orderType;
-    private static final parseOrder orderParser = new parseOrder();
+    private final parseOrder orderParser = new parseOrder();
 
     public Order(String file){
         try{
@@ -39,7 +39,7 @@ public class Order {
     public double getTotalPrice(){
         double totalPrice = 0;
         for (foodItem item : foodItems){
-            totalPrice += item.getPrice();
+            totalPrice += item.getPrice() * item.getQuantity();
         }
         return totalPrice;
     }
