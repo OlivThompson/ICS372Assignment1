@@ -19,9 +19,8 @@ public class OrderManagerInterface {
                 3. Start Incoming Order
                 4. View Incoming Orders
                 5. Complete Incoming Order
-                6. View Incomplete Orders
-                7. Export All Orders
-                8. Exit
+                6. Export All Orders
+                7. Exit
                 """;
         System.out.println(userMenu);
     }
@@ -47,18 +46,32 @@ public class OrderManagerInterface {
             case 4:
                 viewIncomingOrders();
                 break;
-            case 5: break;
-            case 6: break;
-            case 7: break;
-            case 8:
+            case 5:
+                completeIncomingOrder();
+                break;
+            case 6:
+                exportAllOrders();
+                break;
+            case 7:
                 System.exit(0);
                 break;
 
         }
     }
 
-    private void viewIncomingOrders() {
+    private void exportAllOrders() {
+        System.out.println("INCOMPLETE FUNCTIONALITY");
+    }
 
+    private void completeIncomingOrder() {
+        System.out.println("Enter order ID to complete: ");
+        int orderID = s.nextInt();
+
+        orderManager.startIncomingOrder(orderID);
+    }
+
+    private void viewIncomingOrders() {
+        orderManager.viewIncomingOrders();
     }
 
     private void startIncomingOrder() {
@@ -78,7 +91,11 @@ public class OrderManagerInterface {
 
     private void addOrder() throws IOException, ParseException {
         System.out.println("Enter filepath for new order: ");
-        orderParser.readOrderFromJson(s.nextLine());
+        s.nextLine();
+        String filepath = s.nextLine();
+        System.out.println(filepath);
+        Order order = orderParser.readOrderFromJson(filepath);
+        orderManager.addOrder(order);
     }
 
     private int getUserChoice() {

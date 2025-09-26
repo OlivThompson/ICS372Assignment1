@@ -3,9 +3,9 @@ package org.FoodHub;
 public class FoodItem {
     private String name;
     private double price;
-    private int quantity;
+    private Long quantity;
 
-    public FoodItem(String name, int quantity, double price){
+    public FoodItem(String name, Long quantity, double price){
         this.name = name;
         this.quantity = quantity;
         this.price = price;
@@ -15,7 +15,7 @@ public class FoodItem {
         this.price = price;
     }
 
-    public void setFoodQuantity(int quantity){
+    public void setFoodQuantity(long quantity){
         this.quantity = quantity;
     }
 
@@ -27,7 +27,7 @@ public class FoodItem {
         return name;
     }
 
-    public int getQuantity(){
+    public long getQuantity(){
         return this.quantity;
     }
 

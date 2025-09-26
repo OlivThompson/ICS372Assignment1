@@ -67,10 +67,10 @@ public class OrderParser {
         for (Object itemObject : itemsArray){
             JSONObject itemData = (JSONObject)itemObject;
             String name = (String)itemData.get("name");
-            int quantity = (int)itemData.get("quantity");
+            Long quantity = (Long)itemData.get("quantity");
             double price = (double)itemData.get("price");
             orderedItems.add(new FoodItem(name, quantity, price));
         }
-        return new Order(this.orderID, orderedItems, "Incoming", orderDate, orderType);
+        return new Order(this.orderID++, orderedItems, "Incoming", orderDate, orderType);
     }
 }

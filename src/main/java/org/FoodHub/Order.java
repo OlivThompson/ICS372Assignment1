@@ -45,4 +45,13 @@ public class Order {
         return totalPrice;
     }
 
+    @Override
+    public String toString() {
+        return String.format("ID:%d,  Status:%s, Type:%s, Price:%.2f, OrderTime:%d, ItemsOrdered:%s", this.getOrderId(), this.getStatus(), this.getType(), this.totalPrice(), this.orderTime, this.foodItems);
+    }
+
+    private String getType() {
+        return this.orderType;
+    }
+
 }
