@@ -23,13 +23,11 @@ public class parseOrder {
     public void parseFile(String orderFile) throws IOException, ParseException{
         JSONParser parser = new JSONParser();
         String userDirectory = System.getProperty("user.dir");
-        System.out.println(userDirectory);
 
         Path theOrderDir = Paths.get(userDirectory, "orders");
         Path theOrderFile = theOrderDir.resolve(orderFile);
 
         Object obj = parser.parse(new FileReader(theOrderFile.toFile()));
-        System.out.println("Error Pass Here");
         this.objectInfo = (JSONObject)obj;
     }
 
@@ -89,14 +87,14 @@ public class parseOrder {
         }
         File outputFile = new File(orderPath, "Order#" + theOrder.getOrderId() + ".json");
         try(FileWriter file = new FileWriter(outputFile)){
-            file.write(fortmatForWriting(theOrder).toJSONString());
+            file.write(formatForWriting(theOrder).toJSONString());
         } catch(IOException e){
             e.printStackTrace();
         }
 
     }
 
-    public JSONObject fortmatForWriting(Order incomingOrder){
+    public JSONObject formatForWriting(Order incomingOrder){
         JSONArray itemArray = new JSONArray();
         for (foodItem itemData : incomingOrder.getFoodList()){
             JSONObject itemObj = new JSONObject();
@@ -120,7 +118,7 @@ public class parseOrder {
         JSONArray allOrdersArray = new JSONArray();
 
         for (Order order : allOrders){
-            JSONObject orderJSON = fortmatForWriting(order);
+            JSONObject orderJSON = formatForWriting(order);
             allOrdersArray.add(orderJSON);
         }
 

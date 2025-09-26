@@ -5,6 +5,6 @@ package org.FoodHub;
 public class Main {
     public static void main(String[] args) {
         UserInterface startup = new UserInterface();
-        System.out.println("Ended");
+        System.out.println("Program has been ended");
     }
 }

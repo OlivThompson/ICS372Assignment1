@@ -12,8 +12,8 @@ public class UserInterface {
 
             System.out.println("1. Select Order#");
             System.out.println("2. Get All Order Status");
-            System.out.println("3. Show all uncompleted order");
-            System.out.println("4. Show all completed order");
+            System.out.println("3. Show all uncompleted orders");
+            System.out.println("4. Show all completed orders");
             System.out.println("5. Export all orders");
             System.out.println("10. Exit");
             int selector = scnr.nextInt();
@@ -29,7 +29,7 @@ public class UserInterface {
                     int orderID = scnr.nextInt();
                     scnr.nextLine();
                     while(tryAgain) {
-                        System.out.println("Selected Order: " + orderID);
+                        System.out.println("\n\nSelected Order: " + orderID);
                         System.out.println("1. View Order");
                         System.out.println("2. Start Order");
                         System.out.println("3. Complete Order");
@@ -44,66 +44,70 @@ public class UserInterface {
                             ///  If status = 3 (Cancel) do nothing
 
                             case 1:
+                                System.out.println("\n\n\n");
                                 manage.printOrder(orderID);
+                                System.out.println("\n\n");
                                 break;
                             case 2:
                                 if (manage.getOrderStatus(orderID) == 0) {
+                                    System.out.println("\n");
                                     manage.startIncomingOrder(orderID);
+                                    waitForEnter(scnr);
                                     break;
                                 } else if (manage.getOrderStatus(orderID) == 1) {
-                                    System.out.println("\nOrder has already been started\n");
+                                    System.out.println("\n\nOrder has already been started\n");
                                     waitForEnter(scnr);
                                 } else if (manage.getOrderStatus(orderID) == 3) {
-                                    System.out.println("\nOrder has already been cancelled, you cannot start!\n");
+                                    System.out.println("\n\nOrder has already been cancelled, you cannot start!\n");
                                     waitForEnter(scnr);
                                 }
                                 else if (manage.getOrderStatus(orderID) == 2){
-                                    System.out.println("Order has already been completed!");
+                                    System.out.println("\n\nOrder has already been completed!");
                                     waitForEnter(scnr);
                                     break;
                                 }
                                 else{
-                                    System.out.println("Wrong input try again!");
+                                    System.out.println("\n\nWrong input try again!");
                                     waitForEnter(scnr);
                                     break;
                                 }
                                 break;
                             case 3:
                                 if (manage.getOrderStatus(orderID) == 0){
-                                    System.out.println("The has not been started yet");
+                                    System.out.println("\n\nThe has not been started yet");
                                     waitForEnter(scnr);
                                     break;
                                 }
                                 else if (manage.getOrderStatus(orderID) == 3){
-                                    System.out.println("Order has already been cancelled!");
+                                    System.out.println("\n\nOrder has already been cancelled!");
                                     waitForEnter(scnr);
                                     break;
                                 }
                                 else if (manage.getOrderStatus(orderID) == 2){
-                                    System.out.println("Order has already been completed!");
+                                    System.out.println("\n\nOrder has already been completed!");
                                     waitForEnter(scnr);
                                     break;
                                 }
                                 else if (manage.getOrderStatus(orderID) == 1) {
                                     manage.completeOrder(orderID);
-                                    System.out.println("Order has been completed");
+                                    System.out.println("\n\nOrder has been completed");
                                     waitForEnter(scnr);
                                     break;
                                 }
                                 break;
                             case 4:
                                 if (manage.getOrderStatus(orderID) == 2){
-                                    System.out.println("You cannot cancel a completed order!");
+                                    System.out.println("\n\nYou cannot cancel a completed order!");
                                     waitForEnter(scnr);
                                     break;
                                 }
                                 else if (manage.getOrderStatus(orderID) == 3){
-                                    System.out.println("Order is already cancelled");
+                                    System.out.println("\n\nOrder is already cancelled");
                                     waitForEnter(scnr);
                                     break;
                                 }
                                 manage.cancelOrder(orderID);
-                                System.out.println("Order has been cancelled");
+                                System.out.println("\n\nOrder has been cancelled");
                                 waitForEnter(scnr);
                                 break;
                         }
