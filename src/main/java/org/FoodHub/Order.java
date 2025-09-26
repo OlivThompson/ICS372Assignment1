@@ -44,9 +44,18 @@ public class Order {
         return totalPrice;
     }
 
-    @Override
-    public String toString() {
-        return String.format("ID:%d,  Status:%s, Type:%s, Price:%.2f, OrderTime:%d, ItemsOrdered:%s", this.getOrderId(), this.getStatus(), this.getType(), this.totalPrice(), this.orderTime, this.foodItems);
+    public void displayOrder() {
+        String header = """
+        Order #%d
+        Order Type: %s
+        Date: %d
+            Items       Quantity    Price 
+                """;
+        System.out.printf(header, this.orderId, this.orderType, this.orderTime);
+        for(FoodItem i : this.foodItems) {
+            System.out.printf("    %-10s    %-10d$%-10.2f\n", i.getName(),i.getQuantity(),i.getPrice());
+        }
+        System.out.println();
     }
 
     private String getType() {

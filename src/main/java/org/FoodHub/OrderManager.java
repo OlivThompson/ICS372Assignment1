@@ -12,7 +12,7 @@ public class OrderManager {
     public void viewIncomingOrders() {
         for(Order o : orders) {
             if(o.getStatus().equals("Incoming")) {
-                System.out.println(o);
+                o.displayOrder();
             }
         }
     }
