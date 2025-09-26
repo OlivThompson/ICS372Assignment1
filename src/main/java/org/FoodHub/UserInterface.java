@@ -13,6 +13,8 @@ public class UserInterface {
             System.out.println("1. Select Order#");
             System.out.println("2. Get All Order Status");
             System.out.println("3. Show all uncompleted order");
+            System.out.println("4. Show all completed order");
+            System.out.println("5. Export all orders");
             System.out.println("10. Exit");
             int selector = scnr.nextInt();
             scnr.nextLine();
@@ -110,9 +112,19 @@ public class UserInterface {
                     break;
                 case 2:
                     printOrderAllStatus();
+                    waitForEnter(scnr);
                     break;
                 case 3:
                     getIncompleteOrder();
+                    waitForEnter(scnr);
+                    break;
+                case 4:
+                    getCompletedOrder();
+                    waitForEnter(scnr);
+                    break;
+                case 5:
+                    exportAllOrders();
+                    waitForEnter(scnr);
                     break;
             }
         }
@@ -141,13 +153,27 @@ public class UserInterface {
     }
 
     public void getIncompleteOrder(){
-        String orderStatus = "";
+        String orderStatus = "Incomplete";
         double totalPrice = 0;
         for (Order order : manage.getIncompleteOrders()){
-            System.out.println("Order#" + order.getOrderId() + "\t\t|\t Order Status: " + order.getStatus());
+            System.out.println("Order#" + order.getOrderId() + "\t\t|\t Order Status: " + orderStatus);
             totalPrice += order.getTotalPrice();
         }
         System.out.printf("\nTotal Price: %.02f\n\n", totalPrice);
+    }
+
+    public void getCompletedOrder(){
+        double totalPrice = 0;
+        for (Order theOrder : manage.getCompletedOrders()){
+            totalPrice += theOrder.getTotalPrice();
+            System.out.println("Order# " + theOrder.getOrderId() + "\t\t|\t Order Status: " + "Completed");
+        }
+        System.out.printf("\nTotal Price: %.02f\n\n", totalPrice);
+    }
+
+    public void exportAllOrders(){
+        manage.exportAllOrders();
+        System.out.println("All orders has been exported");
     }
 
 }
