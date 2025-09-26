@@ -4,24 +4,25 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class parseOrder {
+public class OrderParser {
     private String filePath = "";
     private JSONObject objectInfo;
     ArrayList<foodItem> items = new ArrayList<foodItem>();
 
     /// Parse the file that is being directed
-    public parseOrder(String orderFile) throws IOException, ParseException{
-        filePath = orderFile;
-        JSONParser parser = new JSONParser();
-
-        Object obj = parser.parse(new FileReader(filePath));
-        /// Assign this to the variable
-        this.objectInfo = (JSONObject)obj;
-    };
+//    public OrderParser(String orderFile) throws IOException, ParseException{
+//        filePath = orderFile;
+//        JSONParser parser = new JSONParser();
+//
+//        Object obj = parser.parse(new FileReader(filePath));
+//        /// Assign this to the variable
+//        this.objectInfo = (JSONObject)obj;
+//    };
 
     /// Return the order information to whoever requests it
     public Object getObjInfo(){
@@ -47,14 +48,21 @@ public class parseOrder {
         return items;
     };
 
-    public void readOrdersFromJson(){
+    public void readOrderFromJson(String orderFile) throws IOException, ParseException {
+        filePath = orderFile;
+        JSONParser parser = new JSONParser();
+
+        Object obj = parser.parse(new FileReader(filePath));
+        /// Assign this to the variable
+        this.objectInfo = (JSONObject)obj;
+        
         JSONObject orderData = (JSONObject)objectInfo.get("order");
         String orderType = (String)orderData.get("type");
         Long orderDate = (Long)orderData.get("order_date");
         JSONArray itemsArray = (JSONArray)orderData.get("items");
-        System.out.printf("Order Type: %s\n", orderType);
-        System.out.printf("Date: %d\n", orderDate);
-        System.out.printf("\tItems%15s %10s", "Quantity:", "Price\n");
+//        System.out.printf("Order Type: %s\n", orderType);
+//        System.out.printf("Date: %d\n", orderDate);
+//        System.out.printf("\tItems%15s %10s", "Quantity:", "Price\n");
         for (Object itemObject : itemsArray){
             JSONObject itemData = (JSONObject)itemObject;
             String name = (String)itemData.get("name");

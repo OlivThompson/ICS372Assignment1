@@ -30,7 +30,7 @@ public class OrderManager {
             }
         }
 
-        incomingOrders.get(index).setStatus("Started");
+        incomingOrders.get(index).setStatus(0);
     }
 
     public void completeIncomingOrder(int orderID) {
@@ -42,7 +42,7 @@ public class OrderManager {
         }
 
         Order completedOrder = incomingOrders.get(index);
-        completedOrder.setStatus("Completed");
+        completedOrder.setStatus(2);
         completedOrders.add(completedOrder);
         incomingOrders.remove(completedOrder);
     }

@@ -1,15 +1,16 @@
 package org.FoodHub;
 
 public class foodItem {
-    private String food;
+    private String name;
     private double price;
     private int quantity;
 
     public foodItem(String food){
-        this.food = food;
+        this.name = food;
     }
-    public foodItem(String food, double price){
-        this.food = food;
+    public foodItem(String name, int quantity, double price){
+        this.name = name;
+        this.quantity = quantity;
         this.price = price;
     }
 
@@ -26,15 +27,15 @@ public class foodItem {
     }
 
     public String getName(){
-        return food;
+        return name;
     }
 
     public int getQuantity(){
-        return quantity;
+        return this.quantity;
     }
 
     public String toString(){
-        return food;
+        return name;
     }
 
 }

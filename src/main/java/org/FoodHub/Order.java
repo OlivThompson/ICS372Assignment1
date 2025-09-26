@@ -7,7 +7,7 @@ public class Order {
 
     private int orderId;
     private ArrayList<foodItem> foodItems = new ArrayList<foodItem>();
-    private String orderStatus;
+    private int orderStatus;
     private LocalDateTime orderTime;
 
 //    public Order(int orderId, ArrayList <foodItem> foodItems, String orderStatus,
@@ -50,15 +50,20 @@ public class Order {
 //    }
 
     public int getStatus(){
-        try {
-            return Integer.parseInt(orderStatus);
-        } catch(NumberFormatException e) {
-            return -1;
-        }
+        return this.orderStatus;
+//        try {
+//            return Integer.parseInt(orderStatus);
+//        } catch(NumberFormatException e) {
+//            return -1;
+//        }
     }
 
     public void printOrderItems(){
         System.out.println(foodItems);
+    }
+
+    public void setStatus(int status) {
+
     }
 
 }
