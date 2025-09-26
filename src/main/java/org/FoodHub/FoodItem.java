@@ -1,14 +1,11 @@
 package org.FoodHub;
 
-public class foodItem {
+public class FoodItem {
     private String name;
     private double price;
     private int quantity;
 
-    public foodItem(String food){
-        this.name = food;
-    }
-    public foodItem(String name, int quantity, double price){
+    public FoodItem(String name, int quantity, double price){
         this.name = name;
         this.quantity = quantity;
         this.price = price;
@@ -34,8 +31,9 @@ public class foodItem {
         return this.quantity;
     }
 
+    @Override
     public String toString(){
-        return name;
+        return String.format("Name: %s, Price: %f, Quantity: %d", this.name, this.price, this.quantity);
     }
 
 }

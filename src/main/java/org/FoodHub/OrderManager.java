@@ -3,55 +3,43 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OrderManager {
-    private List<Order> incomingOrders = new ArrayList<Order>();
-
-    private List<Order> completedOrders = new ArrayList<Order>();
+    private List<Order> orders = new ArrayList<Order>();
 
     public void addOrder(Order order) {
-       this.incomingOrders.add(order);
+       this.orders.add(order);
+    }
+
+    public void viewIncomingOrders() {
+        for(Order o : orders) {
+            if(o.getStatus().equals("Incoming")) {
+                System.out.println(o);
+            }
+        }
     }
 
     public void cancelOrder(int orderID) {
-        int index = -1;
-        for(int i = 0; i < incomingOrders.size(); i++) {
-            if (incomingOrders.get(i).getOrderId() == orderID) {
-                index = i;
-            }
-        }
-
-        incomingOrders.remove(index);
+        findOrder(orderID).setStatus("Cancelled");
     }
 
     public void startIncomingOrder(int orderID) {
-        int index = -1;
-        for(int i = 0; i < incomingOrders.size(); i++) {
-            if (incomingOrders.get(i).getOrderId() == orderID) {
-                index = i;
-            }
-        }
-
-        incomingOrders.get(index).setStatus(0);
+        findOrder((orderID)).setStatus("Started");
     }
 
     public void completeIncomingOrder(int orderID) {
-        int index = -1;
-        for(int i = 0; i < incomingOrders.size(); i++) {
-            if (incomingOrders.get(i).getOrderId() == orderID) {
-                index = i;
-            }
-        }
-
-        Order completedOrder = incomingOrders.get(index);
-        completedOrder.setStatus(2);
-        completedOrders.add(completedOrder);
-        incomingOrders.remove(completedOrder);
-    }
-
-    public void exportAllOrders() {
-        //CONSIDER MOVING TO ORDERMANAGERINTERFACE
+        findOrder(orderID).setStatus("Completed");
     }
 
     public List<Order> getIncompleteOrders() {
-        return this.incomingOrders;
+        return this.orders;
+    }
+
+    private Order findOrder(int orderID) {
+        Order order = null;
+        for(Order o : orders) {
+            if (o.getOrderId() == orderID) {
+                order = o;
+            }
+        }
+        return order;
     }
 }

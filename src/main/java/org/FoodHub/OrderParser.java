@@ -8,12 +8,12 @@ import org.json.simple.parser.ParseException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class OrderParser {
     private String filePath = "";
     private JSONObject objectInfo;
-    ArrayList<foodItem> items = new ArrayList<foodItem>();
-
+    private int orderID = 0;
     /// Parse the file that is being directed
 //    public OrderParser(String orderFile) throws IOException, ParseException{
 //        filePath = orderFile;
@@ -30,25 +30,27 @@ public class OrderParser {
     };
 
     /// Return the array of the items from the json
-    public ArrayList<foodItem> getItems(){
-        /// Create another JSONObject in order to get access into the (order's) data
-        JSONObject objectItemDataAccess = (JSONObject)objectInfo.get("order");
-        JSONArray itemsArray = (JSONArray)objectItemDataAccess.get("items");
-        for (Object itemObject : itemsArray){
-            JSONObject itemData = (JSONObject)itemObject;
-            String itemName = (String)itemData.get("name");
-            double price = (double)itemData.get("price");
-            long quantity = (long)itemData.get("quantity");
+//    public ArrayList<FoodItem> getItems(){
+//        /// Create another JSONObject in order to get access into the (order's) data
+//        JSONObject objectItemDataAccess = (JSONObject)objectInfo.get("order");
+//        JSONArray itemsArray = (JSONArray)objectItemDataAccess.get("items");
+//
+//        for (Object itemObject : itemsArray){
+//            JSONObject itemData = (JSONObject)itemObject;
+//            String itemName = (String)itemData.get("name");
+//            double price = (double)itemData.get("price");
+//            int quantity = (int)itemData.get("quantity");
+//
+//            FoodItem newItem = new FoodItem(itemName, quantity, price);
+//            newItem.setFoodQuantity((int)quantity);
+//            newItem.foodSetPrice(price);
+//            items.add(newItem);
+//        }
+//        return items;
+//    };
 
-            foodItem newItem = new foodItem(itemName);
-            newItem.setFoodQuantity((int)quantity);
-            newItem.foodSetPrice(price);
-            items.add(newItem);
-        }
-        return items;
-    };
+    public Order readOrderFromJson(String orderFile) throws IOException, ParseException {
 
-    public void readOrderFromJson(String orderFile) throws IOException, ParseException {
         filePath = orderFile;
         JSONParser parser = new JSONParser();
 
@@ -60,23 +62,15 @@ public class OrderParser {
         String orderType = (String)orderData.get("type");
         Long orderDate = (Long)orderData.get("order_date");
         JSONArray itemsArray = (JSONArray)orderData.get("items");
-//        System.out.printf("Order Type: %s\n", orderType);
-//        System.out.printf("Date: %d\n", orderDate);
-//        System.out.printf("\tItems%15s %10s", "Quantity:", "Price\n");
+        List<FoodItem> orderedItems = new ArrayList<FoodItem>();
+
         for (Object itemObject : itemsArray){
             JSONObject itemData = (JSONObject)itemObject;
             String name = (String)itemData.get("name");
-            Long quantity = (Long)itemData.get("quantity");
+            int quantity = (int)itemData.get("quantity");
             double price = (double)itemData.get("price");
-            System.out.printf("\t%-" + 15 + "s %-8d %-8d %.2f\n", name, quantity, price);
+            orderedItems.add(new FoodItem(name, quantity, price));
         }
+        return new Order(this.orderID, orderedItems, "Incoming", orderDate, orderType);
     }
-
-    /// Create a new order
-    /// But this new will also create a new orderfile
-    /// orderfile will be created and named incrementally
-    /// the Path to the file will automatically be set to "orders/ + "orderId""
-//    public void writeToFile(Order incomingOrder){
-        ///  Begin by focusing on putting into json format
-//    }
 }

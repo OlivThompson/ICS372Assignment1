@@ -21,32 +21,67 @@ public class OrderManagerInterface {
                 5. Complete Incoming Order
                 6. View Incomplete Orders
                 7. Export All Orders
+                8. Exit
                 """;
+        System.out.println(userMenu);
     }
 
-    public void loopMenu() {
+    public void loopMenu() throws IOException, ParseException {
         while(true) {
             printUserOptions();
-            parseUserInput(getUserInput());
+            parseUserInput(getUserChoice());
         }
     }
 
-    private void parseUserInput(int userInput) {
+    private void parseUserInput(int userInput) throws IOException, ParseException {
         switch (userInput) {
             case 1:
-                System.out.println("option1");
+                addOrder();
                 break;
-            case 2: break;
-            case 3: break;
-            case 4: break;
+            case 2:
+                cancelOrder();
+                break;
+            case 3:
+                startIncomingOrder();
+                break;
+            case 4:
+                viewIncomingOrders();
+                break;
             case 5: break;
             case 6: break;
             case 7: break;
+            case 8:
+                System.exit(0);
+                break;
 
         }
     }
 
-    private int getUserInput() {
+    private void viewIncomingOrders() {
+
+    }
+
+    private void startIncomingOrder() {
+        System.out.println("Enter order ID to start: ");
+        int orderID = s.nextInt();
+
+        orderManager.startIncomingOrder(orderID);
+
+    }
+
+    private void cancelOrder() {
+        System.out.println("Enter orderID to cancel: ");
+        int orderID = s.nextInt();
+
+        orderManager.cancelOrder(orderID);
+    }
+
+    private void addOrder() throws IOException, ParseException {
+        System.out.println("Enter filepath for new order: ");
+        orderParser.readOrderFromJson(s.nextLine());
+    }
+
+    private int getUserChoice() {
         return s.nextInt();
     }
 
