@@ -75,6 +75,11 @@ public class OrderManagerInterface {
     }
 
     private void startIncomingOrder() {
+        for(Order o : orderManager.getOrders()) {
+            if(o.getStatus().equals("Incoming")) {
+                System.out.printf("     OrderID: %d | Status:%s\n", o.getOrderId(), o.getStatus());
+            }
+        }
         System.out.println("Enter order ID to start: ");
         int orderID = s.nextInt();
 
