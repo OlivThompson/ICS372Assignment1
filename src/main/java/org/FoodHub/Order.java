@@ -3,7 +3,13 @@ package org.FoodHub;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class for storing the attributes and contents of an Order.
+ */
 public class Order {
+    /**
+     * The attributes of an Order.
+     */
     private static int orderID = 0;
     private int orderId;
     private List<FoodItem> foodItems = new ArrayList<FoodItem>();
@@ -11,6 +17,14 @@ public class Order {
     private Long orderTime;
     private String orderType;
 
+    /**
+     * Creates a new Order with the given attributes.
+     *
+     * @param foodItems - the FoodItems contained in the order.
+     * @param orderStatus - the status of an Order.
+     * @param orderTime - the time of an Order.
+     * @param orderType - the type of Order.
+     */
     public Order(List<FoodItem> foodItems, String orderStatus,
                  Long orderTime, String orderType) {
         this.orderId = Order.orderID++;
@@ -20,24 +34,41 @@ public class Order {
         this.orderType = orderType;
     }
 
+    /**
+     * @return the orderID of an Order.
+     */
     public int getOrderId(){
         return orderId;
     }
 
+    /**
+     * @return the status of an Order.
+     */
     public String getStatus(){
         return this.orderStatus;
     }
 
-    public void printOrderItems(){
-        System.out.println(foodItems);
-    }
+    /**
+     * @return the list of FoodItems in an Order.
+     */
     public List<FoodItem> getFoodItems() {
         return this.foodItems;
     }
+
+    /**
+     * Sets an Order's status.
+     *
+     * @param status - the Order's new status.
+     */
     public void setStatus(String status) {
         this.orderStatus = status;
     }
 
+    /**
+     * Calculates an Order's total price.
+     *
+     * @return the total price of an order.
+     */
     public double calculateTotalPrice() {
         double totalPrice = 0;
         for( FoodItem i : this.foodItems) {
@@ -46,6 +77,9 @@ public class Order {
         return totalPrice;
     }
 
+    /**
+     * Displays the details of an order.
+     */
     public void displayOrder() {
         String header = """
         Order #%d
@@ -61,10 +95,16 @@ public class Order {
         System.out.println();
     }
 
+    /**
+     * @return the time of an Order.
+     */
     public long getOrderTime() {
         return this.orderTime;
     }
 
+    /**
+     * @return the type of Order.
+     */
     public String getOrderType() {
         return this.orderType;
     }
