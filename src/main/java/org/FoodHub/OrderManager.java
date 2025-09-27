@@ -21,17 +21,6 @@ public class OrderManager {
     }
 
     /**
-     * Displays incoming orders from the orders list.
-     */
-    public void viewIncomingOrders() {
-        for(Order o : orders) {
-            if(o.getStatus().equals("Incoming")) {
-                o.displayOrder();
-            }
-        }
-    }
-
-    /**
      * Cancels an order based on its orderID.
      *
      * @param orderID the order ID of the order to be cancelled.
