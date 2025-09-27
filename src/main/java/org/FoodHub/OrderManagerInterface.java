@@ -76,10 +76,14 @@ public class OrderManagerInterface {
         int orderID = s.nextInt();
 
         orderManager.completeIncomingOrder(orderID);
+        for(Order o: orderManager.getOrders()) {
+            if(o.getOrderId() == orderID) {
+                orderParser.writeOrderToJSON(o);
+            }
+        }
     }
 
     private void displayIncomingOrder() {
-        //orderManager.viewIncomingOrders();
         for(Order o : orderManager.getOrders()) {
             if(o.getStatus().equals("Incoming")) {
                 System.out.printf("     OrderID: %d | Status:%s\n", o.getOrderId(), o.getStatus());
