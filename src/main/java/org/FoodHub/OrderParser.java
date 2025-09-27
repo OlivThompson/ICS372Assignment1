@@ -12,19 +12,28 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class to parse a JSON Order file
+ */
 public class OrderParser {
-    private JSONObject objectInfo;
 
+    /**
+     * Reads and parses a JSON Order file.
+     *
+     * @param orderFile - the filepath of the JSON Order file to be parsed.
+     * @return an Order based upon the JSON file.
+     * @throws IOException
+     * @throws ParseException
+     */
     public Order readOrderFromJson(String orderFile) throws IOException, ParseException {
-
         String filePath = orderFile;
         JSONParser parser = new JSONParser();
 
         Object obj = parser.parse(new FileReader(filePath));
         /// Assign this to the variable
-        this.objectInfo = (JSONObject)obj;
+        JSONObject objectInfo = (JSONObject) obj;
         
-        JSONObject orderData = (JSONObject)objectInfo.get("order");
+        JSONObject orderData = (JSONObject) objectInfo.get("order");
         String orderType = (String)orderData.get("type");
         Long orderDate = (Long)orderData.get("order_date");
         JSONArray itemsArray = (JSONArray)orderData.get("items");
@@ -40,6 +49,11 @@ public class OrderParser {
         return new Order(orderedItems, "Incoming", orderDate, orderType);
     }
 
+    /**
+     * Writes an Order to JSON.
+     *
+     * @param theOrder - the order to be serialized to JSON.
+     */
     public void writeOrderToJSON(Order theOrder){
         File orderPath = new File("orders/completedOrder");
         if (!orderPath .exists()){
@@ -55,6 +69,12 @@ public class OrderParser {
 
     }
 
+    /**
+     * Provides the format for serializing an Order to JSON and writing it to a file.
+     *
+     * @param incomingOrder - the Order to be serialized.
+     * @return the JSONObject containing the attributes of an Order.
+     */
     public JSONObject fortmatForWriting(Order incomingOrder){
         JSONArray itemArray = new JSONArray();
         for (FoodItem itemData : incomingOrder.getFoodItems()){
@@ -75,6 +95,11 @@ public class OrderParser {
         return theOrder;
     }
 
+    /**
+     * Serializes a list of Orders to JSON and writes them to a file.
+     *
+     * @param allOrders - the orders to be serialized.
+     */
     public void writeAllOrderToFile(List<Order> allOrders){
         JSONArray allOrdersArray = new JSONArray();
 
