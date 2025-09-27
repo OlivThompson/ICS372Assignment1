@@ -25,24 +25,6 @@ public class FoodItem {
     }
 
     /**
-     * Sets the price of a FoodItem.
-     *
-     * @param price - the new price of the FoodItem.
-     */
-    public void foodSetPrice(double price){
-        this.price = price;
-    }
-
-    /**
-     * Sets the quantity of a FoodItem.
-     *
-     * @param quantity - new quantity of the FoodItem.
-     */
-    public void setFoodQuantity(long quantity){
-        this.quantity = quantity;
-    }
-
-    /**
      * @return the price of a FoodItem.
      */
     public double getPrice(){

@@ -10,8 +10,8 @@ public class Order {
     /**
      * The attributes of an Order.
      */
-    private static int orderID = 0;
-    private int orderId;
+    private static int orderIDCounter = 0;
+    private int orderID;
     private List<FoodItem> foodItems = new ArrayList<FoodItem>();
     private String orderStatus;
     private Long orderTime;
@@ -27,7 +27,7 @@ public class Order {
      */
     public Order(List<FoodItem> foodItems, String orderStatus,
                  Long orderTime, String orderType) {
-        this.orderId = Order.orderID++;
+        this.orderID = Order.orderIDCounter++;
         this.foodItems = foodItems;
         this.orderStatus = orderStatus;
         this.orderTime = orderTime;
@@ -37,8 +37,8 @@ public class Order {
     /**
      * @return the orderID of an Order.
      */
-    public int getOrderId(){
-        return orderId;
+    public int getOrderID(){
+        return orderID;
     }
 
     /**
@@ -88,7 +88,7 @@ public class Order {
         Price Total: %.2f
             Items       Quantity    Price 
                 """;
-        System.out.printf(header, this.orderId, this.orderType, this.orderTime, this.calculateTotalPrice());
+        System.out.printf(header, this.orderID, this.orderType, this.orderTime, this.calculateTotalPrice());
         for(FoodItem i : this.foodItems) {
             System.out.printf("    %-10s    %-10d$%-10.2f\n", i.getName(),i.getQuantity(),i.getPrice());
         }

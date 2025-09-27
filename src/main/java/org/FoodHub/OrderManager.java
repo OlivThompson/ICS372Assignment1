@@ -62,7 +62,7 @@ public class OrderManager {
     private Order findOrder(int orderID) {
         Order order = null;
         for(Order o : orders) {
-            if (o.getOrderId() == orderID) {
+            if (o.getOrderID() == orderID) {
                 order = o;
             }
         }

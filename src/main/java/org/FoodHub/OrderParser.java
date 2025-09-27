@@ -60,9 +60,9 @@ public class OrderParser {
             orderPath.mkdirs();
             System.out.println("Create Directory");
         }
-        File outputFile = new File(orderPath, "Order#" + theOrder.getOrderId() + ".json");
+        File outputFile = new File(orderPath, "Order#" + theOrder.getOrderID() + ".json");
         try(FileWriter file = new FileWriter(outputFile)){
-            file.write(fortmatForWriting(theOrder).toJSONString());
+            file.write(formatForWriting(theOrder).toJSONString());
         } catch(IOException e){
             e.printStackTrace();
         }
@@ -75,7 +75,7 @@ public class OrderParser {
      * @param incomingOrder - the Order to be serialized.
      * @return the JSONObject containing the attributes of an Order.
      */
-    public JSONObject fortmatForWriting(Order incomingOrder){
+    public JSONObject formatForWriting(Order incomingOrder){
         JSONArray itemArray = new JSONArray();
         for (FoodItem itemData : incomingOrder.getFoodItems()){
             JSONObject itemObj = new JSONObject();
@@ -104,7 +104,7 @@ public class OrderParser {
         JSONArray allOrdersArray = new JSONArray();
 
         for (Order order : allOrders){
-            JSONObject orderJSON = fortmatForWriting(order);
+            JSONObject orderJSON = formatForWriting(order);
             allOrdersArray.add(orderJSON);
         }
 

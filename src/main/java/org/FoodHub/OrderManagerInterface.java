@@ -113,7 +113,7 @@ public class OrderManagerInterface {
         orderManager.completeIncomingOrder(orderID);
 
         for(Order o: orderManager.getOrders()) {
-            if(o.getOrderId() == orderID) {
+            if(o.getOrderID() == orderID) {
                 orderParser.writeOrderToJSON(o);
             }
         }
@@ -126,7 +126,7 @@ public class OrderManagerInterface {
     private void displayIncomingOrder() {
         for(Order o : orderManager.getOrders()) {
             if(o.getStatus().equals("Incoming")) {
-                System.out.printf("     OrderID: %d | Status:%s\n", o.getOrderId(), o.getStatus());
+                System.out.printf("     OrderID: %d | Status:%s\n", o.getOrderID(), o.getStatus());
             }
         }
 
@@ -144,7 +144,7 @@ public class OrderManagerInterface {
     private void startIncomingOrder() {
         for(Order o : orderManager.getOrders()) {
             if(o.getStatus().equals("Incoming")) {
-                System.out.printf("     OrderID: %d | Status:%s\n", o.getOrderId(), o.getStatus());
+                System.out.printf("     OrderID: %d | Status:%s\n", o.getOrderID(), o.getStatus());
             }
         }
 
