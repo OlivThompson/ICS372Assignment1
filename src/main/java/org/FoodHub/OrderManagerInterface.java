@@ -17,7 +17,7 @@ public class OrderManagerInterface {
                 1. Add Order
                 2. Cancel Order
                 3. Start Incoming Order
-                4. View Incoming Orders
+                4. View Incoming Order
                 5. Complete Incoming Order
                 6. View All Incomplete Orders
                 7. Export All Orders
@@ -45,7 +45,7 @@ public class OrderManagerInterface {
                 startIncomingOrder();
                 break;
             case 4:
-                viewIncomingOrders();
+                displayIncomingOrder();
                 break;
             case 5:
                 completeIncomingOrder();
@@ -78,8 +78,18 @@ public class OrderManagerInterface {
         orderManager.completeIncomingOrder(orderID);
     }
 
-    private void viewIncomingOrders() {
-        orderManager.viewIncomingOrders();
+    private void displayIncomingOrder() {
+        //orderManager.viewIncomingOrders();
+        for(Order o : orderManager.getOrders()) {
+            if(o.getStatus().equals("Incoming")) {
+                System.out.printf("     OrderID: %d | Status:%s\n", o.getOrderId(), o.getStatus());
+            }
+        }
+
+        System.out.println("Enter order ID to display: ");
+        int orderID = s.nextInt();
+
+        orderManager.displayOrder(orderID);
     }
 
     private void startIncomingOrder() {
