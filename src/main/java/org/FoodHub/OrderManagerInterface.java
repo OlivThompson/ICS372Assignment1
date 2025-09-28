@@ -96,7 +96,11 @@ public class OrderManagerInterface {
      * Displays all incomplete orders.
      */
     private void displayAllIncompleteOrders() {
-        orderManager.displayAllIncompleteOrders();
+        for(Order o : orderManager.getOrders()) {
+            if(!o.getStatus().equals("Completed")) {
+                o.displayOrder();
+            }
+        }
     }
 
     /**

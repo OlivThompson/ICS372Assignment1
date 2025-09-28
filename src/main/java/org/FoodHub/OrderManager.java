@@ -105,15 +105,6 @@ public class OrderManager {
         }
     }
 
-    /**
-     * Displays all incomplete orders from the orders list.
-     */
-    public void displayAllIncompleteOrders() {
-        for(Order o : this.orders) {
-            if(!o.getStatus().equals("Completed")) {
-                o.displayOrder();
-            }
-        }
-    }
+
 }
 
