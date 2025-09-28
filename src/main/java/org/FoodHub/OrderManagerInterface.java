@@ -1,7 +1,9 @@
 package org.FoodHub;
 import org.json.simple.parser.ParseException;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
@@ -17,9 +19,6 @@ public class OrderManagerInterface {
     private OrderManager orderManager = new OrderManager();
     private Scanner s = new Scanner(System.in);
 
-//    public OrderManagerInterface() throws IOException, ParseException {
-//    }
-
     /**
      * Prints a menu of options for the user.
      */
@@ -29,8 +28,8 @@ public class OrderManagerInterface {
                 1. Add Order
                 2. Cancel Order
                 3. Start Incoming Order
-                4. View Incoming Order
-                5. Complete Incoming Order
+                4. View An Order
+                5. Complete An Order
                 6. View All Incomplete Orders
                 7. Export All Orders
                 8. Exit
@@ -54,7 +53,7 @@ public class OrderManagerInterface {
     /**
      * Takes input from a user and executes the appropriate operation.
      *
-     * @param userInput input from a user.
+     * @param userInput - input from a user.
      * @throws IOException
      * @throws ParseException
      */
@@ -70,10 +69,10 @@ public class OrderManagerInterface {
                 startIncomingOrder();
                 break;
             case 4:
-                displayIncomingOrder();
+                displayOrderDetails();
                 break;
             case 5:
-                completeIncomingOrder();
+                completeOrder();
                 break;
             case 6:
                 displayAllIncompleteOrders();
@@ -83,6 +82,11 @@ public class OrderManagerInterface {
                 break;
             case 8:
                 System.exit(0);
+                break;
+            case -1:
+                break;
+            default:
+                System.out.println("Enter the number of a valid choice.\n");
                 break;
 
         }
@@ -106,9 +110,10 @@ public class OrderManagerInterface {
      * Prompts user for an order ID of order to be completed,
      * then records it in a JSON file.
      */
-    private void completeIncomingOrder() {
+    private void completeOrder() {
+        displayOrderOptions();
         System.out.println("Enter order ID to complete: ");
-        int orderID = s.nextInt();
+        int orderID = getUserChoice();
 
         orderManager.completeIncomingOrder(orderID);
 
@@ -123,17 +128,22 @@ public class OrderManagerInterface {
      * Displays incoming orders, then prompts user to select
      * one to see the details.
      */
-    private void displayIncomingOrder() {
-        for(Order o : orderManager.getOrders()) {
-            if(o.getStatus().equals("Incoming")) {
-                System.out.printf("     OrderID: %d | Status:%s\n", o.getOrderID(), o.getStatus());
-            }
-        }
+    private void displayOrderDetails() {
+        displayOrderOptions();
 
-        System.out.println("Enter order ID to display: ");
-        int orderID = s.nextInt();
+        System.out.println("Enter order ID for detailed display: ");
+        int orderID = getUserChoice();
 
         orderManager.displayOrder(orderID);
+    }
+
+    /**
+     * Displays the incoming order options to user.
+     */
+    private void displayOrderOptions() {
+        for(Order o : orderManager.getOrders()) {
+            System.out.printf("     OrderID: %d | Price: $%.2f Status:%s\n", o.getOrderID(), o.calculateTotalPrice(), o.getStatus());
+        }
     }
 
     /**
@@ -142,15 +152,10 @@ public class OrderManagerInterface {
      * to be started.
      */
     private void startIncomingOrder() {
-        for(Order o : orderManager.getOrders()) {
-            if(o.getStatus().equals("Incoming")) {
-                System.out.printf("     OrderID: %d | Status:%s\n", o.getOrderID(), o.getStatus());
-            }
-        }
+        displayOrderOptions();
 
         System.out.println("Enter order ID to start: ");
-        int orderID = s.nextInt();
-
+        int orderID = getUserChoice();
         orderManager.startIncomingOrder(orderID);
 
     }
@@ -159,8 +164,10 @@ public class OrderManagerInterface {
      * Prompts user for the order ID of order to be cancelled.
      */
     private void cancelOrder() {
+        displayOrderOptions();
+
         System.out.println("Enter orderID to cancel: ");
-        int orderID = s.nextInt();
+        int orderID = getUserChoice();
 
         orderManager.cancelOrder(orderID);
     }
@@ -170,23 +177,44 @@ public class OrderManagerInterface {
      * parses the contents of the order, and adds the
      * order to orderManager's orders.
      *
-     * @throws IOException
      * @throws ParseException
      */
-    private void addOrder() throws IOException, ParseException {
-        System.out.println("Enter filepath for new order: ");
-        s.nextLine();
-        String filepath = s.nextLine();
-        Order order = orderParser.readOrderFromJson(filepath);
-        orderManager.addOrder(order);
+    private void addOrder() {
+
+        try {
+            System.out.println("Enter filepath for new order: ");
+            s.nextLine();
+            String filepath = s.nextLine();
+            Order order = orderParser.readOrderFromJson(filepath);
+            orderManager.addOrder(order);
+
+        } catch (ParseException e) {
+            System.out.println("File could not be parsed: " + e.getMessage());
+
+        } catch (FileNotFoundException e) {
+            System.out.println("File could not be found.");
+
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     /**
+     * Gets user input and validates it is a number.
      *
      * @return User's input.
      */
     private int getUserChoice() {
-        return s.nextInt();
+        int choice = -1;
+
+        try {
+            choice = s.nextInt();
+
+        } catch(InputMismatchException e) {
+            System.out.println("Please enter a valid number.\n");
+            s.nextLine();
+        }
+        return choice;
     }
 
 

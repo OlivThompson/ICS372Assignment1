@@ -26,7 +26,13 @@ public class OrderManager {
      * @param orderID the order ID of the order to be cancelled.
      */
     public void cancelOrder(int orderID) {
-        findOrder(orderID).setStatus("Cancelled");
+        //findOrder(orderID).setStatus("Cancelled");
+        Order order = findOrder(orderID);
+        if(order != null) {
+            order.setStatus("Cancelled");
+        } else {
+            System.out.printf("Order with ID %d doesn't exist.\n", orderID);
+        }
     }
 
     /**
@@ -37,10 +43,14 @@ public class OrderManager {
     public void startIncomingOrder(int orderID) {
         Order order = findOrder(orderID);
 
-        if(!order.getStatus().equals("Incoming")) {
-            System.out.println("Only incoming orders can be started.\n");
+        if (order != null) {
+            if(!order.getStatus().equals("Incoming")) {
+                System.out.println("Only incoming orders can be started.\n");
+            } else {
+                order.setStatus("Started");
+            }
         } else {
-            order.setStatus("Started");
+            System.out.printf("Order with ID %d doesn't exist.\n", orderID);
         }
     }
 
@@ -50,7 +60,12 @@ public class OrderManager {
      * @param orderID - the orderID of the order to be completed.
      */
     public void completeIncomingOrder(int orderID) {
-        findOrder(orderID).setStatus("Completed");
+        Order order = findOrder(orderID);
+        if(findOrder(orderID) != null) {
+            order.setStatus("Completed");
+        } else {
+            System.out.printf("Order with ID %d doesn't exist.\n", orderID);
+        }
     }
 
     /**
@@ -82,7 +97,12 @@ public class OrderManager {
      * @param orderID the orderID of the order to be displayed.
      */
     public void displayOrder(int orderID) {
-        findOrder(orderID).displayOrder();
+        Order order = findOrder(orderID);
+        if(order != null) {
+            order.displayOrder();
+        } else {
+            System.out.printf("Order with ID %d doesn't exist.\n", orderID);
+        }
     }
 
     /**
