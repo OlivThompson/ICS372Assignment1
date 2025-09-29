@@ -6,7 +6,8 @@ The same will go for "Export All Orders"
 
 ## Important  
 Files will be exported after user has exit --- It does not export on runtime
-  
+## Dependency
++ This program uses JSON simple to parse JSOn files.
 ### Major flaw in this at the moment is that  
 + User needs to have orders folder in the Application folder (NOT inside src folder) if it does not exist already
 + This program does not fix with the items duplications yet, if an order json file has more than 2 of the same item in 1 order structure, it will not add  

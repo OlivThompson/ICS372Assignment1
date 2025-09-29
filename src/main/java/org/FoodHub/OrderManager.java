@@ -12,7 +12,7 @@ public class OrderManager {
     private List<Order> orders = new ArrayList<>();
 
     /**
-     * Adds an order to orders.
+     * Adds an order to orders list.
      *
      * @param order - The order to be added to orders.
      */
@@ -21,12 +21,11 @@ public class OrderManager {
     }
 
     /**
-     * Cancels an order based on its orderID.
+     * Changes an order's status to Cancelled based on its order ID.
      *
      * @param orderID the order ID of the order to be cancelled.
      */
     public void cancelOrder(int orderID) {
-        //findOrder(orderID).setStatus("Cancelled");
         Order order = findOrder(orderID);
         if(order != null) {
             order.setStatus("Cancelled");
@@ -74,7 +73,7 @@ public class OrderManager {
      * @param orderID - the orderID of the order to be found.
      * @return the order with the specified orderID.
      */
-    private Order findOrder(int orderID) {
+    Order findOrder(int orderID) {
         Order order = null;
         for(Order o : orders) {
             if (o.getOrderID() == orderID) {
@@ -85,7 +84,7 @@ public class OrderManager {
     }
 
     /**
-     * @return the list of orders.
+     * @return the list of orders managed by the OrderManager.
      */
     public List<Order> getOrders() {
         return this.orders;

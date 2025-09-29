@@ -8,6 +8,11 @@ import java.util.List;
 public class Order {
     /**
      * The attributes of an Order.
+     * orderIDCounter - static variable used to give orders their IDs
+     * orderID - the order's ID.
+     * foodItems - the list of FoodItems contained within an order.
+     * orderTime - the time at which an order was received.
+     * orderType - the type of order: pick-up or to-go.
      */
     private static int orderIDCounter = 0;
     private int orderID;

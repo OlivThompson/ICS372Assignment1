@@ -116,15 +116,11 @@ public class OrderManagerInterface {
 
         orderManager.completeIncomingOrder(orderID);
 
-        for(Order o: orderManager.getOrders()) {
-            if(o.getOrderID() == orderID) {
-                orderParser.writeOrderToJSON(o);
-            }
-        }
+        orderParser.writeOrderToJSON(orderManager.findOrder(orderID));
     }
 
     /**
-     * Displays incoming orders, then prompts user to select
+     * Displays orders, then prompts user to select
      * one to see the details.
      */
     private void displayOrderDetails() {
@@ -137,7 +133,7 @@ public class OrderManagerInterface {
     }
 
     /**
-     * Displays the incoming order options to user.
+     * Displays the order options for user to choose from.
      */
     private void displayOrderOptions() {
         for(Order o : orderManager.getOrders()) {
@@ -146,7 +142,7 @@ public class OrderManagerInterface {
     }
 
     /**
-     * Displays list of incoming orders, then
+     * Displays list of orders, then
      * prompts user enter order ID of order
      * to be started.
      */
@@ -159,7 +155,7 @@ public class OrderManagerInterface {
     }
 
     /**
-     * Prompts user for the order ID of order to be cancelled.
+     * Displays order options, then prompts user for the order ID of order to be cancelled.
      */
     private void cancelOrder() {
         displayOrderOptions();
@@ -192,7 +188,7 @@ public class OrderManagerInterface {
             System.out.println("File could not be found.");
 
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            System.out.println("IOException occurred: " + e.getMessage());
         }
     }
 

@@ -6,6 +6,9 @@ package org.FoodHub;
 public class FoodItem {
     /**
      * The attributes of an item of food.
+     * name - name of food.
+     * price - the price of the food.
+     * quantity - how much/how many items of food.
      */
     private String name;
     private double price;
