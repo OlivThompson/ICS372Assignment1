@@ -9,7 +9,7 @@ public class OrderManager {
     /**
      * The list of orders that an OrderManager will manage.
      */
-    private List<Order> orders = new ArrayList<Order>();
+    private List<Order> orders = new ArrayList<>();
 
     /**
      * Adds an order to orders.

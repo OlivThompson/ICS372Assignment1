@@ -22,22 +22,21 @@ public class OrderParser {
      *
      * @param orderFile - the filepath of the JSON Order file to be parsed.
      * @return an Order based upon the JSON file.
-     * @throws IOException
-     * @throws ParseException
+     * @throws IOException - IOException may be caused by reading files.
+     * @throws ParseException - ParseException may be caused.
      */
     public Order readOrderFromJson(String orderFile) throws IOException, ParseException {
         String filePath = orderFile;
         JSONParser parser = new JSONParser();
 
         Object obj = parser.parse(new FileReader(filePath));
-        /// Assign this to the variable
         JSONObject objectInfo = (JSONObject) obj;
         
         JSONObject orderData = (JSONObject) objectInfo.get("order");
         String orderType = (String)orderData.get("type");
         Long orderDate = (Long)orderData.get("order_date");
         JSONArray itemsArray = (JSONArray)orderData.get("items");
-        List<FoodItem> orderedItems = new ArrayList<FoodItem>();
+        List<FoodItem> orderedItems = new ArrayList<>();
 
         for (Object itemObject : itemsArray){
             JSONObject itemData = (JSONObject)itemObject;

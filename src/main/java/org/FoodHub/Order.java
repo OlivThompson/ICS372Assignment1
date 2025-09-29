@@ -1,6 +1,5 @@
 package org.FoodHub;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,7 +11,7 @@ public class Order {
      */
     private static int orderIDCounter = 0;
     private int orderID;
-    private List<FoodItem> foodItems = new ArrayList<FoodItem>();
+    private List<FoodItem> foodItems;
     private String orderStatus;
     private Long orderTime;
     private String orderType;
@@ -82,10 +81,10 @@ public class Order {
      */
     public void displayOrder() {
         String header = """
-        Order #%d
+        Order ID: %d
         Order Type: %s
         Date: %d
-        Price Total: %.2f
+        Price Total: $%.2f
             Items       Quantity    Price 
                 """;
         System.out.printf(header, this.orderID, this.orderType, this.orderTime, this.calculateTotalPrice());

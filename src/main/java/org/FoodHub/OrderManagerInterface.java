@@ -39,11 +39,8 @@ public class OrderManagerInterface {
 
     /**
      * Loops a menu, continuously prompting user for input.
-     *
-     * @throws IOException
-     * @throws ParseException
      */
-    public void loopMenu() throws IOException, ParseException {
+    public void loopMenu() {
         while(true) {
             printUserOptions();
             parseUserInput(getUserChoice());
@@ -54,10 +51,8 @@ public class OrderManagerInterface {
      * Takes input from a user and executes the appropriate operation.
      *
      * @param userInput - input from a user.
-     * @throws IOException
-     * @throws ParseException
      */
-    private void parseUserInput(int userInput) throws IOException, ParseException {
+    private void parseUserInput(int userInput) {
         switch (userInput) {
             case 1:
                 addOrder();
@@ -161,7 +156,6 @@ public class OrderManagerInterface {
         System.out.println("Enter order ID to start: ");
         int orderID = getUserChoice();
         orderManager.startIncomingOrder(orderID);
-
     }
 
     /**
@@ -181,7 +175,6 @@ public class OrderManagerInterface {
      * parses the contents of the order, and adds the
      * order to orderManager's orders.
      *
-     * @throws ParseException
      */
     private void addOrder() {
 
@@ -220,7 +213,5 @@ public class OrderManagerInterface {
         }
         return choice;
     }
-
-
 }
 

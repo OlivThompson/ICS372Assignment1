@@ -4,7 +4,7 @@ File will create a directory for completed_orders and all_orders inside orders f
 Completed orders will create a completedOrder folder if it does not exist already and will be exported to there, it will be overwritten everytime the program restarts  
 The same will go for "Export All Orders"  
 
-## Imporant  
+## Important  
 Files will be exported after user has exit --- It does not export on runtime
   
 ### Major flaw in this at the moment is that  
