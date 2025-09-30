@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Class to parse a JSON Order file
  */
-public class OrderParser {
+class OrderParser {
 
     /**
      * Reads and parses a JSON Order file.
@@ -25,7 +25,7 @@ public class OrderParser {
      * @throws IOException - IOException may be caused by reading files.
      * @throws ParseException - ParseException may be caused.
      */
-    public Order readOrderFromJson(String orderFile) throws IOException, ParseException {
+    Order readOrderFromJson(String orderFile) throws IOException, ParseException {
         String filePath = orderFile;
         JSONParser parser = new JSONParser();
 
@@ -53,7 +53,7 @@ public class OrderParser {
      *
      * @param theOrder - the order to be serialized to JSON.
      */
-    public void writeOrderToJSON(Order theOrder){
+    void writeOrderToJSON(Order theOrder){
         File orderPath = new File("orders/completedOrder");
         if (!orderPath .exists()){
             orderPath.mkdirs();
@@ -74,7 +74,7 @@ public class OrderParser {
      * @param incomingOrder - the Order to be serialized.
      * @return the JSONObject containing the attributes of an Order.
      */
-    public JSONObject formatForWriting(Order incomingOrder){
+    JSONObject formatForWriting(Order incomingOrder){
         JSONArray itemArray = new JSONArray();
         for (FoodItem itemData : incomingOrder.getFoodItems()){
             JSONObject itemObj = new JSONObject();
@@ -99,7 +99,7 @@ public class OrderParser {
      *
      * @param allOrders - the orders to be serialized.
      */
-    public void writeAllOrderToFile(List<Order> allOrders){
+     void writeAllOrderToFile(List<Order> allOrders){
         JSONArray allOrdersArray = new JSONArray();
 
         for (Order order : allOrders){
