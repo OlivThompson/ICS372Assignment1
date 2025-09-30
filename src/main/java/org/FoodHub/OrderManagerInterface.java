@@ -15,9 +15,9 @@ class OrderManagerInterface {
      * orderParser - parses orders from JSON files.
      * s - Scanner used to get input from user.
      */
-    private OrderParser orderParser = new OrderParser();
-    private OrderManager orderManager = new OrderManager();
-    private Scanner s = new Scanner(System.in);
+    private final OrderParser orderParser = new OrderParser();
+    private final OrderManager orderManager = new OrderManager();
+    private final Scanner s = new Scanner(System.in);
 
     /**
      * Prints a menu of options for the user.
