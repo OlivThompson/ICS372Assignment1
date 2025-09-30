@@ -209,5 +209,10 @@ class OrderManagerInterface {
         }
         return choice;
     }
+
+    public static void main(String[] args) {
+        OrderManagerInterface orderManagerInterface = new OrderManagerInterface();
+        orderManagerInterface.loopMenu();
+    }
 }
 
