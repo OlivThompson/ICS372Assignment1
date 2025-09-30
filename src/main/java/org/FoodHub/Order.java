@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Class for storing the attributes and contents of an Order.
  */
-public class Order {
+class Order {
     /**
      * The attributes of an Order.
      * orderIDCounter - static variable used to give orders their IDs
@@ -29,8 +29,8 @@ public class Order {
      * @param orderTime - the time of an Order.
      * @param orderType - the type of Order.
      */
-    public Order(List<FoodItem> foodItems, String orderStatus,
-                 Long orderTime, String orderType) {
+    Order(List<FoodItem> foodItems, String orderStatus,
+          Long orderTime, String orderType) {
         this.orderID = Order.orderIDCounter++;
         this.foodItems = foodItems;
         this.orderStatus = orderStatus;
@@ -41,21 +41,21 @@ public class Order {
     /**
      * @return the orderID of an Order.
      */
-    public int getOrderID(){
+    int getOrderID(){
         return orderID;
     }
 
     /**
      * @return the status of an Order.
      */
-    public String getStatus(){
+    String getStatus(){
         return this.orderStatus;
     }
 
     /**
      * @return the list of FoodItems in an Order.
      */
-    public List<FoodItem> getFoodItems() {
+    List<FoodItem> getFoodItems() {
         return this.foodItems;
     }
 
@@ -64,7 +64,7 @@ public class Order {
      *
      * @param status - the Order's new status.
      */
-    public void setStatus(String status) {
+    void setStatus(String status) {
         this.orderStatus = status;
     }
 
@@ -73,7 +73,7 @@ public class Order {
      *
      * @return the total price of an order.
      */
-    public double calculateTotalPrice() {
+    double calculateTotalPrice() {
         double totalPrice = 0;
         for( FoodItem i : this.foodItems) {
             totalPrice += (i.getPrice() * i.getQuantity());
@@ -84,7 +84,7 @@ public class Order {
     /**
      * Displays the details of an order.
      */
-    public void displayOrder() {
+    void displayOrder() {
         String header = """
         Order ID: %d
         Order Type: %s
@@ -102,14 +102,14 @@ public class Order {
     /**
      * @return the time of an Order.
      */
-    public long getOrderTime() {
+    long getOrderTime() {
         return this.orderTime;
     }
 
     /**
      * @return the type of Order.
      */
-    public String getOrderType() {
+    String getOrderType() {
         return this.orderType;
     }
 

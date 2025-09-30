@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Class for storing and managing orders
  */
-public class OrderManager {
+class OrderManager {
     /**
      * The list of orders that an OrderManager will manage.
      */
@@ -16,7 +16,7 @@ public class OrderManager {
      *
      * @param order - The order to be added to orders.
      */
-    public void addOrder(Order order) {
+    void addOrder(Order order) {
        this.orders.add(order);
     }
 
@@ -25,7 +25,7 @@ public class OrderManager {
      *
      * @param orderID the order ID of the order to be cancelled.
      */
-    public void cancelOrder(int orderID) {
+    void cancelOrder(int orderID) {
         Order order = findOrder(orderID);
         if(order != null) {
             order.setStatus("Cancelled");
@@ -39,7 +39,7 @@ public class OrderManager {
      *
      * @param orderID - the orderID of the order to be started.
      */
-    public void startIncomingOrder(int orderID) {
+    void startIncomingOrder(int orderID) {
         Order order = findOrder(orderID);
 
         if (order != null) {
@@ -58,7 +58,7 @@ public class OrderManager {
      *
      * @param orderID - the orderID of the order to be completed.
      */
-    public void completeIncomingOrder(int orderID) {
+    void completeIncomingOrder(int orderID) {
         Order order = findOrder(orderID);
         if(findOrder(orderID) != null && order.getStatus().equals("Started")) {
             order.setStatus("Completed");
@@ -88,7 +88,7 @@ public class OrderManager {
     /**
      * @return the list of orders managed by the OrderManager.
      */
-    public List<Order> getOrders() {
+    List<Order> getOrders() {
         return this.orders;
     }
 
@@ -97,7 +97,7 @@ public class OrderManager {
      *
      * @param orderID the orderID of the order to be displayed.
      */
-    public void displayOrder(int orderID) {
+    void displayOrder(int orderID) {
         Order order = findOrder(orderID);
         if(order != null) {
             order.displayOrder();

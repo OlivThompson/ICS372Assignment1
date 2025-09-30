@@ -9,7 +9,7 @@ import java.util.Scanner;
 /**
  * OrderManagerInterface provides an entryway for staff to add and manage orders.
  */
-public class OrderManagerInterface {
+class OrderManagerInterface {
     /**
      * orderManager - manages states of the orders as they come in and are altered.
      * orderParser - parses orders from JSON files.
@@ -22,7 +22,7 @@ public class OrderManagerInterface {
     /**
      * Prints a menu of options for the user.
      */
-    public void printUserOptions()  {
+    void printUserOptions()  {
         String userMenu = """
                 User Menu
                 1. Add Order
@@ -40,7 +40,7 @@ public class OrderManagerInterface {
     /**
      * Loops a menu, continuously prompting user for input.
      */
-    public void loopMenu() {
+    void loopMenu() {
         while(true) {
             printUserOptions();
             parseUserInput(getUserChoice());

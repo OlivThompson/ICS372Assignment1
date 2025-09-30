@@ -3,7 +3,7 @@ package org.FoodHub;
 /**
  * Class to store the attributes of an item of food.
  */
-public class FoodItem {
+class FoodItem {
     /**
      * The attributes of an item of food.
      * name - name of food.
@@ -21,7 +21,7 @@ public class FoodItem {
      * @param quantity - quantity of the food.
      * @param price - price per-item of food.
      */
-    public FoodItem(String name, Long quantity, double price){
+    FoodItem(String name, Long quantity, double price){
         this.name = name;
         this.quantity = quantity;
         this.price = price;
@@ -30,21 +30,21 @@ public class FoodItem {
     /**
      * @return the price of a FoodItem.
      */
-    public double getPrice(){
+    double getPrice(){
         return price;
     }
 
     /**
      * @return the name of a FoodItem.
      */
-    public String getName(){
+    String getName(){
         return name;
     }
 
     /**
      * @return the quantity of a FoodItem.
      */
-    public long getQuantity(){
+    long getQuantity(){
         return this.quantity;
     }
 }
