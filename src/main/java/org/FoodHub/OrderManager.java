@@ -60,10 +60,12 @@ public class OrderManager {
      */
     public void completeIncomingOrder(int orderID) {
         Order order = findOrder(orderID);
-        if(findOrder(orderID) != null) {
+        if(findOrder(orderID) != null && order.getStatus().equals("Started")) {
             order.setStatus("Completed");
-        } else {
+        } else if(order == null) {
             System.out.printf("Order with ID %d doesn't exist.\n", orderID);
+        } else {
+            System.out.printf("Order with ID %d must be started first.\n", orderID);
         }
     }
 
