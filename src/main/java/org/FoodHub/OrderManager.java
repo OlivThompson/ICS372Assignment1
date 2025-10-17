@@ -4,6 +4,9 @@ import java.util.List;
 
 /**
  * Class for storing and managing orders
+ *
+ * Domain Layer
+ *
  */
 class OrderManager {
     /**

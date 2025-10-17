@@ -7,41 +7,72 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.io.File;
+import java.io.FileWriter;
+
+/*
+* Domain Layer
+*
+*
+* */
 
 public class Restaurant{
-    private String name;
-    // A List of Orders
-    private List<Order> incompleteOrders;
-    // A List of Completed Orders
-    private List<Order> completedOrders;
-    // Calls to the instance of the OrderParser
-    private OrderParser orderParser = OrderParser.getInstance();
-    private Scanner s = new Scanner(System.in);
+    private final String name;
+    private final OrderManager orderManager;
+    private final OrderParser orderParser = OrderParser.getInstance();
 
+    // Constructor
     public Restaurant(String name){
         this.name = name;
-        this.incompleteOrders = new ArrayList<>();
-        this.completedOrders = new ArrayList<>();
+        this.orderManager = new OrderManager();
+        this.createRestaurantDirectory();
     }
 
-    private void addOrder() {
+    public void addOrder(String filePath) throws IOException, ParseException{
+        Order order = orderParser.readOrderFromJson(filePath);
+        orderManager.addOrder(order);
+    }
 
-        try {
-            System.out.println("Enter filepath for new order: ");
-            s.nextLine();
-            String filepath = s.nextLine();
-            Order order = orderParser.readOrderFromJson(filepath);
-            orderManager.addOrder(order);
+    public void cancelOrder(int orderID){
+        orderManager.cancelOrder(orderID);
+    }
 
-        } catch (ParseException e) {
-            System.out.println("File could not be parsed: " + e.getMessage());
+    public void startOrder(int orderID){
+        orderManager.startIncomingOrder(orderID);
+    }
 
-        } catch (FileNotFoundException e) {
-            System.out.println("File could not be found.");
+    public void completeOrder(int orderID){
+        orderManager.completeIncomingOrder(orderID);
+        Order completedOrder = orderManager.findOrder(orderID);
+        orderParser.writeOrderToJSON(completedOrder);
+    }
 
-        } catch (IOException e) {
-            System.out.println("IOException occurred: " + e.getMessage());
+    public List<Order> getAllOrder() {
+        return orderManager.getOrders();
+    }
+
+    public void exportAllOrders(){
+        orderParser.writeAllOrderToFile(getAllOrder());
+    }
+
+    public Order getOrder(int orderID){
+        return orderManager.findOrder(orderID);
+    }
+
+    public void createRestaurantDirectory(){
+        File restaurantDirectory = new File("Restaurants/" + name);
+        if (!restaurantDirectory.exists()){
+            restaurantDirectory.mkdirs();
+            System.out.println("Restaurant Directory Created Successfully");
         }
+    }
+
+    public void displayOrder(int orderID){
+        orderManager.displayOrder(orderID);
+    }
+
+    public String getName(){
+        return this.name;
     }
 
 }
