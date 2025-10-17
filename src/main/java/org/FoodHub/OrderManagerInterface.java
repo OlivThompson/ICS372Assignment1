@@ -1,23 +1,54 @@
 package org.FoodHub;
 import org.json.simple.parser.ParseException;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.InputMismatchException;
-import java.util.Scanner;
+import java.io.*;
+import java.util.*;
 
 /**
  * OrderManagerInterface provides an entryway for staff to add and manage orders.
+ *
+ * UI Layer
+ *
  */
 class OrderManagerInterface {
     /**
-     * orderManager - manages states of the orders as they come in and are altered.
-     * orderParser - parses orders from JSON files.
      * s - Scanner used to get input from user.
      */
-    private final OrderParser orderParser = new OrderParser();
-    private final OrderManager orderManager = new OrderManager();
+    private final Map<String, Restaurant> restaurants = new HashMap<>();
+    private Restaurant activeRestaurant = null;
     private final Scanner s = new Scanner(System.in);
+    // Create a restaurant.dat file for serialization
+    private static final String restaurant_Data_File = "restaurants.dat";
+
+    // A saving method to send data into restaurants.dat
+    public void saveData(){
+        try (ObjectOutputStream objectStream = new ObjectOutputStream(new FileOutputStream(restaurant_Data_File))){
+            // Puts restaurants data into restaurant_Data_File
+            objectStream.writeObject(restaurants);
+            System.out.println("Test: Saved Successfully");
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    // Method for loading data
+    public void loadData(){
+        File loadedData = new File(restaurant_Data_File);
+        if (!loadedData.exists()){
+            System.out.println("No data exists");
+            return;
+        }
+
+        try(ObjectInputStream objectStream = new ObjectInputStream(new FileInputStream(loadedData))) {
+            Map<String, Restaurant> loadedMap = (Map<String, Restaurant>) objectStream.readObject();
+            restaurants.putAll(loadedMap);
+        }catch(IOException e){
+            System.err.println("Error Loading" + e.getMessage());
+        } catch (ClassNotFoundException e) {
+            System.err.println("Error loading classes" + e.getMessage());
+        }
+        System.out.println("Test Load");
+    }
 
     /**
      * Prints a menu of options for the user.
@@ -32,7 +63,9 @@ class OrderManagerInterface {
                 5. Complete An Order
                 6. View All Incomplete Orders
                 7. Export All Orders
-                8. Exit
+                8. Create Restaurant
+                9. Select Restaurant
+                10. Exit
                 """;
         System.out.println(userMenu);
     }
@@ -41,6 +74,9 @@ class OrderManagerInterface {
      * Loops a menu, continuously prompting user for input.
      */
     void loopMenu() {
+
+        loadData();
+
         while(true) {
             printUserOptions();
             parseUserInput(getUserChoice());
@@ -76,6 +112,12 @@ class OrderManagerInterface {
                 exportAllOrders();
                 break;
             case 8:
+                addRestaurant();
+                break;
+            case 9:
+                selectRestaurant();
+                break;
+            case 10:
                 System.exit(0);
                 break;
             case -1:
@@ -91,18 +133,21 @@ class OrderManagerInterface {
      * Displays all incomplete orders.
      */
     private void displayAllIncompleteOrders() {
-        for(Order o : orderManager.getOrders()) {
-            if(!o.getStatus().equals("Completed")) {
+        List<Order> orders = activeRestaurant.getAllOrder();
+        for (Order o : orders){
+            if(!o.getStatus().equals("Completed")){
                 o.displayOrder();
             }
         }
+
+
     }
 
     /**
      * Exports every order to a JSON file.
      */
     private void exportAllOrders() {
-        orderParser.writeAllOrderToFile(orderManager.getOrders());
+        activeRestaurant.exportAllOrders();
     }
 
     /**
@@ -114,9 +159,7 @@ class OrderManagerInterface {
         System.out.println("Enter order ID to complete: ");
         int orderID = getUserChoice();
 
-        orderManager.completeIncomingOrder(orderID);
-
-        orderParser.writeOrderToJSON(orderManager.findOrder(orderID));
+        activeRestaurant.completeOrder(orderID);
     }
 
     /**
@@ -129,16 +172,18 @@ class OrderManagerInterface {
         System.out.println("Enter order ID for detailed display: ");
         int orderID = getUserChoice();
 
-        orderManager.displayOrder(orderID);
+        activeRestaurant.displayOrder(orderID);
     }
 
     /**
      * Displays the order options for user to choose from.
      */
     private void displayOrderOptions() {
-        for(Order o : orderManager.getOrders()) {
+        List<Order> orders = activeRestaurant.getAllOrder();
+        for (Order o : orders){
             System.out.printf("     OrderID: %d | Price: $%.2f Status:%s\n", o.getOrderID(), o.calculateTotalPrice(), o.getStatus());
         }
+
     }
 
     /**
@@ -151,7 +196,7 @@ class OrderManagerInterface {
 
         System.out.println("Enter order ID to start: ");
         int orderID = getUserChoice();
-        orderManager.startIncomingOrder(orderID);
+        activeRestaurant.startOrder(orderID);
     }
 
     /**
@@ -163,7 +208,7 @@ class OrderManagerInterface {
         System.out.println("Enter orderID to cancel: ");
         int orderID = getUserChoice();
 
-        orderManager.cancelOrder(orderID);
+        activeRestaurant.cancelOrder(orderID);
     }
 
     /**
@@ -178,8 +223,7 @@ class OrderManagerInterface {
             System.out.println("Enter filepath for new order: ");
             s.nextLine();
             String filepath = s.nextLine();
-            Order order = orderParser.readOrderFromJson(filepath);
-            orderManager.addOrder(order);
+            activeRestaurant.addOrder(filepath);
 
         } catch (ParseException e) {
             System.out.println("File could not be parsed: " + e.getMessage());
@@ -210,7 +254,55 @@ class OrderManagerInterface {
         return choice;
     }
 
+    private void addRestaurant(){
+        s.nextLine();
+        System.out.printf("Enter Restaurant Name: ");
+        String name = s.nextLine().trim();
+        if (restaurants.containsKey(name)){
+            System.out.println("Restaurant Already Exists!");
+            return;
+        }
+        Restaurant newRest = new Restaurant(name);
+        restaurants.put(name, newRest);
+        saveData();
+    }
+
+    private void selectRestaurant(){
+        System.out.println("Select your restaurant: ");
+        displayRestaurants();
+        s.nextLine();
+        String selectRest = s.nextLine().trim();
+        if (restaurants.containsKey(selectRest)){
+            activeRestaurant = restaurants.get(selectRest);
+            System.out.printf("Current Active Restaurant: %s\n", activeRestaurant.getName());
+        }
+        else{
+            System.out.printf("Restaurant does not exists! Try Again!\n");
+        }
+    }
+
+    private void displayRestaurants(){
+        restaurants.keySet().forEach(System.out::println);
+    }
+
     public static void main(String[] args) {
+
+//        OrderParser Parser = OrderParser.getInstance();
+//        try {
+//            File CurrentFile = new File("CurrentFile.txt");
+//            FileWriter write = new FileWriter("CurrentFile.txt");
+//            Order order1 = Parser.readOrderFromJson("orders/order.json");
+//            String test = Parser.serializeOrder(order1);
+//            write.write(test);
+//            write.close();
+//            System.out.println(test);
+//
+//
+//        }catch(IOException|ParseException e){
+//            e.printStackTrace();
+//        }
+
+//
         OrderManagerInterface orderManagerInterface = new OrderManagerInterface();
         orderManagerInterface.loopMenu();
     }

@@ -17,6 +17,9 @@ import java.util.List;
  */
 public final class OrderParser {
 
+    /*
+     * Use the Singleton Pattern into OrderParser because we just need to use one instance of it
+     * */
     private static volatile OrderParser instance;
 
     private OrderParser(){
@@ -33,10 +36,6 @@ public final class OrderParser {
         }
         return instance;
     }
-
-    /*
-    * Use the Singleton Pattern into OrderParser because we just need to use one instance of it
-    * */
 
 
 

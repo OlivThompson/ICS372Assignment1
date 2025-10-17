@@ -1,11 +1,15 @@
 package org.FoodHub;
 
 import java.util.List;
+import java.io.Serializable;
 
 /**
  * Class for storing the attributes and contents of an Order.
+ *
+ * Foundational Layer
+ *
  */
-class Order {
+class Order implements Serializable{
     /**
      * The attributes of an Order.
      * orderIDCounter - static variable used to give orders their IDs
@@ -13,6 +17,7 @@ class Order {
      * foodItems - the list of FoodItems contained within an order.
      * orderTime - the time at which an order was received.
      * orderType - the type of order: pick-up or to-go.
+     * serialVersionUID - Serialized version for compatibility
      */
     private static int orderIDCounter = 0;
     private int orderID;
@@ -20,6 +25,7 @@ class Order {
     private String orderStatus;
     private Long orderTime;
     private String orderType;
+    private static long serialVersionUID = 1L;
 
     /**
      * Creates a new Order with the given attributes.

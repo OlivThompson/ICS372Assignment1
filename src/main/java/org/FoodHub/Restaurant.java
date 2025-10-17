@@ -2,13 +2,12 @@ package org.FoodHub;
 
 import org.json.simple.parser.ParseException;
 
-import java.io.FileNotFoundException;
+
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.Serializable;
 
 /*
 * Domain Layer
@@ -16,10 +15,13 @@ import java.io.FileWriter;
 *
 * */
 
-public class Restaurant{
+public class Restaurant implements Serializable{
+    // Serialized Version for compatibility
+    private static long serialVersionUID = 1L;
     private final String name;
     private final OrderManager orderManager;
-    private final OrderParser orderParser = OrderParser.getInstance();
+    // Need Parser to be transient
+    private transient final OrderParser orderParser = OrderParser.getInstance();
 
     // Constructor
     public Restaurant(String name){
@@ -64,6 +66,9 @@ public class Restaurant{
         if (!restaurantDirectory.exists()){
             restaurantDirectory.mkdirs();
             System.out.println("Restaurant Directory Created Successfully");
+        }
+        else{
+            System.out.println("Directories has been loaded");
         }
     }
 

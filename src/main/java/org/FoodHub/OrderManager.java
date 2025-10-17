@@ -1,6 +1,7 @@
 package org.FoodHub;
 import java.util.ArrayList;
 import java.util.List;
+import java.io.Serializable;
 
 /**
  * Class for storing and managing orders
@@ -8,7 +9,10 @@ import java.util.List;
  * Domain Layer
  *
  */
-class OrderManager {
+class OrderManager implements Serializable{
+    // Serialized Version for compatibility
+    private static long serialVersionUID = 1L;
+
     /**
      * The list of orders that an OrderManager will manage.
      */

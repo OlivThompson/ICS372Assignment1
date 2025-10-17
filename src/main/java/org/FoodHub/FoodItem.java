@@ -1,18 +1,22 @@
 package org.FoodHub;
 
+import java.io.Serializable;
+
 /**
  * Class to store the attributes of an item of food.
  */
-class FoodItem {
+class FoodItem implements Serializable{
     /**
      * The attributes of an item of food.
      * name - name of food.
      * price - the price of the food.
      * quantity - how much/how many items of food.
+     * serialVersionUID - Version for compatibility
      */
     private String name;
     private double price;
     private Long quantity;
+    private static long serialVersionUID = 1L;
 
     /**
      * Creates a new FoodItem with the given attributes.
