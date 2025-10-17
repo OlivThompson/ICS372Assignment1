@@ -39,7 +39,9 @@ class OrderManagerInterface {
             return;
         }
 
+        // Loads restaurant_Data_File into loadedMap and puts data into restraunts
         try(ObjectInputStream objectStream = new ObjectInputStream(new FileInputStream(loadedData))) {
+            @SuppressWarnings("Unchecked")
             Map<String, Restaurant> loadedMap = (Map<String, Restaurant>) objectStream.readObject();
             restaurants.putAll(loadedMap);
         }catch(IOException e){
@@ -63,22 +65,32 @@ class OrderManagerInterface {
                 5. Complete An Order
                 6. View All Incomplete Orders
                 7. Export All Orders
-                8. Create Restaurant
-                9. Select Restaurant
-                10. Exit
+                8. Exit
                 """;
         System.out.println(userMenu);
+    }
+
+    void printRestaurantOptions(){
+        String restaurantSelectionMenu = """
+                User Menu
+                1. Create Restaurant
+                2. Select Restaurant
+                """;
+        System.out.println(restaurantSelectionMenu);
     }
 
     /**
      * Loops a menu, continuously prompting user for input.
      */
     void loopMenu() {
-
+        // Loads Data at every loop for the most current
         loadData();
 
         while(true) {
-            printUserOptions();
+//            printUserOptions();
+            if (!activeRestrauntCheck()) {
+                printRestaurantOptions();
+            }
             parseUserInput(getUserChoice());
         }
     }
@@ -89,43 +101,49 @@ class OrderManagerInterface {
      * @param userInput - input from a user.
      */
     private void parseUserInput(int userInput) {
-        switch (userInput) {
+        switch(userInput) {
             case 1:
-                addOrder();
-                break;
-            case 2:
-                cancelOrder();
-                break;
-            case 3:
-                startIncomingOrder();
-                break;
-            case 4:
-                displayOrderDetails();
-                break;
-            case 5:
-                completeOrder();
-                break;
-            case 6:
-                displayAllIncompleteOrders();
-                break;
-            case 7:
-                exportAllOrders();
-                break;
-            case 8:
                 addRestaurant();
                 break;
-            case 9:
+            case 2:
                 selectRestaurant();
-                break;
-            case 10:
-                System.exit(0);
-                break;
-            case -1:
-                break;
-            default:
-                System.out.println("Enter the number of a valid choice.\n");
-                break;
+                while(userInput != 8){
+                    printUserOptions();
+                    userInput = getUserChoice();
+                    switch (userInput) {
+                        case 1:
+                            addOrder();
+                            break;
+                        case 2:
+                            cancelOrder();
+                            break;
+                        case 3:
+                            startIncomingOrder();
+                            break;
+                        case 4:
+                            displayOrderDetails();
+                            break;
+                        case 5:
+                            completeOrder();
+                            break;
+                        case 6:
+                            displayAllIncompleteOrders();
+                            break;
+                        case 7:
+                            exportAllOrders();
+                            break;
+                        case 8:
+                            System.exit(0);
+                            break;
+                        case -1:
+                            break;
+                        default:
+                            System.out.println("Enter the number of a valid choice.\n");
+                            break;
 
+                    }
+                }
+                break;
         }
     }
 
@@ -285,6 +303,13 @@ class OrderManagerInterface {
         restaurants.keySet().forEach(System.out::println);
     }
 
+    private Boolean activeRestrauntCheck() {
+        if (activeRestaurant == null){
+            return false;
+        }
+        else return true;
+    }
+
     public static void main(String[] args) {
 
 //        OrderParser Parser = OrderParser.getInstance();
@@ -301,8 +326,6 @@ class OrderManagerInterface {
 //        }catch(IOException|ParseException e){
 //            e.printStackTrace();
 //        }
-
-//
         OrderManagerInterface orderManagerInterface = new OrderManagerInterface();
         orderManagerInterface.loopMenu();
     }

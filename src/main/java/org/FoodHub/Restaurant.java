@@ -3,11 +3,8 @@ package org.FoodHub;
 import org.json.simple.parser.ParseException;
 
 
-import java.io.IOException;
+import java.io.*;
 import java.util.List;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.Serializable;
 
 /*
 * Domain Layer
@@ -21,7 +18,7 @@ public class Restaurant implements Serializable{
     private final String name;
     private final OrderManager orderManager;
     // Need Parser to be transient
-    private transient final OrderParser orderParser = OrderParser.getInstance();
+    private transient OrderParser orderParser = OrderParser.getInstance();
 
     // Constructor
     public Restaurant(String name){
@@ -78,6 +75,11 @@ public class Restaurant implements Serializable{
 
     public String getName(){
         return this.name;
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        this.orderParser = OrderParser.getInstance();
     }
 
 }
