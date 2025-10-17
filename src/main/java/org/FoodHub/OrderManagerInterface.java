@@ -65,7 +65,8 @@ class OrderManagerInterface {
                 5. Complete An Order
                 6. View All Incomplete Orders
                 7. Export All Orders
-                8. Exit
+                8. Select restaurant
+                9. Exit
                 """;
         System.out.println(userMenu);
     }
@@ -107,24 +108,29 @@ class OrderManagerInterface {
                 break;
             case 2:
                 selectRestaurant();
-                while(userInput != 8){
+                while(userInput != 9){
                     printUserOptions();
                     userInput = getUserChoice();
                     switch (userInput) {
                         case 1:
-                            addOrder();
+                            addOrder(); ///// Important OrderID are not being stored and resets each order
+                            saveData();
                             break;
                         case 2:
                             cancelOrder();
+                            saveData();
                             break;
                         case 3:
                             startIncomingOrder();
+                            saveData();
                             break;
                         case 4:
                             displayOrderDetails();
+                            saveData();
                             break;
                         case 5:
                             completeOrder();
+                            saveData();
                             break;
                         case 6:
                             displayAllIncompleteOrders();
@@ -133,6 +139,9 @@ class OrderManagerInterface {
                             exportAllOrders();
                             break;
                         case 8:
+                            selectRestaurant();
+                            break;
+                        case 9:
                             System.exit(0);
                             break;
                         case -1:
