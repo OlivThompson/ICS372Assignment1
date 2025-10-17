@@ -15,7 +15,31 @@ import java.util.List;
 /**
  * Class to parse a JSON Order file
  */
-class OrderParser {
+public final class OrderParser {
+
+    private static volatile OrderParser instance;
+
+    private OrderParser(){
+
+    }
+
+    public static OrderParser getInstance(){
+        if (instance == null){
+            synchronized (OrderParser.class){
+                if (instance == null){
+                    instance = new OrderParser();
+                }
+            }
+        }
+        return instance;
+    }
+
+    /*
+    * Use the Singleton Pattern into OrderParser because we just need to use one instance of it
+    * */
+
+
+
 
     /**
      * Reads and parses a JSON Order file.
@@ -74,7 +98,7 @@ class OrderParser {
      * @param incomingOrder - the Order to be serialized.
      * @return the JSONObject containing the attributes of an Order.
      */
-    JSONObject formatForWriting(Order incomingOrder){
+    private JSONObject formatForWriting(Order incomingOrder){
         JSONArray itemArray = new JSONArray();
         for (FoodItem itemData : incomingOrder.getFoodItems()){
             JSONObject itemObj = new JSONObject();
@@ -92,6 +116,14 @@ class OrderParser {
         JSONObject theOrder = new JSONObject();
         theOrder.put("order", orderObj);
         return theOrder;
+    }
+
+    /*
+    * Turns Orders into a String
+    * */
+    public String serializeOrder(Order order){
+        JSONObject obj = formatForWriting(order);
+        return obj.toJSONString();
     }
 
     /**
