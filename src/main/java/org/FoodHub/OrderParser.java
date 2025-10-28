@@ -48,11 +48,11 @@ public final class OrderParser {
      * @throws IOException - IOException may be caused by reading files.
      * @throws ParseException - ParseException may be caused.
      */
-    Order readOrderFromJson(String orderFile) throws IOException, ParseException {
-        String filePath = orderFile;
+    Order readOrderFromJson(File orderFile) throws IOException, ParseException {
+        //String filePath = orderFile;
         JSONParser parser = new JSONParser();
 
-        Object obj = parser.parse(new FileReader(filePath));
+        Object obj = parser.parse(new FileReader(orderFile));
         JSONObject objectInfo = (JSONObject) obj;
         
         JSONObject orderData = (JSONObject) objectInfo.get("order");
@@ -97,7 +97,7 @@ public final class OrderParser {
      * @param incomingOrder - the Order to be serialized.
      * @return the JSONObject containing the attributes of an Order.
      */
-    private JSONObject formatForWriting(Order incomingOrder){
+    protected JSONObject formatForWriting(Order incomingOrder){
         JSONArray itemArray = new JSONArray();
         for (FoodItem itemData : incomingOrder.getFoodItems()){
             JSONObject itemObj = new JSONObject();

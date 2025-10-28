@@ -6,28 +6,48 @@ import org.json.simple.JSONObject;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.List;
 
 import java.util.Map;
 
-public class SaveData implements SaveState{
-    @Override
-    void save(){
+public class jsonSaveData implements SaveState{
+    private final OrderManager orderManager;
+    private final OrderParser orderParser = OrderParser.getInstance();
 
-        File exportToPath = new File("Restaurants");
+    public jsonSaveData(OrderManager om){
+        this.orderManager = om;
+    }
+    @Override
+    public void save(OrderManager om){
+        JSONArray ordersArray = new JSONArray();
+        JSONObject orderObj;
+
+        for (Order o : om.getOrders()){
+            orderObj = orderParser.formatForWriting(o);
+            ordersArray.add(orderObj);
+        }
+
+
+        File exportToPath = new File("CurrentState");
         if  (!exportToPath.exists()){
             exportToPath.mkdirs();
             System.out.println("Created Directory");
         }
-
         try{
             FileWriter write = new FileWriter("Test.json");
-            write.write(obj.toJSONString());
+            write.write(ordersArray.toJSONString());
             write.close();
         }
         catch(IOException e){
             e.printStackTrace();
         }
+
+    }
+
+    @Override
+    public void load(File filePath, OrderManager om){
+//        orderParser.readOrderFromJson();
 
     }
 
