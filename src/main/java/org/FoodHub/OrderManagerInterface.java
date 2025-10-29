@@ -232,7 +232,14 @@ import java.util.*;
             File filePath = new File("example.xml");
 
             xmlParser parser = xmlParser.getInstance();
-            parser.loadToOrder(filePath);
+            OrderManager om = new OrderManager();
+            List<Order> orders = parser.loadToOrder(filePath);
+
+            for (Order o : orders){
+                om.addOrder(o);
+            }
+
+            om.displayOrder(0);
 
         }
     }

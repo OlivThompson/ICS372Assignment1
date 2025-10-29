@@ -59,8 +59,6 @@ public class xmlParser implements OrderParserInterface{
                     int quantity = Integer.parseInt(quantityString);
                     FoodItem currentFood = new FoodItem(type, quantity, price);
                     allFood.add(currentFood);
-
-                    System.out.println("Order " + orderID + ": " + type + " - $" + price + " x " + quantity);
                 }
 
                 Instant orderedTime = Instant.now();
