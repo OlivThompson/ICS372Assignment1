@@ -57,7 +57,6 @@ public class jsonSaveData implements SaveState{
                 for (Order o : loadOrders) {
                     om.addOrder(o);
                 }
-                System.out.println("Test Successfully");
             }
         }catch(IOException | ParseException e){
             e.printStackTrace();
