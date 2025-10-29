@@ -13,6 +13,8 @@ import java.util.*;
         private final OrderParser orderParser = OrderParser.getInstance();
         private final OrderManager orderManager = new OrderManager();
         private final Scanner s = new Scanner(System.in);
+        SaveState saveData = new jsonSaveData(orderManager);
+        File filePath = new File("test.json");
 
         /**
          * Prints a menu of options for the user.
@@ -36,6 +38,7 @@ import java.util.*;
          * Loops a menu, continuously prompting user for input.
          */
         void loopMenu() {
+            saveData.load(filePath, orderManager);
             while(true) {
                 printUserOptions();
                 parseUserInput(getUserChoice());
@@ -51,18 +54,22 @@ import java.util.*;
             switch (userInput) {
                 case 1:
                     addOrder();
+                    saveData.save(orderManager);
                     break;
                 case 2:
                     cancelOrder();
+                    saveData.save(orderManager);
                     break;
                 case 3:
                     startIncomingOrder();
+                    saveData.save(orderManager);
                     break;
                 case 4:
                     displayOrderDetails();
                     break;
                 case 5:
                     completeOrder();
+                    saveData.save(orderManager);
                     break;
                 case 6:
                     displayAllIncompleteOrders();
@@ -72,8 +79,6 @@ import java.util.*;
                     break;
                 case 8:
                     System.exit(0);
-                    break;
-                case -1:
                     break;
                 default:
                     System.out.println("Enter the number of a valid choice.\n");
@@ -173,8 +178,17 @@ import java.util.*;
                 System.out.println("Enter filepath for new order: ");
                 s.nextLine();
                 String filepath = s.nextLine();
-                Order order = orderParser.readOrderFromJson(filepath);
-                orderManager.addOrder(order);
+                File file = new File(filepath);
+                List<Order> loadedOrders = orderParser.readOrdersFromJSON(file);
+                if (loadedOrders.isEmpty()){
+                    System.out.println("No orders");
+                }
+                else {
+                    for (Order o : loadedOrders){
+                        orderManager.addOrder(o);
+                    }
+                }
+
 
             } catch (ParseException e) {
                 System.out.println("File could not be parsed: " + e.getMessage());
@@ -205,8 +219,15 @@ import java.util.*;
             return choice;
         }
 
+
+
+
+
+
         public static void main(String[] args) {
-            org.FoodHub.OrderManagerInterface orderManagerInterface = new org.FoodHub.OrderManagerInterface();
+            OrderManagerInterface orderManagerInterface = new OrderManagerInterface();
             orderManagerInterface.loopMenu();
         }
     }
+
+
