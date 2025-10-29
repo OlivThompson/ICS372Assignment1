@@ -14,7 +14,7 @@ class FoodItem{
      */
     private String name;
     private double price;
-    private Long quantity;
+    private int quantity;
 
     /**
      * Creates a new FoodItem with the given attributes.
@@ -23,7 +23,7 @@ class FoodItem{
      * @param quantity - quantity of the food.
      * @param price - price per-item of food.
      */
-    FoodItem(String name, Long quantity, double price){
+    FoodItem(String name, int quantity, double price){
         this.name = name;
         this.quantity = quantity;
         this.price = price;

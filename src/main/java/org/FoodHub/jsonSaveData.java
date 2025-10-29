@@ -2,6 +2,7 @@ package org.FoodHub;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.ParseException;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -47,8 +48,20 @@ public class jsonSaveData implements SaveState{
 
     @Override
     public void load(File filePath, OrderManager om){
-//        orderParser.readOrderFromJson();
-
+        try {
+            if (!filePath.exists()){
+                System.out.println("There is no save data, starting a new session");
+            }
+            else {
+                List<Order> loadOrders = orderParser.readOrdersFromJSON(filePath);
+                for (Order o : loadOrders) {
+                    om.addOrder(o);
+                }
+                System.out.println("Test Successfully");
+            }
+        }catch(IOException | ParseException e){
+            e.printStackTrace();
+        }
     }
 
 }

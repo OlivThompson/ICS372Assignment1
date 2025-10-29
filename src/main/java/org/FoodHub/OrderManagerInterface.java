@@ -38,7 +38,7 @@ import java.util.*;
          * Loops a menu, continuously prompting user for input.
          */
         void loopMenu() {
-//            saveData.load(filePath, orderManager);
+            saveData.load(filePath, orderManager);
             while(true) {
                 printUserOptions();
                 parseUserInput(getUserChoice());
@@ -179,8 +179,16 @@ import java.util.*;
                 s.nextLine();
                 String filepath = s.nextLine();
                 File file = new File(filepath);
-                Order order = orderParser.readOrderFromJson(file);
-                orderManager.addOrder(order);
+                List<Order> loadedOrders = orderParser.readOrdersFromJSON(file);
+                if (loadedOrders.isEmpty()){
+                    System.out.println("No orders");
+                }
+                else {
+                    for (Order o : loadedOrders){
+                        orderManager.addOrder(o);
+                    }
+                }
+
 
             } catch (ParseException e) {
                 System.out.println("File could not be parsed: " + e.getMessage());
