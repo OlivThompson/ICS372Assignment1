@@ -224,9 +224,16 @@ import java.util.*;
 
 
 
-        public static void main(String[] args) {
-            OrderManagerInterface orderManagerInterface = new OrderManagerInterface();
-            orderManagerInterface.loopMenu();
+        public static void main(String[] args) throws IOException, ParseException {
+/*            OrderManagerInterface orderManagerInterface = new OrderManagerInterface();
+            orderManagerInterface.loopMenu();*/
+
+
+            File filePath = new File("example.xml");
+
+            xmlParser parser = xmlParser.getInstance();
+            parser.loadToOrder(filePath);
+
         }
     }
 
