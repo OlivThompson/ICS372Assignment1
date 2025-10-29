@@ -14,7 +14,7 @@ import java.util.*;
         private final OrderManager orderManager = new OrderManager();
         private final Scanner s = new Scanner(System.in);
         SaveState saveData = new jsonSaveData(orderManager);
-        File filePath = new File("test.json");
+        File filePath = new File("SavedDataForLoad.json");
 
         /**
          * Prints a menu of options for the user.
@@ -54,22 +54,22 @@ import java.util.*;
             switch (userInput) {
                 case 1:
                     addOrder();
-                    saveData.save(orderManager);
+                    saveData.save(orderManager, filePath);
                     break;
                 case 2:
                     cancelOrder();
-                    saveData.save(orderManager);
+                    saveData.save(orderManager, filePath);
                     break;
                 case 3:
                     startIncomingOrder();
-                    saveData.save(orderManager);
+                    saveData.save(orderManager, filePath);
                     break;
                 case 4:
                     displayOrderDetails();
                     break;
                 case 5:
                     completeOrder();
-                    saveData.save(orderManager);
+                    saveData.save(orderManager, filePath);
                     break;
                 case 6:
                     displayAllIncompleteOrders();

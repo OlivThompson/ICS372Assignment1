@@ -7,10 +7,7 @@ import org.json.simple.parser.ParseException;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.List;
-
-import java.util.Map;
 
 public class jsonSaveData implements SaveState{
     private final OrderManager orderManager;
@@ -20,7 +17,7 @@ public class jsonSaveData implements SaveState{
         this.orderManager = om;
     }
     @Override
-    public void save(OrderManager om){
+    public void save(OrderManager om, File filePath){
         JSONArray ordersArray = new JSONArray();
         JSONObject orderObj;
 
@@ -30,13 +27,8 @@ public class jsonSaveData implements SaveState{
         }
 
 
-        File exportToPath = new File("CurrentState");
-        if  (!exportToPath.exists()){
-            exportToPath.mkdirs();
-            System.out.println("Created Directory");
-        }
         try{
-            FileWriter write = new FileWriter("Test.json");
+            FileWriter write = new FileWriter(filePath);
             write.write(ordersArray.toJSONString());
             write.close();
         }
