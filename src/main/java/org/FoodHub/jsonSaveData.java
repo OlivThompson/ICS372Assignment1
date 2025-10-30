@@ -2,25 +2,27 @@ package org.FoodHub;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
+import java.time.Instant;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
-
-import java.util.Map;
 
 public class jsonSaveData implements SaveState{
     private final OrderManager orderManager;
-    private final OrderParser orderParser = OrderParser.getInstance();
+    jsonOrderParser orderParser = jsonOrderParser.getInstance();
 
     public jsonSaveData(OrderManager om){
         this.orderManager = om;
     }
     @Override
-    public void save(OrderManager om){
+    public void save(OrderManager om, File filePath){
         JSONArray ordersArray = new JSONArray();
         JSONObject orderObj;
 
@@ -30,13 +32,8 @@ public class jsonSaveData implements SaveState{
         }
 
 
-        File exportToPath = new File("CurrentState");
-        if  (!exportToPath.exists()){
-            exportToPath.mkdirs();
-            System.out.println("Created Directory");
-        }
         try{
-            FileWriter write = new FileWriter("Test.json");
+            FileWriter write = new FileWriter(filePath);
             write.write(ordersArray.toJSONString());
             write.close();
         }
@@ -53,13 +50,13 @@ public class jsonSaveData implements SaveState{
                 System.out.println("There is no save data, starting a new session");
             }
             else {
-                List<Order> loadOrders = orderParser.readOrdersFromJSON(filePath);
+                List<Order> loadOrders = orderParser.loadToOrder(filePath);
                 for (Order o : loadOrders) {
                     om.addOrder(o);
                 }
             }
         }catch(IOException | ParseException e){
-            e.printStackTrace();
+            System.err.println("\nSavedDataForLoad.json Corrupted");
         }
     }
 

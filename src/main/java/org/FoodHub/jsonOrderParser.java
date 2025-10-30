@@ -1,7 +1,7 @@
 package org.FoodHub;
 
-import org.json.simple.JSONObject;
 import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
@@ -12,36 +12,30 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Class to parse a JSON Order file
- */
-public final class OrderParser {
-
+public class jsonOrderParser implements OrderParserInterface{
     /*
      * Use the Singleton Pattern into OrderParser because we just need to use one instance of it
      * */
-    private static volatile OrderParser instance;
+    private static volatile jsonOrderParser instance;
 
-    private OrderParser(){
+    private jsonOrderParser(){
 
     }
 
-    public static OrderParser getInstance(){
+    public static jsonOrderParser getInstance(){
         if (instance == null){
-            synchronized (OrderParser.class){
+            synchronized (jsonOrderParser.class){
                 if (instance == null){
-                    instance = new OrderParser();
+                    instance = new jsonOrderParser();
                 }
             }
         }
         return instance;
     }
 
-
     /*
-    *   Converting Order Data from JSONObject into Order previously readOrderFromJson
-    * */
-
+     *   Converting Order Data from JSONObject into Order previously readOrderFromJson
+     * */
     private Order jsonToOrder(JSONObject orderData){
         String orderType = (String)orderData.get("type");
         Long orderDate = (Long)orderData.get("order_date");
@@ -59,12 +53,20 @@ public final class OrderParser {
             orderedItems.add(new FoodItem(name, quantity, finalPrice));
         }
 
-        return new Order(orderedItems, "Incoming", orderDate, orderType);
+        String orderStatus;
+        if (orderData.containsKey("order_status") && orderData.get("order_status") instanceof String){
+            orderStatus = (String)orderData.get("order_status");
+        }else{
+            orderStatus = "Incoming";
+        }
+
+        return new Order(orderedItems, orderStatus, orderDate, orderType);
     }
 
+
     /*
-    * Reads from JSON file with incoming orders and also read for savedstate.json file
-    * */
+     * Reads from JSON file with incoming orders and also read for savedstate.json file
+     * */
     /**
      * Reads and parses a JSON Order file.
      *
@@ -73,7 +75,8 @@ public final class OrderParser {
      * @throws IOException - IOException may be caused by reading files.
      * @throws ParseException - ParseException may be caused.
      */
-    public List<Order> readOrdersFromJSON(File orderFile) throws IOException, ParseException{
+    @Override
+    public List<Order> loadToOrder(File orderFile) throws IOException, ParseException{
         List<Order> allOrders = new ArrayList<>();
         JSONParser parser = new JSONParser();
 
@@ -127,7 +130,7 @@ public final class OrderParser {
     }
 
     /**
-     * Provides the format for serializing an Order to JSON and writing it to a file.
+     *
      *
      * @param incomingOrder - the Order to be serialized.
      * @return the JSONObject containing the attributes of an Order.
@@ -143,6 +146,7 @@ public final class OrderParser {
         }
 
         JSONObject orderObj = new JSONObject();
+        orderObj.put("order_status", incomingOrder.getStatus());
         orderObj.put("type", incomingOrder.getOrderType());
         orderObj.put("order_date", incomingOrder.getOrderTime());
         orderObj.put("items", itemArray);
@@ -152,20 +156,12 @@ public final class OrderParser {
         return theOrder;
     }
 
-    /*
-    * Turns Orders into a String
-    * */
-    public String serializeOrder(Order order){
-        JSONObject obj = formatForWriting(order);
-        return obj.toJSONString();
-    }
-
     /**
      * Serializes a list of Orders to JSON and writes them to a file.
      *
      * @param allOrders - the orders to be serialized.
      */
-     void writeAllOrderToFile(List<Order> allOrders){
+    void writeAllOrderToFile(List<Order> allOrders){
         JSONArray allOrdersArray = new JSONArray();
 
         for (Order order : allOrders){
@@ -186,7 +182,26 @@ public final class OrderParser {
         }
     }
 
+/*    protected JSONObject formatForSaving(Order incomingOrder){
+        JSONArray itemArray = new JSONArray();
+        for (FoodItem itemData : incomingOrder.getFoodItems()){
+            JSONObject itemObj = new JSONObject();
+            itemObj.put("name", itemData.getName());
+            itemObj.put("quantity", itemData.getQuantity());
+            itemObj.put("price", itemData.getPrice());
+            itemArray.add(itemObj);
+        }
+
+        JSONObject orderObj = new JSONObject();
+        orderObj.put("order_status", incomingOrder.getStatus());
+        orderObj.put("type", incomingOrder.getOrderType());
+        orderObj.put("order_date", incomingOrder.getOrderTime());
+        orderObj.put("items", itemArray);
+
+        JSONObject theOrder = new JSONObject();
+        theOrder.put("order", orderObj);
+        return theOrder;
+    }*/
+
 
 }
-
-

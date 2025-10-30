@@ -88,14 +88,16 @@ class Order{
      * Displays the details of an order.
      */
     void displayOrder() {
+        DateFormatter readableDate = new DateFormatter(this.orderTime);
+        String finalDateOutput = readableDate.getDate();
         String header = """
         Order ID: %d
         Order Type: %s
-        Date: %d
+        Date: %s
         Price Total: $%.2f
             Items       Quantity    Price 
                 """;
-        System.out.printf(header, this.orderID, this.orderType, this.orderTime, this.calculateTotalPrice());
+        System.out.printf(header, this.orderID, this.orderType, finalDateOutput, this.calculateTotalPrice());
         for(FoodItem i : this.foodItems) {
             System.out.printf("    %-10s    %-10d$%-10.2f\n", i.getName(),i.getQuantity(),i.getPrice());
         }
@@ -105,7 +107,7 @@ class Order{
     /**
      * @return the time of an Order.
      */
-    long getOrderTime() {
+    Long getOrderTime() {
         return this.orderTime;
     }
 
