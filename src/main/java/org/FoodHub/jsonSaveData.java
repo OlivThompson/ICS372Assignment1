@@ -56,7 +56,7 @@ public class jsonSaveData implements SaveState{
                 }
             }
         }catch(IOException | ParseException e){
-            e.printStackTrace();
+            System.err.println("\nSavedDataForLoad.json Corrupted");
         }
     }
 
