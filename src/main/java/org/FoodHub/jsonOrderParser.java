@@ -53,10 +53,14 @@ public class jsonOrderParser implements OrderParserInterface{
             orderedItems.add(new FoodItem(name, quantity, finalPrice));
         }
 
-        DateFormatter formattingDate = new DateFormatter(orderDate);
-        String finalDateOutput = formattingDate.getDate();
+        String orderStatus;
+        if (orderData.containsKey("order_status") && orderData.get("order_status") instanceof String){
+            orderStatus = (String)orderData.get("order_status");
+        }else{
+            orderStatus = "Incoming";
+        }
 
-        return new Order(orderedItems, "Incoming", finalDateOutput, orderType);
+        return new Order(orderedItems, orderStatus, orderDate, orderType);
     }
 
 
@@ -126,7 +130,7 @@ public class jsonOrderParser implements OrderParserInterface{
     }
 
     /**
-     * Provides the format for serializing an Order to JSON and writing it to a file.
+     *
      *
      * @param incomingOrder - the Order to be serialized.
      * @return the JSONObject containing the attributes of an Order.
@@ -142,6 +146,7 @@ public class jsonOrderParser implements OrderParserInterface{
         }
 
         JSONObject orderObj = new JSONObject();
+        orderObj.put("order_status", incomingOrder.getStatus());
         orderObj.put("type", incomingOrder.getOrderType());
         orderObj.put("order_date", incomingOrder.getOrderTime());
         orderObj.put("items", itemArray);
@@ -176,6 +181,27 @@ public class jsonOrderParser implements OrderParserInterface{
             e.printStackTrace();
         }
     }
+
+/*    protected JSONObject formatForSaving(Order incomingOrder){
+        JSONArray itemArray = new JSONArray();
+        for (FoodItem itemData : incomingOrder.getFoodItems()){
+            JSONObject itemObj = new JSONObject();
+            itemObj.put("name", itemData.getName());
+            itemObj.put("quantity", itemData.getQuantity());
+            itemObj.put("price", itemData.getPrice());
+            itemArray.add(itemObj);
+        }
+
+        JSONObject orderObj = new JSONObject();
+        orderObj.put("order_status", incomingOrder.getStatus());
+        orderObj.put("type", incomingOrder.getOrderType());
+        orderObj.put("order_date", incomingOrder.getOrderTime());
+        orderObj.put("items", itemArray);
+
+        JSONObject theOrder = new JSONObject();
+        theOrder.put("order", orderObj);
+        return theOrder;
+    }*/
 
 
 }

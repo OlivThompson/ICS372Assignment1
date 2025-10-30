@@ -10,11 +10,11 @@ import java.util.*;
          * orderParser - parses orders from JSON files.
          * s - Scanner used to get input from user.
          */
-        private final OrderParser orderParser = OrderParser.getInstance();
         private final OrderManager orderManager = new OrderManager();
         private final Scanner s = new Scanner(System.in);
         SaveState saveData = new jsonSaveData(orderManager);
         File filePath = new File("SavedDataForLoad.json");
+        OrderProcessor processOrder = new OrderProcessor();
 
         /**
          * Prints a menu of options for the user.
@@ -78,6 +78,7 @@ import java.util.*;
                     exportAllOrders();
                     break;
                 case 8:
+                    saveData.save(orderManager, filePath);
                     System.exit(0);
                     break;
                 default:
@@ -102,7 +103,7 @@ import java.util.*;
          * Exports every order to a JSON file.
          */
         private void exportAllOrders() {
-            orderParser.writeAllOrderToFile(orderManager.getOrders());
+            processOrder.writeAllOrdersToFile(orderManager.getOrders());
         }
 
         /**
@@ -116,7 +117,7 @@ import java.util.*;
 
             orderManager.completeIncomingOrder(orderID);
 
-            orderParser.writeOrderToJSON(orderManager.findOrder(orderID));
+            processOrder.writeToJSON(orderManager.findOrder(orderID));
         }
 
         /**
@@ -173,33 +174,21 @@ import java.util.*;
          *
          */
         private void addOrder() {
-
-            try {
                 System.out.println("Enter filepath for new order: ");
                 s.nextLine();
                 String filepath = s.nextLine();
                 File file = new File(filepath);
-                List<Order> loadedOrders = orderParser.readOrdersFromJSON(file);
+                List<Order> loadedOrders = processOrder.processSingleOrder(filepath);
                 if (loadedOrders.isEmpty()){
                     System.out.println("No orders");
                 }
-                else {
+                else{
                     for (Order o : loadedOrders){
                         orderManager.addOrder(o);
                     }
                 }
-
-
-            } catch (ParseException e) {
-                System.out.println("File could not be parsed: " + e.getMessage());
-
-            } catch (FileNotFoundException e) {
-                System.out.println("File could not be found.");
-
-            } catch (IOException e) {
-                System.out.println("IOException occurred: " + e.getMessage());
-            }
         }
+
 
         /**
          * Gets user input and validates it is a number.
@@ -225,43 +214,9 @@ import java.util.*;
 
 
         public static void main(String[] args) throws IOException, ParseException {
-    //        OrderManagerInterface orderManagerInterface = new OrderManagerInterface();
-    //        orderManagerInterface.loopMenu();
+            OrderManagerInterface orderManagerInterface = new OrderManagerInterface();
+            orderManagerInterface.loopMenu();
 
-
-/*
-            File filePath = new File("example.xml");
-
-            xmlParser parser = xmlParser.getInstance();
-            OrderManager om = new OrderManager();
-            List<Order> orders = parser.loadToOrder(filePath);
-
-            for (Order o : orders){
-                om.addOrder(o);
-            }
-
-            om.displayOrder(0);
-*/
-
-            FileAccesser allFiles = new FileAccesser();
-            List<String> Fies = allFiles.fetechOrderFolderList();
-
-            for (String fileName : Fies){
-                File orderFile = new File("orders" + File.separator + fileName);
-                String fileExtension = allFiles.getExtension(fileName);
-
-                OrderParserInterface parser = AbstractedOrderParserFactory.getParser(fileExtension);
-
-                if (parser != null){
-                    try{
-                        List<Order> orders = parser.loadToOrder(orderFile);
-                        System.out.println("Successful");
-                    }catch(IOException|ParseException e){
-                        e.printStackTrace();
-                    }
-                }
-
-            }
 
 
         }
