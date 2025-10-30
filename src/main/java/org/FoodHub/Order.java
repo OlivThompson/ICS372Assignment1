@@ -21,7 +21,7 @@ class Order{
     private int orderID;
     private List<FoodItem> foodItems;
     private String orderStatus;
-    private Long orderTime;
+    private String orderTime;
     private String orderType;
 
     /**
@@ -33,7 +33,7 @@ class Order{
      * @param orderType - the type of Order.
      */
     Order(List<FoodItem> foodItems, String orderStatus,
-          Long orderTime, String orderType) {
+          String orderTime, String orderType) {
         this.orderID = Order.orderIDCounter++;
         this.foodItems = foodItems;
         this.orderStatus = orderStatus;
@@ -91,7 +91,7 @@ class Order{
         String header = """
         Order ID: %d
         Order Type: %s
-        Date: %d
+        Date: %s
         Price Total: $%.2f
             Items       Quantity    Price 
                 """;
@@ -105,7 +105,7 @@ class Order{
     /**
      * @return the time of an Order.
      */
-    long getOrderTime() {
+    String getOrderTime() {
         return this.orderTime;
     }
 

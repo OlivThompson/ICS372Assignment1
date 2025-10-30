@@ -6,13 +6,17 @@ import java.time.ZonedDateTime;
 import java.time.ZoneOffset;
 
 public class DateFormatter {
-    public String Dateformatter(Long dateNum){
-        Instant instant = Instant.ofEpochSecond(dateNum);
+    private String formattedUTCDate;
+    public DateFormatter(Long dateNum){
+        Instant instant = Instant.ofEpochMilli(dateNum);
         ZonedDateTime zonedTime = instant.atZone(ZoneOffset.UTC);
 
         DateTimeFormatter formattedDate = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss z");
 
-        String formattedUTCDate = zonedTime.format(formattedDate);
+        formattedUTCDate = zonedTime.format(formattedDate);
+    }
+
+    public String getDate(){
         return formattedUTCDate;
     }
 }

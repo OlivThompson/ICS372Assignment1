@@ -60,7 +60,10 @@ public final class OrderParser {
             orderedItems.add(new FoodItem(name, quantity, finalPrice));
         }
 
-        return new Order(orderedItems, "Incoming", orderDate, orderType);
+        DateFormatter formattingDate = new DateFormatter(orderDate);
+        String finalDateOutput = formattingDate.getDate();
+
+        return new Order(orderedItems, "Incoming", finalDateOutput, orderType);
     }
 
     /*
