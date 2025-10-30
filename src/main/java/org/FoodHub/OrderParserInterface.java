@@ -6,5 +6,6 @@ import java.io.IOException;
 import java.util.List;
 
 public interface OrderParserInterface {
+
     List<Order> loadToOrder(File orderFile) throws IOException, ParseException;
 }

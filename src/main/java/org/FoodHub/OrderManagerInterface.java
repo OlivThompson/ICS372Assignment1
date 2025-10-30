@@ -225,8 +225,8 @@ import java.util.*;
 
 
         public static void main(String[] args) throws IOException, ParseException {
-            OrderManagerInterface orderManagerInterface = new OrderManagerInterface();
-            orderManagerInterface.loopMenu();
+    //        OrderManagerInterface orderManagerInterface = new OrderManagerInterface();
+    //        orderManagerInterface.loopMenu();
 
 
 /*
@@ -242,6 +242,27 @@ import java.util.*;
 
             om.displayOrder(0);
 */
+
+            FileAccesser allFiles = new FileAccesser();
+            List<String> Fies = allFiles.fetechOrderFolderList();
+
+            for (String fileName : Fies){
+                File orderFile = new File("orders" + File.separator + fileName);
+                String fileExtension = allFiles.getExtension(fileName);
+
+                OrderParserInterface parser = AbstractedOrderParserFactory.getParser(fileExtension);
+
+                if (parser != null){
+                    try{
+                        List<Order> orders = parser.loadToOrder(orderFile);
+                        System.out.println("Successful");
+                    }catch(IOException|ParseException e){
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
 
         }
     }

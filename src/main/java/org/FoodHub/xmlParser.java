@@ -16,7 +16,7 @@ public class xmlParser implements OrderParserInterface{
     * Singleton Pattern for the xmlParser
     *
     * */
-    public static volatile xmlParser instance;
+    private static volatile xmlParser instance;
 
     private xmlParser(){}
 
