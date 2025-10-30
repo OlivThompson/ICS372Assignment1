@@ -48,6 +48,10 @@ public class xmlParser implements OrderParserInterface{
                 Element order = (Element)orderList.item(i);
                 String orderID = order.getAttribute("id");
                 String orderType = order.getElementsByTagName("OrderType").item(0).getTextContent();
+                if (orderType.isBlank()){
+                    System.err.println("Missing Data, Not accepting order\n");
+                    return List.of();
+                }
 
                 NodeList itemList = order.getElementsByTagName("Item");
                 for (int j = 0; j < itemList.getLength(); j++){
@@ -55,6 +59,12 @@ public class xmlParser implements OrderParserInterface{
                     String type = item.getAttribute("type");
                     String priceString = item.getElementsByTagName("Price").item(0).getTextContent();
                     String quantityString = item.getElementsByTagName("Quantity").item(0).getTextContent();
+
+                    if (type.isBlank() || priceString.isBlank() || priceString.isBlank()){
+                        System.err.println("Missing Data, Not accepting order\n");
+                        return List.of();
+                    }
+
                     double price = Double.parseDouble(priceString);
                     int quantity = Integer.parseInt(quantityString);
                     FoodItem currentFood = new FoodItem(type, quantity, price);
