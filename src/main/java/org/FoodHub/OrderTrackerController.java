@@ -10,7 +10,10 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import org.json.simple.parser.ParseException;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
@@ -56,7 +59,7 @@ public class OrderTrackerController {
      *
      * **/
     @FXML
-    public void initialize() throws IOException {
+    public void initialize() throws IOException, ParseException, ParserConfigurationException, SAXException {
         idColumn.setCellValueFactory(new PropertyValueFactory<>("orderID"));
         typeColumn.setCellValueFactory(new PropertyValueFactory<>("orderType"));
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("orderStatus"));
@@ -64,6 +67,7 @@ public class OrderTrackerController {
 
         if (filePath.exists()) {
             allOrders = process.processSingleOrder("SavedDataForLoad.json");
+            allOrders.addAll(process.processAllOrder());
             orderManager.setAllOrder(allOrders);
         }
         else

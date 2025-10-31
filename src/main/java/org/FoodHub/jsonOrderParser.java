@@ -4,7 +4,9 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -97,7 +99,7 @@ public class jsonOrderParser implements OrderParserInterface{
      * @throws ParseException - ParseException may be caused.
      */
     @Override
-    public List<Order> loadToOrder(File orderFile) throws IOException, ParseException{
+    public List<Order> loadToOrder(File orderFile) throws IOException, ParserConfigurationException, SAXException, ParseException {
         List<Order> allOrders = new ArrayList<>();
         JSONParser parser = new JSONParser();
 

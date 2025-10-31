@@ -4,19 +4,23 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
 public class xmlParser implements OrderParserInterface{
     /*
-    * Singleton Pattern for the xmlParser
-    *
-    * */
+     * Singleton Pattern for the xmlParser
+     *
+     * */
     private static volatile xmlParser instance;
 
     private xmlParser(){}
@@ -33,53 +37,44 @@ public class xmlParser implements OrderParserInterface{
     }
 
     @Override
-    public List<Order> loadToOrder(File orderFile){
+    public List<Order> loadToOrder(File orderFile) throws IOException, ParserConfigurationException, SAXException {
         List<Order> allOrder = new ArrayList<>();
-        List<FoodItem> allFood = new ArrayList<>();
-        try {
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder builder = factory.newDocumentBuilder();
-            Document document = builder.parse(orderFile);
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        Document document = builder.parse(orderFile);
 
-            NodeList orderList = document.getElementsByTagName("Order");
+        NodeList orderList = document.getElementsByTagName("Order");
 
-            for (int i = 0; i < orderList.getLength(); i++){
-
-                Element order = (Element)orderList.item(i);
-                String orderID = order.getAttribute("id");
-                String orderType = order.getElementsByTagName("OrderType").item(0).getTextContent();
-                if (orderType.isBlank()){
-                    System.err.println("Missing Data, Not accepting order\n");
-                    return List.of();
-                }
-
-                NodeList itemList = order.getElementsByTagName("Item");
-                for (int j = 0; j < itemList.getLength(); j++){
-                    Element item = (Element)itemList.item(j);
-                    String type = item.getAttribute("type");
-                    String priceString = item.getElementsByTagName("Price").item(0).getTextContent();
-                    String quantityString = item.getElementsByTagName("Quantity").item(0).getTextContent();
-
-                    if (type.isBlank() || priceString.isBlank() || priceString.isBlank()){
-                        System.err.println("Missing Data, Not accepting order\n");
-                        return List.of();
-                    }
-
-                    double price = Double.parseDouble(priceString);
-                    int quantity = Integer.parseInt(quantityString);
-                    FoodItem currentFood = new FoodItem(type, quantity, price);
-                    allFood.add(currentFood);
-                }
-
-                Instant orderedTime = Instant.now();
-                Long convertedToMili = orderedTime.toEpochMilli();
-                Order currentO = new Order(allFood, OrderStatus.INCOMING, convertedToMili, OrderType.Pick_Up);
-                allOrder.add(currentO);
+        for (int i = 0; i < orderList.getLength(); i++){
+            List<FoodItem> allFood = new ArrayList<>();
+            Element order = (Element)orderList.item(i);
+            String orderID = order.getAttribute("id");
+            String orderType = order.getElementsByTagName("OrderType").item(0).getTextContent();
+            if (orderType.isBlank()){
+                throw new SAXException("Missing Data Will Not Accept");
             }
 
+            NodeList itemList = order.getElementsByTagName("Item");
+            for (int j = 0; j < itemList.getLength(); j++){
+                Element item = (Element)itemList.item(j);
+                String type = item.getAttribute("type");
+                String priceString = item.getElementsByTagName("Price").item(0).getTextContent();
+                String quantityString = item.getElementsByTagName("Quantity").item(0).getTextContent();
 
-        }catch(Exception e){
-            e.printStackTrace();
+                if (type.isBlank() || priceString.isBlank() || quantityString.isBlank()){
+                    throw new SAXException("Missing Data Will Not Accept");
+                }
+
+                double price = Double.parseDouble(priceString);
+                int quantity = Integer.parseInt(quantityString);
+                FoodItem currentFood = new FoodItem(type, quantity, price);
+                allFood.add(currentFood);
+            }
+
+            Instant orderedTime = Instant.now();
+            Long convertedToMili = orderedTime.toEpochMilli();
+            Order currentO = new Order(allFood, OrderStatus.INCOMING, convertedToMili, OrderType.Pick_Up);
+            allOrder.add(currentO);
         }
         return allOrder;
     }

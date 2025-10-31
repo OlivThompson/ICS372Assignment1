@@ -1,9 +1,12 @@
 package org.FoodHub;
 
 import org.json.simple.parser.ParseException;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,14 +24,23 @@ public class OrderProcessor {
             System.out.println("No order to process");
             return allOrder;
         }
-            for (String file : allFiles){
+        for (String file : allFiles){
+            try {
                 allOrder.addAll(processSingleOrder(file));
                 fileAccesser.moveProcessedFile(file);
+            } catch (Exception e){
+                System.err.println("Failed to process order: " + file + " for " + e.getMessage());
+                try{
+                    fileAccesser.moveErrorFile(file);
+                } catch(IOException e2){
+                    e2.printStackTrace();
+                }
             }
-            return allOrder;
+        }
+        return allOrder;
     }
 
-    public List<Order> processSingleOrder(String fileName){
+    public List<Order> processSingleOrder(String fileName) throws IOException,ParseException,ParserConfigurationException,SAXException{
         File orderFile;
         String fileExtension;
         if (!fileName.equals("SavedDataForLoad.json")) {
@@ -42,11 +54,7 @@ public class OrderProcessor {
 
         OrderParserInterface parser = AbstractedOrderParserFactory.getParser(fileExtension);
         if (parser != null){
-            try{
-                return parser.loadToOrder(orderFile);
-            }catch(IOException|ParseException e){
-                e.printStackTrace();
-            }
+            return parser.loadToOrder(orderFile);
         }
         return List.of();
     }

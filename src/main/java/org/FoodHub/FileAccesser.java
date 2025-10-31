@@ -14,12 +14,14 @@ public class FileAccesser {
     private List<String> allOrderFiles = new ArrayList<>();
     private String sourceDir = "orders";
     private String processedOrderDir = "orders/processedOrders";
+    private String errorOrderDir = "orders/ErrorOrders";
 
     public FileAccesser(){
         try{
             Files.createDirectories(Paths.get(processedOrderDir));
+            Files.createDirectories(Paths.get(errorOrderDir));
         }catch (IOException e){
-            System.err.println("Error Creating Directory For Processed File");
+            System.err.println("Error Creating Directory");
             e.printStackTrace();
         }
     }
@@ -46,10 +48,19 @@ public class FileAccesser {
         return "";
     }
 
-    public void moveProcessedFile(String fileName) throws IOException{
+    private void moveFile(String fileName, Path targetDir) throws IOException {
         Path sourcePath = Paths.get(sourceDir, fileName);
-        Path targetDir = Paths.get(processedOrderDir, fileName);
-        Files.move(sourcePath, targetDir, StandardCopyOption.REPLACE_EXISTING);
+        Path targetPath = targetDir.resolve(fileName);
+        Files.move(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
+    }
+
+    public void moveProcessedFile(String fileName) throws IOException {
+        moveFile(fileName, Paths.get(processedOrderDir));
+    }
+
+    public void moveErrorFile(String fileName) throws IOException {
+        moveFile(fileName, Paths.get(errorOrderDir));
+
     }
 
 }
