@@ -36,6 +36,24 @@ public class jsonOrderParser implements OrderParserInterface{
     /*
      *   Converting Order Data from JSONObject into Order previously readOrderFromJson
      * */
+    private OrderStatus parseOrderStatus(String status) {
+        if (status == null) return OrderStatus.INCOMING;
+        try {
+            return OrderStatus.valueOf(status.trim().toUpperCase());
+        } catch (IllegalArgumentException e) {
+            return OrderStatus.INCOMING;
+        }
+    }
+
+    private OrderType parseOrderType(String type) {
+        if (type == null) return null;
+        try {
+            return OrderType.valueOf(type.trim().toUpperCase());
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+    }
+
     private Order jsonToOrder(JSONObject orderData){
         String orderType = (String)orderData.get("type");
         Long orderDate = (Long)orderData.get("order_date");
@@ -60,9 +78,12 @@ public class jsonOrderParser implements OrderParserInterface{
             orderStatus = "Incoming";
         }
 
-        return new Order(orderedItems, orderStatus, orderDate, orderType);
-    }
+        OrderStatus enumStatus = parseOrderStatus(orderStatus);
+        OrderType enumType = parseOrderType(orderType);
+        if (enumType == null) enumType = OrderType.DELIVERY; // Default fallback
 
+        return new Order(orderedItems, enumStatus, orderDate, enumType);
+    }
 
     /*
      * Reads from JSON file with incoming orders and also read for savedstate.json file
@@ -126,7 +147,6 @@ public class jsonOrderParser implements OrderParserInterface{
         } catch(IOException e){
             e.printStackTrace();
         }
-
     }
 
     /**
@@ -146,8 +166,8 @@ public class jsonOrderParser implements OrderParserInterface{
         }
 
         JSONObject orderObj = new JSONObject();
-        orderObj.put("order_status", incomingOrder.getStatus());
-        orderObj.put("type", incomingOrder.getOrderType());
+        orderObj.put("order_status", incomingOrder.getOrderStatus().name());
+        orderObj.put("type", incomingOrder.getOrderType().name());
         orderObj.put("order_date", incomingOrder.getOrderTime());
         orderObj.put("items", itemArray);
 
@@ -181,27 +201,4 @@ public class jsonOrderParser implements OrderParserInterface{
             e.printStackTrace();
         }
     }
-
-/*    protected JSONObject formatForSaving(Order incomingOrder){
-        JSONArray itemArray = new JSONArray();
-        for (FoodItem itemData : incomingOrder.getFoodItems()){
-            JSONObject itemObj = new JSONObject();
-            itemObj.put("name", itemData.getName());
-            itemObj.put("quantity", itemData.getQuantity());
-            itemObj.put("price", itemData.getPrice());
-            itemArray.add(itemObj);
-        }
-
-        JSONObject orderObj = new JSONObject();
-        orderObj.put("order_status", incomingOrder.getStatus());
-        orderObj.put("type", incomingOrder.getOrderType());
-        orderObj.put("order_date", incomingOrder.getOrderTime());
-        orderObj.put("items", itemArray);
-
-        JSONObject theOrder = new JSONObject();
-        theOrder.put("order", orderObj);
-        return theOrder;
-    }*/
-
-
 }

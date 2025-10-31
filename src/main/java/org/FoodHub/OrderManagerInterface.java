@@ -93,7 +93,7 @@ import java.util.*;
          */
         private void displayAllIncompleteOrders() {
             for(Order o : orderManager.getOrders()) {
-                if(!o.getStatus().equals("Completed")) {
+                if(!o.getOrderStatus().equals(OrderStatus.COMPLETED)) {
                     o.displayOrder();
                 }
             }
@@ -138,7 +138,7 @@ import java.util.*;
          */
         private void displayOrderOptions() {
             for(Order o : orderManager.getOrders()) {
-                System.out.printf("     OrderID: %d | Price: $%.2f Status:%s\n", o.getOrderID(), o.calculateTotalPrice(), o.getStatus());
+                System.out.printf("     OrderID: %d | Price: $%.2f Status:%s\n", o.getOrderID(), o.calculateTotalPrice(), o.getOrderStatus());
             }
         }
 

@@ -73,7 +73,7 @@ public class xmlParser implements OrderParserInterface{
 
                 Instant orderedTime = Instant.now();
                 Long convertedToMili = orderedTime.toEpochMilli();
-                Order currentO = new Order(allFood, "Incoming", convertedToMili,orderType);
+                Order currentO = new Order(allFood, OrderStatus.INCOMING, convertedToMili, OrderType.Pick_Up);
                 allOrder.add(currentO);
             }
 

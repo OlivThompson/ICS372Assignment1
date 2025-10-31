@@ -25,14 +25,14 @@ class OrderManager{
     }
 
     /**
-     * Changes an order's status to Cancelled based on its order ID.
+     * Changes an order's status to CANCELLED based on its order ID.
      *
-     * @param orderID the order ID of the order to be cancelled.
+     * @param orderID the order ID of the order to be CANCELLED.
      */
     void cancelOrder(int orderID) {
         Order order = findOrder(orderID);
-        if(order != null) {
-            order.setStatus("Cancelled");
+        if (order != null) {
+            order.setOrderStatus(OrderStatus.CANCELLED);
         } else {
             System.out.printf("Order with ID %d doesn't exist.\n", orderID);
         }
@@ -47,10 +47,10 @@ class OrderManager{
         Order order = findOrder(orderID);
 
         if (order != null) {
-            if(!order.getStatus().equals("Incoming")) {
+            if(!order.getOrderStatus().equals(OrderStatus.INCOMING)) {
                 System.out.println("Only incoming orders can be started.\n");
             } else {
-                order.setStatus("Started");
+                order.setOrderStatus(OrderStatus.STARTED);
             }
         } else {
             System.out.printf("Order with ID %d doesn't exist.\n", orderID);
@@ -58,14 +58,14 @@ class OrderManager{
     }
 
     /**
-     * Sets a given order's status to Completed.
+     * Sets a given order's status to COMPLETE.
      *
      * @param orderID - the orderID of the order to be completed.
      */
     void completeIncomingOrder(int orderID) {
         Order order = findOrder(orderID);
-        if(findOrder(orderID) != null && order.getStatus().equals("Started")) {
-            order.setStatus("Completed");
+        if(findOrder(orderID) != null && order.getOrderStatus().equals(OrderStatus.STARTED)) {
+            order.setOrderStatus(OrderStatus.COMPLETED);
         } else if(order == null) {
             System.out.printf("Order with ID %d doesn't exist.\n", orderID);
         } else {

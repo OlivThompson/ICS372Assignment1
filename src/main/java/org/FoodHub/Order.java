@@ -20,9 +20,11 @@ class Order{
     private static int orderIDCounter = 0;
     private int orderID;
     private List<FoodItem> foodItems;
-    private String orderStatus;
     private Long orderTime;
-    private String orderType;
+    private OrderStatus orderStatus;
+    private OrderType orderType;
+    private DeliveryStatus deliveryStatus;
+    private OrderTypeIcon iconType;
 
     /**
      * Creates a new Order with the given attributes.
@@ -32,8 +34,8 @@ class Order{
      * @param orderTime - the time of an Order.
      * @param orderType - the type of Order.
      */
-    Order(List<FoodItem> foodItems, String orderStatus,
-          Long orderTime, String orderType) {
+    Order(List<FoodItem> foodItems, OrderStatus orderStatus,
+          Long orderTime, OrderType orderType) {
         this.orderID = Order.orderIDCounter++;
         this.foodItems = foodItems;
         this.orderStatus = orderStatus;
@@ -48,12 +50,6 @@ class Order{
         return orderID;
     }
 
-    /**
-     * @return the status of an Order.
-     */
-    String getStatus(){
-        return this.orderStatus;
-    }
 
     /**
      * @return the list of FoodItems in an Order.
@@ -63,13 +59,28 @@ class Order{
     }
 
     /**
+     * @return the status of an Order.
+     */
+    OrderStatus getOrderStatus(){
+        return this.orderStatus;
+    }
+
+    /**
      * Sets an Order's status.
      *
-     * @param status - the Order's new status.
+     * @param orderStatus - the Order's new status.
      */
-    void setStatus(String status) {
-        this.orderStatus = status;
+
+    void setOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
     }
+    DeliveryStatus getDeliveryStatus(){
+        return this.deliveryStatus;
+    }
+    void setDeliveryStatus(DeliveryStatus deliveryStatus) {
+        this.deliveryStatus = deliveryStatus;
+    }
+
 
     /**
      * Calculates an Order's total price.
@@ -114,7 +125,7 @@ class Order{
     /**
      * @return the type of Order.
      */
-    String getOrderType() {
+    OrderType getOrderType() {
         return this.orderType;
     }
 
