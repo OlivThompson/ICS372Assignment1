@@ -7,7 +7,7 @@ import java.util.List;
  * Foundational Layer
  *
  */
-class Order{
+public class Order{
     /**
      * The attributes of an Order.
      * orderIDCounter - static variable used to give orders their IDs
@@ -34,7 +34,7 @@ class Order{
      * @param orderTime - the time of an Order.
      * @param orderType - the type of Order.
      */
-    Order(List<FoodItem> foodItems, OrderStatus orderStatus,
+    public Order(List<FoodItem> foodItems, OrderStatus orderStatus,
           Long orderTime, OrderType orderType) {
         this.orderID = Order.orderIDCounter++;
         this.foodItems = foodItems;
@@ -46,7 +46,7 @@ class Order{
     /**
      * @return the orderID of an Order.
      */
-    int getOrderID(){
+    public int getOrderID(){
         return orderID;
     }
 
@@ -54,14 +54,14 @@ class Order{
     /**
      * @return the list of FoodItems in an Order.
      */
-    List<FoodItem> getFoodItems() {
+    public List<FoodItem> getFoodItems() {
         return this.foodItems;
     }
 
     /**
      * @return the status of an Order.
      */
-    OrderStatus getOrderStatus(){
+    public OrderStatus getOrderStatus(){
         return this.orderStatus;
     }
 
@@ -71,13 +71,16 @@ class Order{
      * @param orderStatus - the Order's new status.
      */
 
-    void setOrderStatus(OrderStatus orderStatus) {
+    public void setOrderStatus(OrderStatus orderStatus) {
         this.orderStatus = orderStatus;
     }
-    DeliveryStatus getDeliveryStatus(){
+
+    public DeliveryStatus getDeliveryStatus(){
         return this.deliveryStatus;
     }
-    void setDeliveryStatus(DeliveryStatus deliveryStatus) {
+
+
+    public void setDeliveryStatus(DeliveryStatus deliveryStatus) {
         this.deliveryStatus = deliveryStatus;
     }
 
@@ -118,14 +121,14 @@ class Order{
     /**
      * @return the time of an Order.
      */
-    Long getOrderTime() {
+    public Long getOrderTime() {
         return this.orderTime;
     }
 
     /**
      * @return the type of Order.
      */
-    OrderType getOrderType() {
+    public OrderType getOrderType() {
         return this.orderType;
     }
 
