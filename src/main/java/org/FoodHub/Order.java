@@ -138,6 +138,18 @@ public class Order{
         return this.orderType;
     }
 
+    /**
+     *
+     * @return OrderTypeIcon
+     */
+    OrderTypeIcon getOrderTypeIcon() {
+        return switch(this.orderType) {
+            case DELIVERY -> OrderTypeIcon.Delivery_Icon;
+            case Pick_Up -> OrderTypeIcon.Pick_Up_Icon;
+            case To_Go -> OrderTypeIcon.To_Go_Icon;
+        };
+    }
+
 
 }
 
