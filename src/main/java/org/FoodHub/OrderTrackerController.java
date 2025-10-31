@@ -33,6 +33,8 @@ public class OrderTrackerController {
     @FXML
     public TableColumn<Order, String> statusColumn;
     @FXML
+    public TableColumn<Order, String> deliveryStatusColumn;
+    @FXML
     public ComboBox<OrderStatus> statusBox;
     @FXML
     public ComboBox<DeliveryStatus> deliveryStatusBox;
@@ -56,7 +58,10 @@ public class OrderTrackerController {
         idColumn.setCellValueFactory(new PropertyValueFactory<>("orderID"));
         typeColumn.setCellValueFactory(new PropertyValueFactory<>("orderType"));
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("orderStatus"));
-
+        deliveryStatusColumn.setCellValueFactory(data -> {
+            DeliveryStatus ds = data.getValue().getDeliveryStatus();
+            return new SimpleStringProperty(ds != null ? ds.name() : "");
+        });
         if (filePath.exists()) {
             allOrders = process.processSingleOrder("SavedDataForLoad.json");
             orderManager.setAllOrder(allOrders);
@@ -69,15 +74,19 @@ public class OrderTrackerController {
 
         allOrdersList = FXCollections.observableArrayList(allOrders);
         orderTable.setItems(allOrdersList);
+
         orderTable.setItems(FXCollections.observableArrayList(allOrders));
         List<OrderStatus> statuses = Arrays.asList(OrderStatus.values());
+
         statusBox.setItems(FXCollections.observableArrayList(statuses));
-        saveData.save(orderManager, filePath);
         deliveryStatusBox.setItems(FXCollections.observableArrayList(DeliveryStatus.values()));
+
         deliveryStatusBox.setDisable(true);
         orderTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             updateUIForSelectedOrder(newSelection);
         });
+        saveData.save(orderManager, filePath);
+
     }
 
     /**
@@ -104,7 +113,7 @@ public class OrderTrackerController {
         OrderStatus newStatus = statusBox.getValue();
         if (selected != null && newStatus != null) {
             orderManager.findOrder(selected.getOrderID()).setOrderStatus(newStatus);
-            orderTable.refresh();
+
         }
         if (selected != null && !deliveryStatusBox.isDisable() && deliveryStatusBox.getValue() != null) {
             orderManager.findOrder(selected.getOrderID()).setDeliveryStatus(deliveryStatusBox.getValue());
