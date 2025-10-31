@@ -5,10 +5,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import org.json.simple.parser.ParseException;
 import org.xml.sax.SAXException;
 import javafx.scene.image.Image;
@@ -53,6 +57,8 @@ public class OrderTrackerController {
     public Button updateButton;
     @FXML
     public Button exportButton;
+    @FXML
+    public Button displayOrder;
 
 
     public void handleExportOrders(ActionEvent actionEvent) {
@@ -199,4 +205,42 @@ public class OrderTrackerController {
         saveData.save(orderManager, filePath);
     }
 
+    public void handleDisplayOrder(ActionEvent actionEvent) {
+        Order selected = orderTable.getSelectionModel().getSelectedItem();
+        if (selected == null) {
+            return;
+        }
+
+        Stage detailStage = new Stage();
+        detailStage.setTitle("Order Details - ID " + selected.getOrderID());
+
+        VBox layout = new VBox(10);
+        layout.setPadding(new javafx.geometry.Insets(10));
+
+        Text header = new Text("Order Type: " + selected.getOrderType() +
+                "\nStatus: " + selected.getDeliveryStatus() +
+                "\nTime: " + new java.util.Date(selected.getOrderTime()));
+
+        TableView<FoodItem> itemTable = new TableView<>();
+        TableColumn<FoodItem, String> nameCol = new TableColumn<>("Item");
+        nameCol.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue().getName()));
+
+        TableColumn<FoodItem, Number> qtyCol = new TableColumn<>("Qty");
+        qtyCol.setCellValueFactory(data -> new javafx.beans.property.SimpleLongProperty(data.getValue().getQuantity()));
+
+        TableColumn<FoodItem, Number> priceCol = new TableColumn<>("Price");
+        priceCol.setCellValueFactory(data -> new javafx.beans.property.SimpleDoubleProperty(data.getValue().getPrice()));
+
+        itemTable.getColumns().addAll(nameCol, qtyCol, priceCol);
+        itemTable.setItems(FXCollections.observableArrayList(selected.getFoodItems()));
+
+        Label totalLabel = new Label(String.format("Total: $%.2f", selected.calculateTotalPrice()));
+
+        layout.getChildren().addAll(header, itemTable, totalLabel);
+
+        Scene scene = new Scene(layout, 400, 300);
+        detailStage.setScene(scene);
+        detailStage.show();
+    }
 }
+

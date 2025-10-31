@@ -43,6 +43,7 @@
             <ComboBox fx:id="deliveryStatusBox" prefWidth="150"/>
 
             <Button fx:id="updateButton" text="Update Status" onAction="#handleUpdateStatus"/>
+            <Button fx:id="displayOrder" text="Display Order" onAction="#handleDisplayOrder"/>
             <Button fx:id="exportButton" text="Export Orders" onAction="#handleExportOrders"/>
         </HBox>
     </bottom>
