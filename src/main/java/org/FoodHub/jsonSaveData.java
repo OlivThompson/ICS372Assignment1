@@ -4,7 +4,9 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -44,7 +46,7 @@ public class jsonSaveData implements SaveState{
     }
 
     @Override
-    public void load(File filePath, OrderManager om){
+    public void load(File filePath, OrderManager om) {
         try {
             if (!filePath.exists()){
                 System.out.println("There is no save data, starting a new session");
@@ -55,7 +57,7 @@ public class jsonSaveData implements SaveState{
                     om.addOrder(o);
                 }
             }
-        }catch(IOException | ParseException e){
+        }catch(IOException | ParseException | ParserConfigurationException | SAXException e){
             System.err.println("\nSavedDataForLoad.json Corrupted");
         }
     }

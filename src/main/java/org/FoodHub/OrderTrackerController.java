@@ -10,8 +10,12 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import org.json.simple.parser.ParseException;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -23,6 +27,8 @@ public class OrderTrackerController {
     private File filePath = new File("SavedDataForLoad.json");
     private FileAccesser accesser = new FileAccesser();
     private List<Order> allOrders;
+    private FetchFilesService fileListenerService;
+    private Thread fileListenerThread;
 
 
     @FXML
@@ -55,7 +61,7 @@ public class OrderTrackerController {
      *
      * **/
     @FXML
-    public void initialize(){
+    public void initialize() throws IOException, ParseException, ParserConfigurationException, SAXException {
         idColumn.setCellValueFactory(new PropertyValueFactory<>("orderID"));
         typeColumn.setCellValueFactory(new PropertyValueFactory<>("orderType"));
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("orderStatus"));
@@ -63,6 +69,7 @@ public class OrderTrackerController {
 
         if (filePath.exists()) {
             allOrders = process.processSingleOrder("SavedDataForLoad.json");
+            allOrders.addAll(process.processAllOrder());
             orderManager.setAllOrder(allOrders);
         }
         else
@@ -73,7 +80,7 @@ public class OrderTrackerController {
 
         allOrdersList = FXCollections.observableArrayList(allOrders);
         orderTable.setItems(allOrdersList);
-        orderTable.setItems(FXCollections.observableArrayList(allOrders));
+//        orderTable.setItems(FXCollections.observableArrayList(allOrders));
         List<OrderStatus> statuses = Arrays.asList(OrderStatus.values());
         statusBox.setItems(FXCollections.observableArrayList(statuses));
         saveData.save(orderManager, filePath);
@@ -82,6 +89,19 @@ public class OrderTrackerController {
         orderTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             updateUIForSelectedOrder(newSelection);
         });
+
+        fileListenerService = new FetchFilesService(allOrdersList, orderManager, process, accesser);
+        fileListenerThread = new Thread(fileListenerService, "FileWatcherThread");
+        fileListenerThread.setDaemon(true);
+        fileListenerThread.start();
+
+
+    }
+
+    public void shutdown(){
+        if (fileListenerService != null){
+            fileListenerService.stop();
+        }
     }
 
     /**

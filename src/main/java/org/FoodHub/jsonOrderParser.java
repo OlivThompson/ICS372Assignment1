@@ -4,7 +4,9 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -97,32 +99,34 @@ public class jsonOrderParser implements OrderParserInterface{
      * @throws ParseException - ParseException may be caused.
      */
     @Override
-    public List<Order> loadToOrder(File orderFile) throws IOException, ParseException{
+    public List<Order> loadToOrder(File orderFile) throws IOException, ParserConfigurationException, SAXException, ParseException {
         List<Order> allOrders = new ArrayList<>();
         JSONParser parser = new JSONParser();
 
-        Object orderLevelObject = parser.parse(new FileReader(orderFile));
+        try (FileReader reader = new FileReader(orderFile)) {
+            Object orderLevelObject = parser.parse(reader);
 
-        if (orderLevelObject instanceof JSONArray){
-            JSONArray finalArray = (JSONArray)orderLevelObject;
+            if (orderLevelObject instanceof JSONArray) {
+                JSONArray finalArray = (JSONArray) orderLevelObject;
 
-            for (Object obj : finalArray) {
-                JSONObject orderInfo = (JSONObject) obj;
-                JSONObject orderData;
+                for (Object obj : finalArray) {
+                    JSONObject orderInfo = (JSONObject) obj;
+                    JSONObject orderData;
 
-                if (orderInfo.containsKey("order") && orderInfo.get("order") instanceof JSONObject) {
-                    orderData = (JSONObject) orderInfo.get("order");
-                } else {
-                    orderData = orderInfo;
+                    if (orderInfo.containsKey("order") && orderInfo.get("order") instanceof JSONObject) {
+                        orderData = (JSONObject) orderInfo.get("order");
+                    } else {
+                        orderData = orderInfo;
+                    }
+                    allOrders.add(jsonToOrder(orderData));
                 }
-                allOrders.add(jsonToOrder(orderData));
-            }
-        } else if (orderLevelObject instanceof JSONObject){
-            JSONObject objectInfo = (JSONObject)orderLevelObject;
+            } else if (orderLevelObject instanceof JSONObject) {
+                JSONObject objectInfo = (JSONObject) orderLevelObject;
 
-            if (objectInfo.containsKey("order") && objectInfo.get("order") instanceof JSONObject){
-                JSONObject objectData = (JSONObject)objectInfo.get("order");
-                allOrders.add(jsonToOrder(objectData));
+                if (objectInfo.containsKey("order") && objectInfo.get("order") instanceof JSONObject) {
+                    JSONObject objectData = (JSONObject) objectInfo.get("order");
+                    allOrders.add(jsonToOrder(objectData));
+                }
             }
         }
 
