@@ -26,8 +26,16 @@ public class OrderProcessor {
     }
 
     public List<Order> processSingleOrder(String fileName){
-        File orderFile = new File("orders" + File.separator + fileName);
-        String fileExtension = fileAccesser.getExtension(fileName);
+        File orderFile;
+        String fileExtension;
+        if (!fileName.equals("SavedDataForLoad.json")) {
+            orderFile = new File("orders" + File.separator + fileName);
+            fileExtension = fileAccesser.getExtension(fileName);
+        }
+        else{
+            orderFile = new File(fileName);
+            fileExtension = fileAccesser.getExtension(fileName);
+        }
 
         OrderParserInterface parser = AbstractedOrderParserFactory.getParser(fileExtension);
         if (parser != null){
