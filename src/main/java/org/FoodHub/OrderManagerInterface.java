@@ -177,7 +177,7 @@ import java.util.*;
                 System.out.println("Enter filepath for new order: ");
                 s.nextLine();
                 String filepath = s.nextLine();
-                File file = new File(filepath);
+//                File file = new File(filepath);
                 List<Order> loadedOrders = processOrder.processSingleOrder(filepath);
                 if (loadedOrders.isEmpty()){
                     System.out.println("No orders");
@@ -208,18 +208,6 @@ import java.util.*;
             return choice;
         }
 
-
-
-
-
-
-        public static void main(String[] args) throws IOException, ParseException {
-            OrderManagerInterface orderManagerInterface = new OrderManagerInterface();
-            orderManagerInterface.loopMenu();
-
-
-
-        }
     }
 
 
