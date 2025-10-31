@@ -109,7 +109,6 @@ public class FetchFilesService implements Runnable{
                     System.err.println("Invalid Key");
                     run = false;
                 }
-
             }
         } catch(IOException e){
             e.printStackTrace();

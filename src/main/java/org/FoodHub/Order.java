@@ -145,7 +145,7 @@ public class Order{
     OrderTypeIcon getOrderTypeIcon() {
         return switch(this.orderType) {
             case DELIVERY -> OrderTypeIcon.Delivery_Icon;
-            case Pick_Up -> OrderTypeIcon.Pick_Up_Icon;
+            case PICKUP -> OrderTypeIcon.Pick_Up_Icon;
             case To_Go -> OrderTypeIcon.To_Go_Icon;
         };
     }
