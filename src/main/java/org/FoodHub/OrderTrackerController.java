@@ -52,7 +52,7 @@ public class OrderTrackerController {
     public void initialize(){
         idColumn.setCellValueFactory(new PropertyValueFactory<>("orderID"));
         typeColumn.setCellValueFactory(new PropertyValueFactory<>("orderType"));
-        statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
+        statusColumn.setCellValueFactory(new PropertyValueFactory<>("orderStatus"));
 
         if (filePath.exists()) {
             allOrders = process.processSingleOrder("SavedDataForLoad.json");
