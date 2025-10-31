@@ -42,6 +42,8 @@ public class OrderTrackerController {
     @FXML
     public TableColumn<Order, String> statusColumn;
     @FXML
+    public TableColumn<Order, String> deliveryStatusColumn;
+    @FXML
     public ComboBox<OrderStatus> statusBox;
     @FXML
     public ComboBox<DeliveryStatus> deliveryStatusBox;
@@ -66,7 +68,9 @@ public class OrderTrackerController {
         typeColumn.setCellValueFactory(new PropertyValueFactory<>("orderType"));
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("orderStatus"));
         dateColumn.setCellValueFactory(new PropertyValueFactory<>("OrderTimeToText"));
-
+        deliveryStatusColumn.setCellValueFactory(order ->
+                new SimpleStringProperty(order.getValue().getDeliveryStatus() != null ?
+                        order.getValue().getDeliveryStatus().toString() : ""));
         if (filePath.exists()) {
             allOrders = process.processSingleOrder("SavedDataForLoad.json");
             allOrders.addAll(process.processAllOrder());
