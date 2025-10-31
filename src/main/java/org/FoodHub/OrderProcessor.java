@@ -17,7 +17,7 @@ public class OrderProcessor {
     }
 
     public List<Order> processAllOrder() throws IOException {
-        List<String> allFiles = fileAccesser.fetechOrderFolderList();
+        List<String> allFiles = fileAccesser.fetchOrderFolderList();
         List<Order> allOrder = new ArrayList<>();
 
         if (allFiles.isEmpty()) {

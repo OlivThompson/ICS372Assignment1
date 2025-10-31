@@ -26,7 +26,7 @@ public class FileAccesser {
         }
     }
 
-    public List<String> fetechOrderFolderList(){
+    public List<String> fetchOrderFolderList(){
         Path directory = Paths.get(sourceDir);
         try(Stream<Path> stream = Files.list(directory)){
             allOrderFiles = stream.filter(file ->file.toString().endsWith(".json") || file.toString().endsWith(".xml")).map(Path::getFileName)
