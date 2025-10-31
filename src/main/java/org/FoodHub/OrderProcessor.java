@@ -4,6 +4,7 @@ import org.json.simple.parser.ParseException;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class OrderProcessor {
@@ -12,17 +13,18 @@ public class OrderProcessor {
     public OrderProcessor(){
     }
 
-    public void processAllOrder(){
+    public List<Order> processAllOrder(){
         List<String> allFiles = fileAccesser.fetechOrderFolderList();
+        List<Order> allOrder = new ArrayList<>();
 
-        if (allFiles.isEmpty()){
+        if (allFiles.isEmpty()) {
             System.out.println("No order to process");
-
-            for (String file : allFiles){
-                processSingleOrder(file);
-            }
-
+            return allOrder;
         }
+            for (String file : allFiles){
+                allOrder.addAll(processSingleOrder(file));
+            }
+            return allOrder;
     }
 
     public List<Order> processSingleOrder(String fileName){
