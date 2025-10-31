@@ -110,6 +110,10 @@ class OrderManager{
         }
     }
 
+    protected void setAllOrder(List<Order> allOrders){
+        orders.addAll(allOrders);
+    }
+
 
 }
 
