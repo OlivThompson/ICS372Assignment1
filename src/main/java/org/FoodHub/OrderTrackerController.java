@@ -12,6 +12,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.List;
 
 public class OrderTrackerController {
@@ -23,7 +24,6 @@ public class OrderTrackerController {
     private FileAccesser accesser = new FileAccesser();
     private List<Order> allOrders;
 
-
     @FXML
     public TableView<Order> orderTable;
     @FXML
@@ -33,7 +33,7 @@ public class OrderTrackerController {
     @FXML
     public TableColumn<Order, String> statusColumn;
     @FXML
-    public ComboBox<String> statusBox;
+    public ComboBox<OrderStatus> statusBox;
     @FXML
     public Button updateButton;
     @FXML
@@ -63,21 +63,20 @@ public class OrderTrackerController {
             allOrders = process.processAllOrder();
             orderManager.setAllOrder(allOrders);
         }
-        /// // NNEED TO HANDLE ERROR IF SAVEDDATAFORLOAD DOES NOT EXIST
 
         allOrdersList = FXCollections.observableArrayList(allOrders);
         orderTable.setItems(allOrdersList);
         orderTable.setItems(FXCollections.observableArrayList(allOrders));
-        List<String> statuses = List.of("Incoming", "Started", "Completed", "Cancelled");
+        List<OrderStatus> statuses = Arrays.asList(OrderStatus.values());
         statusBox.setItems(FXCollections.observableArrayList(statuses));
         saveData.save(orderManager, filePath);
     }
 
     public void handleUpdateStatus(ActionEvent actionEvent) {
         Order selected = orderTable.getSelectionModel().getSelectedItem();
-        String newStatus = statusBox.getValue();
+        OrderStatus newStatus = statusBox.getValue();
         if (selected != null && newStatus != null) {
-            orderManager.findOrder(selected.getOrderID()).setStatus(newStatus);
+            orderManager.findOrder(selected.getOrderID()).setOrderStatus(newStatus);
             orderTable.refresh();
         }
         saveData.save(orderManager, filePath);
