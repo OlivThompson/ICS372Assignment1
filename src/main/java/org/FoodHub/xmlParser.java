@@ -7,6 +7,7 @@ import org.w3c.dom.NodeList;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
+import java.io.FileReader;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,14 +33,13 @@ public class xmlParser implements OrderParserInterface{
     }
 
     @Override
-    public List<Order> loadToOrder(File filePath) {
+    public List<Order> loadToOrder(File orderFile){
         List<Order> allOrder = new ArrayList<>();
         List<FoodItem> allFood = new ArrayList<>();
-        try{
-
+        try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
-            Document document = builder.parse(filePath);
+            Document document = builder.parse(orderFile);
 
             NodeList orderList = document.getElementsByTagName("Order");
 

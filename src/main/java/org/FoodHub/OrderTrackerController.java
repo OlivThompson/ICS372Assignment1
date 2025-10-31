@@ -12,6 +12,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -55,7 +56,7 @@ public class OrderTrackerController {
      *
      * **/
     @FXML
-    public void initialize(){
+    public void initialize() throws IOException {
         idColumn.setCellValueFactory(new PropertyValueFactory<>("orderID"));
         typeColumn.setCellValueFactory(new PropertyValueFactory<>("orderType"));
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("orderStatus"));

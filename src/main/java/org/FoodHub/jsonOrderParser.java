@@ -101,28 +101,30 @@ public class jsonOrderParser implements OrderParserInterface{
         List<Order> allOrders = new ArrayList<>();
         JSONParser parser = new JSONParser();
 
-        Object orderLevelObject = parser.parse(new FileReader(orderFile));
+        try (FileReader reader = new FileReader(orderFile)) {
+            Object orderLevelObject = parser.parse(reader);
 
-        if (orderLevelObject instanceof JSONArray){
-            JSONArray finalArray = (JSONArray)orderLevelObject;
+            if (orderLevelObject instanceof JSONArray) {
+                JSONArray finalArray = (JSONArray) orderLevelObject;
 
-            for (Object obj : finalArray) {
-                JSONObject orderInfo = (JSONObject) obj;
-                JSONObject orderData;
+                for (Object obj : finalArray) {
+                    JSONObject orderInfo = (JSONObject) obj;
+                    JSONObject orderData;
 
-                if (orderInfo.containsKey("order") && orderInfo.get("order") instanceof JSONObject) {
-                    orderData = (JSONObject) orderInfo.get("order");
-                } else {
-                    orderData = orderInfo;
+                    if (orderInfo.containsKey("order") && orderInfo.get("order") instanceof JSONObject) {
+                        orderData = (JSONObject) orderInfo.get("order");
+                    } else {
+                        orderData = orderInfo;
+                    }
+                    allOrders.add(jsonToOrder(orderData));
                 }
-                allOrders.add(jsonToOrder(orderData));
-            }
-        } else if (orderLevelObject instanceof JSONObject){
-            JSONObject objectInfo = (JSONObject)orderLevelObject;
+            } else if (orderLevelObject instanceof JSONObject) {
+                JSONObject objectInfo = (JSONObject) orderLevelObject;
 
-            if (objectInfo.containsKey("order") && objectInfo.get("order") instanceof JSONObject){
-                JSONObject objectData = (JSONObject)objectInfo.get("order");
-                allOrders.add(jsonToOrder(objectData));
+                if (objectInfo.containsKey("order") && objectInfo.get("order") instanceof JSONObject) {
+                    JSONObject objectData = (JSONObject) objectInfo.get("order");
+                    allOrders.add(jsonToOrder(objectData));
+                }
             }
         }
 

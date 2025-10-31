@@ -13,7 +13,7 @@ public class OrderProcessor {
     public OrderProcessor(){
     }
 
-    public List<Order> processAllOrder(){
+    public List<Order> processAllOrder() throws IOException {
         List<String> allFiles = fileAccesser.fetechOrderFolderList();
         List<Order> allOrder = new ArrayList<>();
 
@@ -23,6 +23,7 @@ public class OrderProcessor {
         }
             for (String file : allFiles){
                 allOrder.addAll(processSingleOrder(file));
+                fileAccesser.moveProcessedFile(file);
             }
             return allOrder;
     }
