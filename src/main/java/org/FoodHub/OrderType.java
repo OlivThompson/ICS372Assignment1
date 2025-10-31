@@ -1,7 +1,7 @@
 package org.FoodHub;
 
 public enum OrderType {
-    To_Go,
+    TOGO,
     PICKUP,
     DELIVERY
 }

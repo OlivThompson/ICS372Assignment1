@@ -73,10 +73,20 @@ public class xmlParser implements OrderParserInterface{
 
             Instant orderedTime = Instant.now();
             Long convertedToMili = orderedTime.toEpochMilli();
-            Order currentO = new Order(allFood, OrderStatus.INCOMING, convertedToMili, OrderType.PICKUP);
+            OrderType enumType = xmlParseOrderType(orderType);
+            Order currentO = new Order(allFood, OrderStatus.INCOMING, convertedToMili, enumType);
             allOrder.add(currentO);
         }
         return allOrder;
+    }
+
+    private OrderType xmlParseOrderType(String type){
+        if (type == null) return null;
+        try {
+            return OrderType.valueOf(type.trim().toUpperCase());
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
     }
 
 

@@ -1,7 +1,7 @@
 <Orders>
     <Order id="485">
         <OrderType>Delivery</OrderType>
-        <Item type="Hamburger">
+        <Item type="">
             <Price>0.00</Price>
             <Quantity>2</Quantity>
         </Item>

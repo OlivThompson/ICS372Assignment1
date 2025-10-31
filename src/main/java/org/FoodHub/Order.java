@@ -41,7 +41,11 @@ public class Order{
         this.orderStatus = orderStatus;
         this.orderTime = orderTime;
         this.orderType = orderType;
-        this.deliveryStatus = DeliveryStatus.PENDING;
+        if ((this.orderType == OrderType.TOGO) || (this.orderType == OrderType.PICKUP)){
+            this.deliveryStatus = null;
+        }else if(this.orderType == OrderType.DELIVERY){
+            this.deliveryStatus = DeliveryStatus.PENDING;
+        }
     }
 
     /**
@@ -146,7 +150,7 @@ public class Order{
         return switch(this.orderType) {
             case DELIVERY -> OrderTypeIcon.Delivery_Icon;
             case PICKUP -> OrderTypeIcon.Pick_Up_Icon;
-            case To_Go -> OrderTypeIcon.To_Go_Icon;
+            case TOGO -> OrderTypeIcon.To_Go_Icon;
         };
     }
 
