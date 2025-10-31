@@ -9,8 +9,7 @@ import javafx.stage.Stage;
 import java.util.Objects;
 
 public class OrderTrackerApplication extends Application {
-
-//    OrderManagerInterface orderManagerInterface = new OrderManagerInterface();
+    private OrderTrackerController controller;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -19,5 +18,13 @@ public class OrderTrackerApplication extends Application {
         primaryStage.setTitle("Restaurant Order Manager");
         primaryStage.setScene(scene);
         primaryStage.show();
+    }
+
+    @Override
+    public void stop(){
+        System.out.println("Ping Service Shutting Down");
+        if (controller != null){
+            controller.shutdown();
+        }
     }
 }

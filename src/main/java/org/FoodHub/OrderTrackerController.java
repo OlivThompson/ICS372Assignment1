@@ -27,6 +27,8 @@ public class OrderTrackerController {
     private File filePath = new File("SavedDataForLoad.json");
     private FileAccesser accesser = new FileAccesser();
     private List<Order> allOrders;
+    private FetchFilesService fileListenerService;
+    private Thread fileListenerThread;
 
 
     @FXML
@@ -78,7 +80,7 @@ public class OrderTrackerController {
 
         allOrdersList = FXCollections.observableArrayList(allOrders);
         orderTable.setItems(allOrdersList);
-        orderTable.setItems(FXCollections.observableArrayList(allOrders));
+//        orderTable.setItems(FXCollections.observableArrayList(allOrders));
         List<OrderStatus> statuses = Arrays.asList(OrderStatus.values());
         statusBox.setItems(FXCollections.observableArrayList(statuses));
         saveData.save(orderManager, filePath);
@@ -87,6 +89,19 @@ public class OrderTrackerController {
         orderTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             updateUIForSelectedOrder(newSelection);
         });
+
+        fileListenerService = new FetchFilesService(allOrdersList, orderManager, process, accesser);
+        fileListenerThread = new Thread(fileListenerService, "FileWatcherThread");
+        fileListenerThread.setDaemon(true);
+        fileListenerThread.start();
+
+
+    }
+
+    public void shutdown(){
+        if (fileListenerService != null){
+            fileListenerService.stop();
+        }
     }
 
     /**
