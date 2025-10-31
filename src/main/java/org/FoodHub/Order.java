@@ -41,6 +41,7 @@ public class Order{
         this.orderStatus = orderStatus;
         this.orderTime = orderTime;
         this.orderType = orderType;
+        this.deliveryStatus = DeliveryStatus.PENDING;
     }
 
     /**

@@ -35,9 +35,12 @@ public class OrderTrackerController {
     @FXML
     public ComboBox<OrderStatus> statusBox;
     @FXML
+    public ComboBox<DeliveryStatus> deliveryStatusBox;
+    @FXML
     public Button updateButton;
     @FXML
     public Button exportButton;
+
 
     public void handleExportOrders(ActionEvent actionEvent) {
 
@@ -70,6 +73,30 @@ public class OrderTrackerController {
         List<OrderStatus> statuses = Arrays.asList(OrderStatus.values());
         statusBox.setItems(FXCollections.observableArrayList(statuses));
         saveData.save(orderManager, filePath);
+        deliveryStatusBox.setItems(FXCollections.observableArrayList(DeliveryStatus.values()));
+        deliveryStatusBox.setDisable(true);
+        orderTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            updateUIForSelectedOrder(newSelection);
+        });
+    }
+
+    /**
+     * Updates UI components based on the currently selected order type.
+     * Enables or disables the delivery status ComboBox.
+     * @param selected The currently selected Order from the TableView.
+     */
+    private void updateUIForSelectedOrder(Order selected) {
+        if (selected != null && selected.getOrderType() == OrderType.DELIVERY) {
+            deliveryStatusBox.setDisable(false);
+            deliveryStatusBox.setValue(selected.getDeliveryStatus());
+        } else {
+            deliveryStatusBox.setDisable(true);
+            deliveryStatusBox.setValue(null);
+        }
+
+        if (selected != null) {
+            statusBox.setValue(selected.getOrderStatus());
+        }
     }
 
     public void handleUpdateStatus(ActionEvent actionEvent) {
@@ -79,6 +106,11 @@ public class OrderTrackerController {
             orderManager.findOrder(selected.getOrderID()).setOrderStatus(newStatus);
             orderTable.refresh();
         }
+        if (selected != null && !deliveryStatusBox.isDisable() && deliveryStatusBox.getValue() != null) {
+            orderManager.findOrder(selected.getOrderID()).setDeliveryStatus(deliveryStatusBox.getValue());
+        }
+        orderTable.refresh();
+
         saveData.save(orderManager, filePath);
     }
 
