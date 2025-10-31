@@ -126,6 +126,11 @@ public class Order{
         return this.orderTime;
     }
 
+    public String getOrderTimeToText() {
+        DateFormatter formatDate = new DateFormatter(this.orderTime);
+        return formatDate.getDate();
+    }
+
     /**
      * @return the type of Order.
      */
