@@ -21,6 +21,7 @@
         <TableView fx:id="orderTable" prefHeight="400" prefWidth="600">
             <columns>
                 <TableColumn fx:id="idColumn" text="Order ID" prefWidth="100"/>
+                <TableColumn fx:id="dateColumn" text="Order Date" prefWidth="200"/>
                 <TableColumn fx:id="typeColumn" text="Order Type" prefWidth="200"/>
                 <TableColumn fx:id="statusColumn" text="Delivery Status" prefWidth="200"/>
             </columns>
