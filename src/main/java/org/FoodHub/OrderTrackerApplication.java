@@ -10,6 +10,9 @@ import javafx.stage.Stage;
 import java.util.Objects;
 
 public class OrderTrackerApplication extends Application {
+
+    OrderManagerInterface orderManagerInterface = new OrderManagerInterface();
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("OrderTrackerView.fxml")));
