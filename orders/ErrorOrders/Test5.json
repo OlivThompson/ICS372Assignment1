@@ -1,6 +1,5 @@
 {
   "order": {
-    "type": "togo",
     "order_date": 1515354694451,
     "items": [
       {
@@ -14,6 +13,7 @@
         "price": 3.99
       },
       {
+        "name": "apple",
         "quantity": 1,
         "price": 8.95
       }

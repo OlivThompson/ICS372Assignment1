@@ -60,6 +60,9 @@ public class jsonOrderParser implements OrderParserInterface{
     private Order jsonToOrder(JSONObject orderData) throws ParseException {
         String orderType = (String)orderData.get("type");
         Long orderDate = (Long)orderData.get("order_date");
+        if (orderType == null){
+            throw new ParseException(ParseException.ERROR_UNEXPECTED_TOKEN, "Missing Data, Order will not be processed");
+        }
         // Will check if the order has order_date, if not will create the time at the moment it is being processed
         if (orderDate == null){
             orderDate = Instant.now().toEpochMilli();
