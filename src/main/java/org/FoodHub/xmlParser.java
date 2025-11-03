@@ -48,7 +48,7 @@ public class xmlParser implements OrderParserInterface{
         for (int i = 0; i < orderList.getLength(); i++){
             List<FoodItem> allFood = new ArrayList<>();
             Element order = (Element)orderList.item(i);
-            String orderID = order.getAttribute("id");
+//            String orderID = order.getAttribute("id");
             String orderType = order.getElementsByTagName("OrderType").item(0).getTextContent();
             if (orderType.isBlank()){
                 throw new SAXException("Missing Data Will Not Accept");

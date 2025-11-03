@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,6 +60,10 @@ public class jsonOrderParser implements OrderParserInterface{
     private Order jsonToOrder(JSONObject orderData){
         String orderType = (String)orderData.get("type");
         Long orderDate = (Long)orderData.get("order_date");
+        // Will check if the order has order_date, if not will create the time at the moment it is being processed
+        if (orderDate == null){
+            orderDate = Instant.now().toEpochMilli();
+        }
         JSONArray itemsArray = (JSONArray)orderData.get("items");
         List<FoodItem> orderedItems = new ArrayList<>();
 
@@ -168,6 +173,7 @@ public class jsonOrderParser implements OrderParserInterface{
             itemObj.put("price", itemData.getPrice());
             itemArray.add(itemObj);
         }
+
 
         JSONObject orderObj = new JSONObject();
         orderObj.put("order_status", incomingOrder.getOrderStatus().name());
