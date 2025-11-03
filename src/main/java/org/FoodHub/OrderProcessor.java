@@ -29,7 +29,8 @@ public class OrderProcessor {
                 allOrder.addAll(processSingleOrder(file));
                 fileAccesser.moveProcessedFile(file);
             } catch (Exception e){
-                System.err.println("Failed to process order: " + file + " for " + e.getMessage());
+                String errorMessage = e.toString();
+                System.err.println("Failed to process order: " + file + " for " + errorMessage);
                 try{
                     fileAccesser.moveErrorFile(file);
                 } catch(IOException e2){

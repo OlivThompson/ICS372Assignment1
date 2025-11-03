@@ -57,7 +57,7 @@ public class jsonOrderParser implements OrderParserInterface{
         }
     }
 
-    private Order jsonToOrder(JSONObject orderData){
+    private Order jsonToOrder(JSONObject orderData) throws ParseException {
         String orderType = (String)orderData.get("type");
         Long orderDate = (Long)orderData.get("order_date");
         // Will check if the order has order_date, if not will create the time at the moment it is being processed
@@ -72,6 +72,10 @@ public class jsonOrderParser implements OrderParserInterface{
             String name = (String)itemData.get("name");
             Long quantityLong = (Long)itemData.get("quantity");
             Double price = (Double)itemData.get("price");
+
+            if (name == null || quantityLong == null || price == null){
+                throw new ParseException(ParseException.ERROR_UNEXPECTED_TOKEN, "Missing Data, Order will not be processed");
+            }
 
             int quantity = quantityLong != null ? quantityLong.intValue() : 0;
             double finalPrice = price != null ? price.doubleValue() : 0.0;

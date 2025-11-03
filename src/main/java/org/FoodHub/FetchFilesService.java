@@ -96,7 +96,7 @@ public class FetchFilesService implements Runnable{
                                     priceUpdateCallBack.run();
                                 });
                             }
-                        }catch(Exception e){
+                        }catch(ParseException|SAXException|ParserConfigurationException e){
                             System.err.println("Failed to process file");
                             try{
                                 accesser.moveErrorFile(fileName);
