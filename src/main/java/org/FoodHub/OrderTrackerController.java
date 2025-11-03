@@ -130,7 +130,7 @@ public class OrderTrackerController {
                 new SimpleStringProperty(order.getValue().getDeliveryStatus() != null ?
                         order.getValue().getDeliveryStatus().toString() : ""));
 
-        if (filePath.exists()) {
+        if (filePath.exists() && filePath.length() > 0) {
             allOrders = process.processSingleOrder("SavedDataForLoad.json");
             allOrders.addAll(process.processAllOrder());
             orderManager.setAllOrder(allOrders);
