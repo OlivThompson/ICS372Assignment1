@@ -37,12 +37,16 @@ class OrderManager{
             System.out.printf("Order with ID %d doesn't exist.\n", orderID);
         }
     }
+/*
 
-    /**
+///////////////////// Commented out unused codes maybe will need it for restructuring later
+    */
+/**
      * Changes an incoming order's status to Started.
      *
      * @param orderID - the orderID of the order to be started.
-     */
+     *//*
+
     void startIncomingOrder(int orderID) {
         Order order = findOrder(orderID);
 
@@ -57,11 +61,13 @@ class OrderManager{
         }
     }
 
-    /**
+    */
+/**
      * Sets a given order's status to COMPLETE.
      *
      * @param orderID - the orderID of the order to be completed.
-     */
+     *//*
+
     void completeIncomingOrder(int orderID) {
         Order order = findOrder(orderID);
         if(findOrder(orderID) != null && order.getOrderStatus().equals(OrderStatus.STARTED)) {
@@ -72,6 +78,8 @@ class OrderManager{
             System.out.printf("Order with ID %d must be started first.\n", orderID);
         }
     }
+*/
+
 
     /**
      * Finds an order based on its orderID.
@@ -95,12 +103,15 @@ class OrderManager{
     List<Order> getOrders() {
         return this.orders;
     }
+/*
 
-    /**
+    */
+/**
      * Displays a given order based on its orderID.
      *
      * @param orderID the orderID of the order to be displayed.
-     */
+     *//*
+
     void displayOrder(int orderID) {
         Order order = findOrder(orderID);
         if(order != null) {
@@ -109,6 +120,7 @@ class OrderManager{
             System.out.printf("Order with ID %d doesn't exist.\n", orderID);
         }
     }
+*/
 
     protected void setAllOrder(List<Order> allOrders){
         orders.addAll(allOrders);

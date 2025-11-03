@@ -168,7 +168,6 @@ public class OrderTrackerController {
     }
 
     public void handleExportOrders(ActionEvent actionEvent) {
-
         process.writeAllOrdersToFile(orderManager.getOrders());
     }
 
@@ -191,9 +190,12 @@ public class OrderTrackerController {
         }
     }
 
-    public void handleUpdateStatus(ActionEvent actionEvent) {
+    public void handleUpdateStatus(ActionEvent actionEvent) throws IOException, ParseException, ParserConfigurationException, SAXException {
         Order selected = orderTable.getSelectionModel().getSelectedItem();
         OrderStatus newStatus = statusBox.getValue();
+        if (newStatus == OrderStatus.COMPLETED){
+            process.writeToJSON(selected);
+        }
         if (selected != null && newStatus != null) {
             orderManager.findOrder(selected.getOrderID()).setOrderStatus(newStatus);
             orderTable.refresh();
