@@ -1,6 +1,9 @@
 package org.FoodHub;
 
+import org.junit.Assert.*;
+import org.junit.Before;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -21,7 +24,22 @@ public class Tester {
         Order order = new Order(List.of(), OrderStatus.INCOMING, System.currentTimeMillis(), OrderType.DELIVERY);
         order.setOrderStatus(OrderStatus.STARTED);
         order.setDeliveryStatus(DeliveryStatus.Out_For_Delivery);
+
         Assertions.assertEquals(OrderStatus.STARTED, order.getOrderStatus());
         Assertions.assertEquals(DeliveryStatus.Out_For_Delivery, order.getDeliveryStatus());
+    }
+
+    @Test
+    void testGettingExtensions() {
+        FileAccesser accesser = new FileAccesser();
+
+        Assertions.assertEquals("json", accesser.getExtension("file.json"));
+        Assertions.assertEquals("xml", accesser.getExtension("file.xml"));
+        Assertions.assertEquals("", accesser.getExtension("file"));
+    }
+
+    @Test
+    void test() {
+
     }
 }
