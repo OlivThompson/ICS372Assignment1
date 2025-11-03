@@ -61,10 +61,6 @@ public class OrderTrackerController {
     public Button displayOrder;
 
 
-    public void handleExportOrders(ActionEvent actionEvent) {
-
-    }
-
     /**
      * Will initialize with SavedDataForLoad.json being processed
      *
@@ -169,6 +165,11 @@ public class OrderTrackerController {
         if (fileListenerService != null){
             fileListenerService.stop();
         }
+    }
+
+    public void handleExportOrders(ActionEvent actionEvent) {
+
+        process.writeAllOrdersToFile(orderManager.getOrders());
     }
 
     /**

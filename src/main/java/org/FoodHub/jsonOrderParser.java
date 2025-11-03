@@ -82,7 +82,7 @@ public class jsonOrderParser implements OrderParserInterface{
 
         OrderStatus enumStatus = parseOrderStatus(orderStatus);
         OrderType enumType = parseOrderType(orderType);
-        if (enumType == null) enumType = OrderType.DELIVERY; // Default fallback
+        if (enumType == null) enumType = OrderType.PICKUP; // Default fallback
 
         return new Order(orderedItems, enumStatus, orderDate, enumType);
     }
