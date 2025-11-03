@@ -221,7 +221,7 @@ public class OrderTrackerController {
         layout.setPadding(new javafx.geometry.Insets(10));
 
         Text header = new Text("Order Type: " + selected.getOrderType() +
-                "\nStatus: " + selected.getDeliveryStatus() +
+                "\nStatus: " + selected.getOrderStatus() +
                 "\nTime: " + new java.util.Date(selected.getOrderTime()));
 
         TableView<FoodItem> itemTable = new TableView<>();
