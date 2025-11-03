@@ -36,6 +36,13 @@
                 <Insets top="10" bottom="10" left="10" right="10"/>
             </padding>
 
+            <Label fx:id="totalPriceLabel" text="Total Price: $0.00">
+                <HBox.margin>
+                        <Insets right="30" />
+                </HBox.margin>
+            </Label>
+
+
             <Label text="New Status:"/>
             <ComboBox fx:id="statusBox" prefWidth="150"/>
 

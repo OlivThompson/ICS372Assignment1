@@ -126,6 +126,21 @@ class OrderManager{
         orders.addAll(allOrders);
     }
 
+    protected double calculateAllOrderPrice(){
+        double currentTotal = 0;
+        for (Order o : getOrders()){
+            if (o.getOrderStatus() == OrderStatus.CANCELLED){
+                continue;
+            }
+            currentTotal += o.calculateTotalPrice();
+        }
+        return currentTotal;
+    }
+
+    protected double getAllOrderPrice(){
+        return calculateAllOrderPrice();
+    }
+
 
 }
 

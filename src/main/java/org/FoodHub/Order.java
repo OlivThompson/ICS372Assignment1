@@ -95,7 +95,7 @@ public class Order{
      *
      * @return the total price of an order.
      */
-    double calculateTotalPrice() {
+    protected double calculateTotalPrice() {
         double totalPrice = 0;
         for( FoodItem i : this.foodItems) {
             totalPrice += (i.getPrice() * i.getQuantity());

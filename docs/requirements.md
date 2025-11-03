@@ -13,4 +13,8 @@
 ### 13. The software shall have four status for the order, "Incoming", "Started", "Completed", "Cancelled" and allowed to be updated at runtime and display to the UI
 ### 14. The delivery status for the orders shall have two status, "Pending", "Out For Delivery" and allowed to be updated only for delivery type orders and displayed to the UI
 ### 15. The software shall display all available orders onto the each columns of their respected information
-### 16. 
+### 16. The order details shall display the total cost of the specified order
+### 17. The User Interface shall have the total price for all the orders excluding cancelled order
+### 18. The User Interface's total order price display shall automatically update when an order has been cancelled or when a new order file has been processed
+### 19. The software shall convert Long order_date into a readable string date to display onto the Order Manager Interface
+### 20. The software shall be able to process both JSON and XML file in the "orders" directory

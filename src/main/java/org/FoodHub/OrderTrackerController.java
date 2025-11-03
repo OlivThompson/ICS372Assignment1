@@ -56,6 +56,8 @@ public class OrderTrackerController {
     @FXML
     public ComboBox<DeliveryStatus> deliveryStatusBox;
     @FXML
+    public Label totalPriceLabel;
+    @FXML
     public Button updateButton;
     @FXML
     public Button exportButton;
@@ -162,10 +164,12 @@ public class OrderTrackerController {
             updateUIForSelectedOrder(newSelection);
         });
 
-        fileListenerService = new FetchFilesService(allOrdersList, orderManager, process, accesser);
+        fileListenerService = new FetchFilesService(allOrdersList, orderManager, process, accesser, this::updatePriceDisplay);
         fileListenerThread = new Thread(fileListenerService, "FileWatcherThread");
         fileListenerThread.setDaemon(true);
         fileListenerThread.start();
+
+        updatePriceDisplay();
 
 
     }
@@ -213,8 +217,8 @@ public class OrderTrackerController {
             orderManager.findOrder(selected.getOrderID()).setDeliveryStatus(deliveryStatusBox.getValue());
         }
         orderTable.refresh();
-
         saveData.save(orderManager, filePath);
+        updatePriceDisplay();
     }
 
     public void handleDisplayOrder(ActionEvent actionEvent) {
@@ -253,6 +257,13 @@ public class OrderTrackerController {
         Scene scene = new Scene(layout, 400, 300);
         detailStage.setScene(scene);
         detailStage.show();
+    }
+
+    private void updatePriceDisplay(){
+        if (totalPriceLabel != null){
+            double total = orderManager.getAllOrderPrice();
+            totalPriceLabel.setText(String.format("Total Price: %.2f", total));
+        }
     }
 }
 

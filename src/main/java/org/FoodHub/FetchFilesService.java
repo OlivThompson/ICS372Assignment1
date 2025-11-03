@@ -25,16 +25,18 @@ public class FetchFilesService implements Runnable{
     private final OrderManager orderManager;
     private final OrderProcessor processor;
     private final FileAccesser accesser;
+    private final Runnable priceUpdateCallBack;
 
     private volatile boolean run = true;
     private volatile WatchService ping;
 
     public FetchFilesService(ObservableList<Order> allOrdersList, OrderManager orderManager,
-                             OrderProcessor processor, FileAccesser accesser){
+                             OrderProcessor processor, FileAccesser accesser, Runnable priceUpdateCallBack){
         this.allOrdersList = allOrdersList;
         this.orderManager = orderManager;
         this.processor = processor;
         this.accesser = accesser;
+        this.priceUpdateCallBack = priceUpdateCallBack;
     }
 
     public void stop(){
@@ -91,6 +93,7 @@ public class FetchFilesService implements Runnable{
                                         orderManager.addOrder(o);
                                     }
                                     allOrdersList.addAll(newOrders);
+                                    priceUpdateCallBack.run();
                                 });
                             }
                         }catch(Exception e){
