@@ -1,5 +1,6 @@
 package org.FoodHub;
 
+import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -23,6 +24,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 public class OrderTrackerController {
@@ -42,7 +44,7 @@ public class OrderTrackerController {
     @FXML
     public TableColumn<Order, Integer> idColumn;
     @FXML
-    public TableColumn<Order, Integer> dateColumn;
+    public TableColumn<Order, String> dateColumn;
     @FXML
     public TableColumn<Order, String> typeColumn;
     @FXML
@@ -70,7 +72,14 @@ public class OrderTrackerController {
     public void initialize() throws IOException, ParseException, ParserConfigurationException, SAXException {
         idColumn.setCellValueFactory(new PropertyValueFactory<>("orderID"));
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("orderStatus"));
-        dateColumn.setCellValueFactory(new PropertyValueFactory<>("OrderTimeToText"));
+        dateColumn.setCellValueFactory(cellData -> {
+            Long orderTime = cellData.getValue().getOrderTime();
+            if (orderTime == null){
+                return new SimpleStringProperty("N/A");
+            }else{
+                return new SimpleStringProperty(new Date(orderTime).toString());
+            }
+        });
         deliveryStatusColumn.setCellValueFactory(order ->
                 new SimpleStringProperty(order.getValue().getDeliveryStatus() != null ?
                         order.getValue().getDeliveryStatus().toString() : ""));
