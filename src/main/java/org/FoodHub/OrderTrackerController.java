@@ -27,6 +27,13 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Controller class is used for managing and displaying food orders in the FoodHub application.
+ *
+ * This class is used to handle loading, displaying, updating, and exporting orders. Additionally,
+ * it manages the UI including the order table, status and delivery status ComboBoxes, and total price display.
+ * This class also listens for file changes to update the order list.
+ */
 public class OrderTrackerController {
     private OrderProcessor process = new OrderProcessor();
     private OrderManager orderManager = new OrderManager();
@@ -66,10 +73,13 @@ public class OrderTrackerController {
 
 
     /**
-     * Will initialize with SavedDataForLoad.json being processed
+     * Will initialize with SavedDataForLoad.json being processed.
      *
-     *
-     * **/
+     * @throws IOException if I/O error occurs during initialization.
+     * @throws ParseException if parsing JSON data fails.
+     * @throws ParserConfigurationException if a parser cannot be properly configured.
+     * @throws SAXException if an XML parsing error occurs.
+     */
     @FXML
     public void initialize() throws IOException, ParseException, ParserConfigurationException, SAXException {
         idColumn.setCellValueFactory(new PropertyValueFactory<>("orderID"));
@@ -100,11 +110,11 @@ public class OrderTrackerController {
 
             /**
              * Updates the cell display with an order type icon and label.
-             * Loads appropriate icon from classpath
+             * Loads appropriate icon from classpath.
              * Uses text only display if icon resource is not found.
              *
-             * @param item the order type string value to display
-             * @param empty true if the cell is empty, false otherwise
+             * @param item the order type string value to display.
+             * @param empty true if the cell is empty, false otherwise.
              */
             @Override
             protected void updateItem(String item, boolean empty) {
@@ -174,12 +184,18 @@ public class OrderTrackerController {
 
     }
 
+
     public void shutdown(){
         if (fileListenerService != null){
             fileListenerService.stop();
         }
     }
 
+    /**
+     *Exports all current orders to an external file when the export action is triggered.
+     *
+     * @param actionEvent the event that triggers the export operation.
+     */
     public void handleExportOrders(ActionEvent actionEvent) {
         process.writeAllOrdersToFile(orderManager.getOrders());
     }
@@ -203,6 +219,17 @@ public class OrderTrackerController {
         }
     }
 
+    /**
+     * Updates status of the selected order based on user input.
+     * If the order is completed the details are written to a JSON file.
+     * Changes are saved and order status is refreshed.
+     *
+     * @param actionEvent
+     * @throws IOException when an I/O error occurs.
+     * @throws ParseException if the JSON data isn't formated properly.
+     * @throws ParserConfigurationException if a parser cant be configured properly.
+     * @throws SAXException if XML parsing error occurs.
+     */
     public void handleUpdateStatus(ActionEvent actionEvent) throws IOException, ParseException, ParserConfigurationException, SAXException {
         Order selected = orderTable.getSelectionModel().getSelectedItem();
         OrderStatus newStatus = statusBox.getValue();
@@ -220,6 +247,14 @@ public class OrderTrackerController {
         saveData.save(orderManager, filePath);
         updatePriceDisplay();
     }
+
+    /**
+     * Display each orders detailed view of the selected order in a new window which
+     * includes order type, status, time, and a table listing the food items with their quantities and prices.
+     * Also shows the total price of the order at the bottom.
+     *
+     * @param actionEvent the event that triggers the display of order details.
+     */
 
     public void handleDisplayOrder(ActionEvent actionEvent) {
         Order selected = orderTable.getSelectionModel().getSelectedItem();
@@ -259,6 +294,9 @@ public class OrderTrackerController {
         detailStage.show();
     }
 
+    /**
+     * Updates the displayed total price label with the current total price of all orders.
+     */
     private void updatePriceDisplay(){
         if (totalPriceLabel != null){
             double total = orderManager.getAllOrderPrice();

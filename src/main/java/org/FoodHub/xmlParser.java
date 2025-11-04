@@ -25,6 +25,12 @@ public class xmlParser implements OrderParserInterface{
 
     private xmlParser(){}
 
+    /**
+     * Returns singleton instance of xmlParser.
+     * Creates instance if it does not exist.
+     *
+     * @return the single xmlParser instance
+     */
     public static xmlParser getInstance(){
         if (instance == null){
             synchronized (xmlParser.class){
@@ -36,6 +42,14 @@ public class xmlParser implements OrderParserInterface{
         return instance;
     }
 
+    /**
+     *Loads orders from the given XML file and parses food item into an Order object.
+     * @param orderFile the XML file containing order data
+     * @return list of parsed orders from file
+     * @throws IOException if an I/O error occurs during file access
+     * @throws ParserConfigurationException if a parser cannot be properly configured
+     * @throws SAXException if XML is missing data or wrongly formatted
+     */
     @Override
     public List<Order> loadToOrder(File orderFile) throws IOException, ParserConfigurationException, SAXException {
         List<Order> allOrder = new ArrayList<>();
@@ -81,6 +95,11 @@ public class xmlParser implements OrderParserInterface{
         return allOrder;
     }
 
+    /**
+     * Parses the string of an order into OrderType enum
+     * @param type the order type as a string
+     * @return OrderType enum or null if the string is invalid or null
+     */
     private OrderType xmlParseOrderType(String type){
         if (type == null) return null;
         try {
