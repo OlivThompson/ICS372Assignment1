@@ -1,9 +1,13 @@
 package org.FoodHub;
 
-import org.junit.Assert.*;
+import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 
@@ -69,7 +73,40 @@ public class Tester {
     }
 
     @Test
-    void test() {
+    void testOrderParsers() throws IOException, ParserConfigurationException, ParseException, SAXException {
+        jsonOrderParser jsonParser1 = jsonOrderParser.getInstance();
+        jsonOrderParser jsonParser2 = jsonOrderParser.getInstance();
 
+        Assertions.assertSame(jsonParser1, jsonParser2);
+
+        List<Order> jsonOrder = jsonOrderParser.getInstance().loadToOrder(new File("orders/processedOrders/orderTap.json"));
+        Assertions.assertEquals(OrderType.PICKUP, jsonOrder.getFirst().getOrderType());
+        Assertions.assertEquals("AppleSlice", jsonOrder.getFirst().getFoodItems().get(0).getName());
+        Assertions.assertEquals(2, jsonOrder.getFirst().getFoodItems().get(0).getQuantity());
+        Assertions.assertEquals(8.99, jsonOrder.getFirst().getFoodItems().get(0).getPrice());
+        Assertions.assertEquals("Fries", jsonOrder.getFirst().getFoodItems().get(1).getName());
+        Assertions.assertEquals(2, jsonOrder.getFirst().getFoodItems().get(1).getQuantity());
+        Assertions.assertEquals(3.99, jsonOrder.getFirst().getFoodItems().get(1).getPrice());
+        Assertions.assertEquals("Milkshake", jsonOrder.getFirst().getFoodItems().get(2).getName());
+        Assertions.assertEquals(1, jsonOrder.getFirst().getFoodItems().get(2).getQuantity());
+        Assertions.assertEquals(8.95, jsonOrder.getFirst().getFoodItems().get(2).getPrice());
+
+        xmlParser xmlParser1 = xmlParser.getInstance();
+        xmlParser xmlParser2 = xmlParser.getInstance();
+        Assertions.assertSame(xmlParser1, xmlParser2);
+
+        List<Order> xmlOrder = xmlParser.getInstance().loadToOrder(new File("orders/processedOrders/example.xml"));
+        Assertions.assertEquals(OrderType.DELIVERY, xmlOrder.getFirst().getOrderType());
+        Assertions.assertEquals("Hamburger", xmlOrder.getFirst().getFoodItems().getFirst().getName());
+        Assertions.assertEquals(13.45, xmlOrder.getFirst().getFoodItems().get(0).getPrice());
+        Assertions.assertEquals(2, xmlOrder.getFirst().getFoodItems().get(0).getQuantity());
+        Assertions.assertEquals("French 2222222", xmlOrder.getFirst().getFoodItems().get(1).getName());
+        Assertions.assertEquals(5.25, xmlOrder.getFirst().getFoodItems().get(1).getPrice());
+        Assertions.assertEquals(2, xmlOrder.getFirst().getFoodItems().get(1).getQuantity());
+        Assertions.assertEquals("Vanilla Shake", xmlOrder.getFirst().getFoodItems().get(2).getName());
+        Assertions.assertEquals(8.99, xmlOrder.getFirst().getFoodItems().get(2).getPrice());
+        Assertions.assertEquals(1, xmlOrder.getFirst().getFoodItems().get(2).getQuantity());
     }
+
+
 }
