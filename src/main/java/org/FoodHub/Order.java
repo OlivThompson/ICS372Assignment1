@@ -80,11 +80,19 @@ public class Order{
         this.orderStatus = orderStatus;
     }
 
+    /**
+     *  Gets delivery status
+     *
+     * @return - the status of a delivery
+     */
     public DeliveryStatus getDeliveryStatus(){
         return this.deliveryStatus;
     }
 
-
+    /**
+     *  Sets a delivery's status
+     * @param deliveryStatus - the delivery's new status.
+     */
     public void setDeliveryStatus(DeliveryStatus deliveryStatus) {
         this.deliveryStatus = deliveryStatus;
     }

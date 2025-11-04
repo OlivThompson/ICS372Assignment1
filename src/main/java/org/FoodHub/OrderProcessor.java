@@ -10,12 +10,20 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Processes orders that are loaded from files and written in JSON
+ */
 public class OrderProcessor {
     private final FileAccesser fileAccesser = new FileAccesser();
 
     public OrderProcessor(){
     }
 
+    /**
+     * Processes all order files in the orders directory.
+     * @return list of all successfully processed orders
+     * @throws IOException if file operations fail
+     */
     public List<Order> processAllOrder() throws IOException {
         List<String> allFiles = fileAccesser.fetchOrderFolderList();
         List<Order> allOrder = new ArrayList<>();
@@ -41,6 +49,15 @@ public class OrderProcessor {
         return allOrder;
     }
 
+    /**
+     * Uses parser to convert file contents to Order objects.
+     * @param fileName name of the file to process
+     * @return list of orders parsed from the file
+     * @throws IOException on file read errors
+     * @throws ParseException on JSON parsing errors
+     * @throws ParserConfigurationException on parser config error
+     * @throws SAXException on XML parsing errors
+     */
     public List<Order> processSingleOrder(String fileName) throws IOException,ParseException,ParserConfigurationException,SAXException{
         File orderFile;
         String fileExtension;
@@ -59,12 +76,20 @@ public class OrderProcessor {
         }
         return List.of();
     }
-
+    /**
+     * Writes a single order to a JSON file.
+     *
+     * @param theOrder the order to write
+     */
     public void writeToJSON(Order theOrder){
         jsonOrderParser parser = jsonOrderParser.getInstance();
         parser.writeOrderToJSON(theOrder);
     }
-
+    /**
+     * Writes a list of all orders to a JSON file.
+     *
+     * @param allOrders list of all orders to write
+     */
     public void writeAllOrdersToFile(List<Order> allOrders){
         jsonOrderParser parser = jsonOrderParser.getInstance();
         parser.writeAllOrderToFile(allOrders);
