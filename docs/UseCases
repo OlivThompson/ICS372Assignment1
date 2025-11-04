@@ -1,0 +1,58 @@
+Use Case Name: Display Order Type Indicator
+ Primary Actor: Restaurant Staff
+stakeholders & Interests:
+•	Restaurant Staff: Need to quickly identify order types to ensure proper handling and routing.
+•	Customers: Expect accurate preparation and correct fulfillment of their orders.
+•	Management: Wants efficient operations with minimal order-type mix-ups.
+•	System Administrator: Requires clear and consistent indicator setup for all order types.
+Preconditions:
+•	Order exists in the system with its order type (to-go, pick-up, or delivery) defined.
+•	The order is marked as completed.
+Success Conditions:
+•	Each completed order displays a visible indicator showing its type.
+•	Staff can distinguish all completed orders at a glance with no ambiguity.
+•	The system shows consistent and accurate indicators for every completed order.
+Frequency of Occurrence:
+•	Occurs continuously throughout each business day as orders are completed.
+
+Main Success Scenario:
+User Action 	                            System Actions
+1. Staff member selects “Complete Order”
+                                            2. Record order as completed
+                                            3. Retrieve the order type
+                                            4. Determines and assigns the correct visual indicator for the order type.
+                                            5. Display Completed orders list with associated visual indicators
+
+6. Staff views the “Completed Orders” list to verify the order’s type.
+
+Use Case Name: Saving system data
+Primary Actor: System Manager
+Stakeholder & Interests:
+The Restaurant – Wants to have a reliable system that will store their information during a crash
+The customer – They want their order to be correct
+Preconditions:
+-	There must already be data such as restaurants/orders
+Success Conditions: System adds data and saves every action then loads data successfully.
+Frequency Occurrence: Multiple times a day
+Main Success Scenario:
+User Action	            System Actions
+1.Uses an action
+ 	                    2. System calls for data saving function
+3. Manager ends system
+ 	                    4. System Exits
+5. Manager reopen system
+ 	                    6. System loads the saved data
+
+
+Use Case Name: Exporting all orders from a Restaurant
+Primary Actor: System Manager
+Stakeholder & Interests:
+The restaurant – Want to know the order data for further analysis
+Preconditions:
+-	Must have at least 1 order
+Success Conditions: Export all the orders into a single file in the directory of the Restaurant
+Main Success Scenario:
+User Action	                System Actions
+1. Selects Export Orders.
+                            2. System exports all orders to file.
+
